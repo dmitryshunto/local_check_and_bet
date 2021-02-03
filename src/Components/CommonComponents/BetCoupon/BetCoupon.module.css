@@ -1,0 +1,109 @@
+.bet_coupon {
+    position: fixed;
+    bottom: 0px;
+    left: 30%;
+    width: 40%;
+    overflow: hidden;
+    border-radius: 4px;
+} 
+
+.bet_coupon_head {
+    height: 64px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #0a6e51;
+}
+
+.bets_length_block {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #0a6e51;
+    background: #0a6e51;
+    text-align: center;
+    color: #eef5f3
+}
+
+.bets_length_block::before {
+    content: "";
+    display: inline-block;
+    min-height: inherit;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.remove_all_bets_button:hover {
+    cursor: pointer;
+}
+
+.bet_coupon_head div {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.bet_coupon_item {
+    height: 64px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #e5e5e5;
+    border-bottom: 0.5px solid #afafaf;
+}
+
+.add_bet_button {
+    height: 48px;
+    width: 100%;
+    background: #0a6e50;
+    color: #eef5f3;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.add_bet_button:hover {
+    background: #57d8b0;
+    color: #333c39;
+    cursor: pointer;
+} 
+
+.remove_bet_button {
+    text-align: center;
+    width:10%;
+}
+
+.remove_bet_button:hover {
+    cursor: pointer;
+    color: #0a6e51;
+}
+
+.coupon_odd_type {
+    width: 70%;
+}
+
+.bet_success_message {
+    position: fixed;
+    bottom: 0px;
+    left: 30%;
+    width: 40%;
+    height: 48px;
+    background: #0a6e50;
+    color: #eef5f3;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.remove_message_button {
+    width: 10%;
+}
+
+.remove_message_button:hover {
+    cursor: pointer;
+}
+
+.message_block {
+    width: 90%;
+}

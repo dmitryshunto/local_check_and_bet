@@ -1,0 +1,104 @@
+.championship_stats {
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin-top: 20px;
+}
+
+.championship_table_head {
+    margin-bottom: 3px;
+}
+
+.name_of_championship_block {
+    background: #0c815d;
+    text-align: center;
+    height: 48px;
+    color: #ecf6f8;
+}
+
+.name_of_championship_block::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.toogle_buttons div {
+    width: 70px;
+    text-align: center;
+    background: #076649;
+    width: 150px;
+    color: #ecf6f8;
+}
+
+.toogle_buttons div:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.active_button {
+    border-bottom:6px solid #0c815d;
+}
+
+.toogle_buttons div:hover {
+    cursor: pointer;
+}
+
+.championship_table {
+    width: 100%;
+    height: 100%;
+    background: #969696;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.championship_table thead {
+    background:#0c815e;
+    color: #b9e3df;
+}
+
+.championship_table thead:hover {
+    cursor: pointer
+}
+
+.championship_table thead tr {
+    height: 32px;
+}
+
+.championship_table thead th:not(:first-child) {
+    width: 90px;
+}
+
+.championship_table thead th:first-child {
+    width: 200px;
+}
+
+.championship_table tbody tr {
+    text-align: center;
+    background: #575757;
+    color: #ffe014;
+    height: 100%;
+}
+
+.championship_table tbody tr:hover {
+    background: #787878;
+}
+
+.championship_table tbody tr td:first-child {
+    background: #666666;
+    color: #cbc4b5;
+}
+
+.current_total_cell {
+    display: flex;
+    justify-content: space-around;
+}
+
+.triangle {
+    display: block;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-top-color: #cbc4b5;
+}

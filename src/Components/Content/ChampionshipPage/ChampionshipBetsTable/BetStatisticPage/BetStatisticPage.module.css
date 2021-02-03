@@ -1,0 +1,16 @@
+.bet_statistic_page {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page_head {
+    height: 48px;
+    color: #ecf6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #076649;
+    margin-top: 0.5%;
+    margin-bottom: 0.5%;
+}

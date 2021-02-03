@@ -1,0 +1,43 @@
+.user_bets_table {
+    min-width: 98%;
+    max-width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.user_bets_table {
+    padding: 5px;
+}
+
+.user_bets_table tr {
+    height: 32px;
+    color: aliceblue;
+}
+
+tr.user_bet {
+    border-bottom: 1px solid aliceblue;
+}
+
+
+.win_bet {
+    color: rgb(21, 76, 21);
+}
+
+.back_bet {
+    color: darkkhaki;
+}
+
+.lose_bet {
+    color: rgb(154, 36, 36);
+}
+
+.show_more_button {
+    width: 25%;
+    margin: 1% auto;
+}
+
+.show_more_button button:hover {
+    cursor: pointer;
+}

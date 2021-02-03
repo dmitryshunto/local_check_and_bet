@@ -1,0 +1,49 @@
+.predict_championship {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    width: 100%;
+    background: #575757;
+}
+
+.championship_head {
+    display: flex;
+    align-items: center;
+}
+
+.championship_check_button {
+    width: 15%
+}
+
+.championship_check_button button {
+    color: rgba(253, 39, 39, 0.763);
+}
+
+.championship_checked_button {
+    width: 15%
+}
+
+.championship_checked_button button {
+    color: rgba(0, 157, 23, 0.763);
+}
+
+.championship_link {
+    width: 30%
+}
+
+.predict_championship h5 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #cbc4b5;
+    text-align: center;
+}
+
+.championship_table {
+    height: 100%;
+    background: #8a8a8a;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.championship_checked {
+    display: none;
+}

@@ -1,0 +1,29 @@
+.toogle_buttons {
+    display: flex;
+    background: #076649;
+    justify-content: space-around;
+    height: 48px
+}
+
+.toogle_buttons div {
+    width: 70px;
+    text-align: center;
+    background: #076649;
+    width: 150px;
+    color: #ecf6f8;
+}
+
+.toogle_buttons div::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.active_button {
+    border-bottom:6px solid #0c815d;
+}
+
+.toogle_buttons div:hover {
+    cursor: pointer;
+}

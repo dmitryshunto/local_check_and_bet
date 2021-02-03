@@ -1,0 +1,50 @@
+.my_net_main_page_container {
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: #575757;
+    min-height: 100%;
+}
+
+.empty_page {
+    height: 100%;
+    margin-top: 10%;
+    text-align: center;
+    color: antiquewhite;
+}
+
+.my_net_championship_table {
+    margin-left: 1%;
+    display: table;
+    border-collapse: collapse;
+    color: aliceblue;
+}
+
+.my_net_championship_caption {
+    display: table-caption;
+    text-align: center;
+}
+
+.my_net_game {
+    display: table;
+}
+
+.my_net_game_teams_block {
+    display: table-cell;
+    width: 300px 
+}
+
+.my_net_kind_of_bet_items {
+    display: table-cell;
+}
+
+.my_net_kinds_of_bet_row {
+    display: table-row;
+}
+
+.my_net_kinds_of_bet_cell {
+    display: table-cell;
+    text-align: center;
+    width: 100px
+}

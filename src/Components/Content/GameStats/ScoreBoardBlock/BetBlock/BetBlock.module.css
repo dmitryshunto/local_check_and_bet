@@ -1,0 +1,75 @@
+.bet_block {
+    width: 100%; 
+}
+
+.bet_block_head {
+    height: 28px;
+    background:#454545;
+    text-align: center;
+    width: 100%
+}
+
+.fulltime_result_block {
+    width: 100%;
+}
+
+.market_head {
+    height: 28px;
+    width: 100%;
+    background: #0c815e;
+}
+
+.market_head span {
+    padding-left: 10px;
+}
+
+.market_content {
+    height: 32px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.market_odd {
+    width: 33.33%;
+    background: #666666;
+    height: 100%;
+    text-align: center;
+    border-left: 0.5px solid #858484;
+}
+
+.market_odd:hover {
+    background: #cfcfcf;
+    cursor: pointer;
+    color: #0a6e51;
+}
+
+.odd_button_active {
+    background: #cfcfcf;
+    color: #0a6e51;
+}
+
+.over_under_line {
+    background: #a8a8a8;
+    height: 20px;
+    color: #101111;
+    text-align: center;
+    display: flex;
+}
+
+.over_under_line div {
+    width: 33.33%;
+}
+
+.odd_type_block {
+    width: 33.33%;
+    text-align: center;
+    height: 100%;
+}
+
+.two_way_bet_block div::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}

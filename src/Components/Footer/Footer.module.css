@@ -1,0 +1,9 @@
+footer {
+    background: #404040;
+}
+
+.footer_content {
+    width: 1200px;
+    margin: 1% auto;
+    color: aliceblue;
+}

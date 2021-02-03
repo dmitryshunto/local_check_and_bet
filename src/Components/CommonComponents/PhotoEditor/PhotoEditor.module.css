@@ -1,0 +1,63 @@
+.avatar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #575757;
+}
+
+.oncrop_button {
+    width: 40%;
+    margin-top: 1%;
+}
+
+.avatar canvas {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input_file_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input_photo_label, .oncrop_button  {
+    height: 32px;
+    border: 2px solid #575757;
+    border-radius: 10px;
+    padding: 5px;
+    color: #575757;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input_photo_label, .oncrop_button:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.input_photo_label span::before {
+    content: "";
+    display: inline-block;
+    min-height: inherit;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.photo_input {
+    display: none
+}
+
+div.warning_message {
+    text-align: center;
+    color: #8d2525;
+}
+
+.range_input_container {
+    display: flex;
+    align-items: center;
+}
+
+.scale_input {
+    width: 50%
+}

@@ -1,0 +1,72 @@
+.create_new_user_page {
+    width: 1200px;
+    margin: 0 auto;
+    background: #f2f2f2;
+    overflow: hidden;
+    height: 100%;
+}
+
+.create_new_user_form {
+    width: 50%;
+    margin: 2% auto;
+    text-align: right;
+}
+
+.create_new_user_form input, button {
+    border-radius: 2px;
+    height: 32px;
+    border: none;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.create_new_user_form input {
+    width: 100%
+}
+
+.create_new_user_form button {
+    background: #259069;
+    color: #f3f7f3;
+    margin-top: 1%;
+    width: 70%;
+    margin-bottom: 8px;
+}
+
+.create_new_user_form button:hover {
+    cursor: pointer;
+}
+
+.input_block {
+    margin-bottom: 8px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+}
+
+.input_block span {
+    width: 100%;
+    color: rgb(182, 0, 0);
+    border-bottom: 1px solid rgb(182, 0, 0);
+}
+
+.label_class {
+    width: 30%;
+    margin-right: 1%;
+    text-align: right;
+}
+
+.input_class {
+    width: 70%
+}
+
+.create_new_user_form label {
+    margin-right: 1%;
+}
+
+.warning_message {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: rgb(167, 33, 33);
+}

@@ -1,0 +1,93 @@
+   .prediction_odds_block {
+       text-align: center;
+       background: #575757;
+       color: #ffe014;
+       height: 100%;
+   }
+   
+   .prediction_odds_block:hover {
+       background: #6d6d6d;
+   }
+   
+   .teams_block a {
+       width: 100%;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       text-decoration: none;
+       color: #cbc4b5;
+   }
+   
+   .teams_block {
+       background: #666666;
+   }
+   
+   .teams_block_head {
+       width: 260px;
+   }
+   
+   .odds_block {
+       width: 120px;
+   }
+   
+   .odd_item_head {
+       width: 60px;
+   }
+   
+   .odd_button_active {
+       width: 100%;
+       height: 100%;
+       background: #cfcfcf;
+       color: #0a6e51;
+   }
+   
+   td.odd_item_container:hover,
+   td.more_information_button:hover {
+       background: #6e6e6e;
+       cursor: pointer;
+       text-align: center;
+   }
+   
+   .odd_item_container {
+       height: 100%;
+   }
+   
+   .odd_item_container div {
+       width: 100%;
+       height: 100%;
+   }
+   
+   .odd_item_container div::before {
+       content: "";
+       display: inline-block;
+       min-height: inherit;
+       height: 100%;
+       vertical-align: middle;
+   }
+   
+   .kind_of_bet_head {
+       width: 80px
+   }
+   
+   .prediction_parameter_head {
+       width: 60px
+   }
+   
+   .prediction_score_block {
+       width: 60px
+   }
+   
+   .green_text_selection {
+       color: rgb(0, 172, 0);
+   }
+   
+   .red_text_selection {
+       color: rgb(172, 1, 1)
+   }
+   
+   thead {
+       background: #0c815e;
+       color: #b9e3df;
+       width: 100%;
+   }

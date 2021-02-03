@@ -1,0 +1,44 @@
+.header {
+  grid-area: h;
+  background-color:#0c815e;
+  display: flex;
+  align-items: center;
+}
+
+.header div {
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+}
+
+.header div a {
+  text-decoration: none;
+  color: white;  
+}
+
+.header div a::before {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  content: "";
+}
+
+.my_profile_link a {
+  margin-right: 3px;
+}
+
+.logout_button {
+  height: 24px;
+  width: 56px
+}
+
+.logout_button button {
+  background:  rgb(255, 255, 0);
+}
+
+.logout_button button:hover {
+  cursor: pointer;
+}
+
+.user_avatar > img {
+  height: 36px
+}

@@ -1,0 +1,51 @@
+.score_board_table {
+    width: 100%;
+    color: aliceblue;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.score_board_table_head {
+    height: 30px;
+    background:#0c815e;
+    text-align: center;
+    width: 100%
+}
+
+.score_board_content {
+    width: 100%;
+    background: #575757;
+}
+
+.main_block {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.more_info_block {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.main_block_item {
+    width: 33.33%;
+    text-align: center;
+}
+
+.line {
+    width: 42%;
+}
+
+.more_info_button:hover {
+    cursor: pointer;
+}
+
+.date_of_match_block {
+    width: 100%;
+    text-align: center;
+}
+

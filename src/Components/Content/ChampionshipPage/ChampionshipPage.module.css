@@ -1,0 +1,10 @@
+.championship_page {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.championship_page h3 {
+    color: #cbc4b5;
+    padding-top: 30px;
+    padding-left: 30px;
+}
