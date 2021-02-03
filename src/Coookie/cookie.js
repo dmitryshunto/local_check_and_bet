@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import { getTodayDate } from '../CommonFunctions/commonFunctions';
 
 export const setCookie = (cname, cvalue, exdays) => {
@@ -37,7 +36,8 @@ export const isChamponshipChecked = (name_of_championship, date) => {
 }
 
 export const create_new_date_for_checked_championsips_storage = (new_date) => {
-    const checked_championships = JSON.parse(localStorage.getItem('checked_championships'))
+    let checked_championships = JSON.parse(localStorage.getItem('checked_championships'))
+    if(!checked_championships) checked_championships = {}
     const dates = Object.keys(checked_championships)
     if(dates.indexOf(new_date) === -1) {
         checked_championships[new_date] = []
