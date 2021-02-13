@@ -47,3 +47,18 @@
 .championship_checked {
     display: none;
 }
+
+.my_node_enter {
+    opacity: 0;
+}
+.my_node_enter_active {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+.my_node_exit {
+    opacity: 1;
+}
+.my_node_exit_active {
+    opacity: 0;
+    transition: opacity 200ms;
+}

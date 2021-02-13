@@ -27,7 +27,6 @@ export const changeCheckedChampionshipStatus = (name_of_championship, date) => {
 }
 
 export const isChamponshipChecked = (name_of_championship, date) => {
-    debugger
     const checked_championships = JSON.parse(localStorage.getItem('checked_championships'))
     if(checked_championships[date]) {
         if(checked_championships[date].indexOf(name_of_championship) === -1) return false
