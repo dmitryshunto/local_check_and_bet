@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './Header.module.css';
 import { NavLink } from 'react-router-dom';
-import { getLoginOfLU } from '../../Selectors/selectors';
+import { auth_user_selectors } from '../../Selectors/selectors';
 import { connect } from 'react-redux';
 import { logoutUserTC } from '../../redux/authReducer';
 
@@ -28,7 +28,7 @@ const MyProfileLink = ({logoutUserTC, login}) => {
 
 let mapStateToProps = (state) => {
     return {
-        login: getLoginOfLU(state)
+        login: auth_user_selectors.get_login(state)
     }
 }
  

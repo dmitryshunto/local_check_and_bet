@@ -1,5 +1,5 @@
 import React from 'react';
-import { getIsGettingPrediction, getLoadedPredictions, getDateOfPrediction, getAddedBets, getSelectedDateOfPrediction} from '../../../Selectors/selectors';
+import { added_bets_selectors, main_page_selectors} from '../../../Selectors/selectors';
 import { connect } from 'react-redux';
 import Championship from './Championship/Championship';
 import DateButton from '../../CommonComponents/DateButton/DateButton';
@@ -82,11 +82,11 @@ type MapStateToPropsType = {
 
 let mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
   return {
-    bets: getAddedBets(state),
-    date_of_prediction: getDateOfPrediction(state),
-    selected_date_of_prediction: getSelectedDateOfPrediction(state),
-    predictions: getLoadedPredictions(state),
-    isGettingPrediction: getIsGettingPrediction(state)
+    bets: added_bets_selectors.get_data(state),
+    date_of_prediction: main_page_selectors.get_date_of_prediction(state),
+    selected_date_of_prediction: main_page_selectors.get_selected_date_of_prediction(state),
+    predictions: main_page_selectors.get_data(state),
+    isGettingPrediction: main_page_selectors.get_is_getting_data(state)
   }
 }
 

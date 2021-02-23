@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './BetCoupon.module.css'
 import { connect } from 'react-redux';
-import { getAddedBets, getLoginOfLU, getIsAddingBetToDB, getMessageFromBetReducer } from '../../../Selectors/selectors';
+import { added_bets_selectors, auth_user_selectors } from '../../../Selectors/selectors';
 import { actions, addBetToDBTC } from '../../../redux/betReducer';
 import { translate_kind_of_bet_and_home_away } from '../../../CommonFunctions/commonFunctions';
 import { withRenderByCondition } from '../../../HOC/withPreloader'
@@ -65,10 +65,10 @@ const BetSuccessMessage = withRenderByCondition(NullComponent, 'message')(({mess
 
 const mapStateToProps = (state) => {
     return {
-        bets: getAddedBets(state),
-        isAddingBets: getIsAddingBetToDB(state),
-        message: getMessageFromBetReducer(state),
-        login: getLoginOfLU(state)
+        bets: added_bets_selectors.get_data(state),
+        isAddingBets: added_bets_selectors.get_is_getting_data(state),
+        message: added_bets_selectors.get_message(state),
+        login: auth_user_selectors.get_login(state)
     }
 }
 

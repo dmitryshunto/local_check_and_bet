@@ -25,7 +25,6 @@ export const my_net_api = {
     }
 }
 
-
 export const amIAuthorized = () => {
     return instanse.get<AuthorizeType>(`authuser.php`);
 } 

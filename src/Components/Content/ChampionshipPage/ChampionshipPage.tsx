@@ -4,7 +4,7 @@ import { setChampionshipStatsTC, ChampionshipStatsDataType, BetStatisticType, Ba
          actions } from '../../../redux/championship_stats_reducer';
 import {AppStoreType} from '../../../redux/redux'
 import ChampionshipStats from './ChampionshipStats/ChampionshipStats';
-import { getChampionshipStats, getChampionshipBetStatistic, getIsGettingChampionshipPageData, getBasicTotals, getGamesDataForChampionshipPage, getAddedBets } from '../../../Selectors/selectors';
+import { added_bets_selectors, championship_page_selectors } from '../../../Selectors/selectors';
 import { RouteComponentProps } from "react-router-dom"
 import classes from './ChampionshipPage.module.css'
 import ChampionshipBetsTable from './ChampionshipBetsTable/ChampionshipBetsTable';
@@ -15,6 +15,7 @@ import GamesTable from './GamesTable/GamesTable';
 import { BetType, addBetActionType, removeBetActionType, actions as betReducerActions } from '../../../redux/betReducer';
 import BetCoupon from '../../CommonComponents/BetCoupon/BetCoupon';
 import { useEffect } from 'react';
+import { MainPageGameDataType } from '../../../redux/championshipsReduser';
 
 const ChampionshipPageContainer: React.FC<PropsType> = (props) => {
     useEffect(() => {
@@ -49,7 +50,7 @@ type MapStatePropsType = {
     bet_statistic: BetStatisticType | undefined
     isGettingData: boolean
     basic_totals: BasicTotals | undefined
-    games: Object
+    games: MainPageGameDataType[] | [] | undefined
     bets: BetType[] | []
 }
 
@@ -70,12 +71,12 @@ type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType & Route
 
 let mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {
-        championship_stats: getChampionshipStats(state),
-        bet_statistic: getChampionshipBetStatistic(state),
-        isGettingData: getIsGettingChampionshipPageData(state),
-        basic_totals: getBasicTotals(state),
-        games: getGamesDataForChampionshipPage(state),
-        bets: getAddedBets(state)        
+        championship_stats: championship_page_selectors.get_championship_stats(state),
+        bet_statistic: championship_page_selectors.get_championship_bet_statistic(state),
+        isGettingData: championship_page_selectors.get_is_getting_data(state),
+        basic_totals: championship_page_selectors.get_basic_totals(state),
+        games: championship_page_selectors.get_games(state),
+        bets: added_bets_selectors.get_data(state)        
     }
 }
 

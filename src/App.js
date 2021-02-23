@@ -6,7 +6,7 @@ import CreateNewUserPage from './Components/CreateNewUserPage/CreateNewUserPage'
 import Header from './Components/Header/Header';
 import { amIAuthorizedTC } from './redux/authReducer';
 import { connect } from 'react-redux';
-import { getIsLoggingUser } from './Selectors/selectors';
+import { auth_user_selectors } from './Selectors/selectors';
 import MainPage from './Components/Content/MainPage/MainPage';
 import GameStats from './Components/Content/GameStats/GameStats';
 import ChampionshipPage from './Components/Content/ChampionshipPage/ChampionshipPage';
@@ -64,7 +64,7 @@ let mapDispatchToProps = {
 
 let mapStateToProps = (state) => {
   return {
-    isLogingUser: getIsLoggingUser(state)
+    isLogingUser: auth_user_selectors.get_is_logging_user(state)
   }
 }
 

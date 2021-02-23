@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { setBetStatisticTC } from '../../../../../redux/bet_statistic_reducer';
 import { AppStoreType } from '../../../../../redux/redux'
 import { connect } from 'react-redux';
-import { getFullBetStatisticFromState, getIsGettingBetsStatisticData } from '../../../../../Selectors/selectors'
+import { bet_statistic_page_selectors } from '../../../../../Selectors/selectors'
 import BetStatisticTable from './BetStatisticTable/BetStatisticTable';
 import { FullBetStatisticDataType } from '../../../../../redux/bet_statistic_reducer'
 import classes from "./BetStatisticPage.module.css"
@@ -45,8 +45,8 @@ type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType & Route
 
 let mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {
-       data: getFullBetStatisticFromState(state),
-       isGettingData: getIsGettingBetsStatisticData(state)
+       data: bet_statistic_page_selectors.get_data(state),
+       isGettingData: bet_statistic_page_selectors.get_is_getting_data(state)
     }
 }
 

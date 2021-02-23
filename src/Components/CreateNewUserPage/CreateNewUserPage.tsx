@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, reduxForm, WrappedFieldProps, InjectedFormProps } from 'redux-form'
 import { connect } from 'react-redux';
 import { createNewUserTC } from '../../redux/createNUReducer';
-import { getIsCreatingUser, getNULogin, getCNUwarningMessage, getCNUsuccess } from '../../Selectors/selectors';
+import { create_new_user_page_selectors } from '../../Selectors/selectors';
 import WelcomeNewUserPage from '../WelcomeNUPage/WelcomeNUPage';
 import classes from './CreateNewUserPage.module.css'
 import { validate } from '../../CommonFunctions/validators';
@@ -121,10 +121,10 @@ type MapStateToPropsType = {
 
 let mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
     return {
-        isCreatingUser: getIsCreatingUser(state),
-        loginOfNU: getNULogin(state),
-        createNUWarningMessage: getCNUwarningMessage(state),
-        createNUsuccess: getCNUsuccess(state)
+        isCreatingUser: create_new_user_page_selectors.get_is_creating_user(state),
+        loginOfNU: create_new_user_page_selectors.get_new_user_login(state),
+        createNUWarningMessage: create_new_user_page_selectors.get_warning_message(state),
+        createNUsuccess: create_new_user_page_selectors.get_operation_success(state)
     }
 }
 

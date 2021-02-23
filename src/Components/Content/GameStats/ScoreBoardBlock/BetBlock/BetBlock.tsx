@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './BetBlock.module.css';
 import { connect } from 'react-redux';
-import { getAddedBets } from '../../../../../Selectors/selectors';
+import { added_bets_selectors } from '../../../../../Selectors/selectors';
 import { createBetMarkets } from '../../../../../CommonFunctions/commonFunctions'
 import ThreeWayBetMarket from './BetMarkets/ThreeWayBetMarket'
 import TwoWayBetMarket from './BetMarkets/TwoWayBetMarket'
@@ -50,9 +50,8 @@ type MapStateToPropsType = {
 
 let mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
     return {
-        bets: getAddedBets(state)
+        bets: added_bets_selectors.get_data(state)
     }
 }
-
 
 export default connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsTypes, AppStoreType>(mapStateToProps, mapDispatchToProps)(BetBlock);

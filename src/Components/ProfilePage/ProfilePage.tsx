@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { MyProfileDataType, MyProfileDataItemType, setMyProfileDataTC, updatePhotoTC, actions } from '../../redux/my_profile_reducer'
-import { getMyProfileData,getLoginOfLU, getIsGettingMyProfileData, getProfilePhotoUrl, getIsLoadingProfilePhoto } from '../../Selectors/selectors'
+import { auth_user_selectors, propfile_selectors } from '../../Selectors/selectors'
 import { AppStoreType } from '../../redux/redux'
 import classes from './ProfilePage.module.css'
 import { round_plus, translate_kind_of_bet_and_home_away } from '../../CommonFunctions/commonFunctions'
@@ -103,11 +103,11 @@ type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
 
 let mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {
-        my_profile_data: getMyProfileData(state),
-        user_login: getLoginOfLU(state),       
-        isGettingData: getIsGettingMyProfileData(state),
-        photo_url: getProfilePhotoUrl(state),
-        isLoadingPhoto: getIsLoadingProfilePhoto(state)
+        my_profile_data: propfile_selectors.get_data(state),
+        user_login: auth_user_selectors.get_login(state),       
+        isGettingData: propfile_selectors.get_is_getting_data(state),
+        photo_url: propfile_selectors.get_profile_photo_url(state),
+        isLoadingPhoto: propfile_selectors.get_is_loading_profile_photo(state)
     }
 }
 

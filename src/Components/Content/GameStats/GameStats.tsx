@@ -1,7 +1,7 @@
 import React from 'react';
 import { setGameStatsTC, actions, GameStatsDataType } from '../../../redux/game_stats_reducer';
 import { connect } from 'react-redux';
-import { getGameStatsData, getIsGettingGameStatsData, getAddedBets } from '../../../Selectors/selectors';
+import { game_stats_selectors, added_bets_selectors } from '../../../Selectors/selectors';
 import MatchStatistics from './MatchStatistics/MatchStatistics';
 import classes from './GameStats.module.css';
 import MatchAnalysis from './MatchAnalysis/MatchAnalysis';
@@ -87,9 +87,9 @@ type MapStateToPropsType = {
 
 let mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
   return {
-    addedBets: getAddedBets(state),
-    data: getGameStatsData(state),
-    isGettingData: getIsGettingGameStatsData(state)
+    addedBets: added_bets_selectors.get_data(state),
+    data: game_stats_selectors.get_data(state),
+    isGettingData: game_stats_selectors.get_is_getting_data(state)
   }
 }
 

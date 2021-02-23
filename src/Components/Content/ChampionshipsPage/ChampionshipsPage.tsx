@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChampionshipsPageDataType, setChampionshipsListTC } from '../../../redux/championships_page_reducer'
 import { AppStoreType } from '../../../redux/redux'
-import { getDataForChampionshipsPage } from '../../../Selectors/selectors';
+import { championships_page_selectors } from '../../../Selectors/selectors';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import classes from './ChampionshipsPage.module.css'
@@ -57,7 +57,7 @@ type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
 
 let mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {
-       data: getDataForChampionshipsPage(state)
+       data: championships_page_selectors.get_data(state)
     }
 }
 

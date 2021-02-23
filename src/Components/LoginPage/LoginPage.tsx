@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form'
 import { NavLink } from 'react-router-dom';
 import { loginUserTC } from '../../redux/authReducer';
-import { getIsLoggingUser, getIsAuthorizedLU, getLUwarningMessage, getLoginOfLU } from '../../Selectors/selectors';
+import { auth_user_selectors } from '../../Selectors/selectors';
 import { connect } from 'react-redux';
 import WelcomeNewUserPage from '../WelcomeNUPage/WelcomeNUPage';
 import classes from './LoginPage.module.css';
@@ -82,10 +82,10 @@ type MapStateToPropsType = {
 
 let mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
     return {
-        isLoggingUser: getIsLoggingUser(state),
-        isAuthorized: getIsAuthorizedLU(state),
-        loginUserWarningMessage: getLUwarningMessage(state),
-        loginOfLU: getLoginOfLU(state)
+        isLoggingUser: auth_user_selectors.get_is_logging_user(state),
+        isAuthorized: auth_user_selectors.get_is_authorized(state),
+        loginUserWarningMessage: auth_user_selectors.get_warning_message(state),
+        loginOfLU: auth_user_selectors.get_login(state)
     }
 }
 
