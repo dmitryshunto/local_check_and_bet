@@ -51,11 +51,19 @@ export const amIAuthorizedTC = (): ThunkAction<Promise<void>, AppStoreType, unkn
     dispatch(actions.toggleIsLoggingUser(true));
     const response = await amIAuthorized();
     if (response.data.resultCode === ResultCodeTypes.Success) {
-        dispatch(actions.setAutorization({
-            login: response.data.login,
-            isAuthorized: true,
-            warningMessage: null
-        }));
+        if(response.data.login) {
+            dispatch(actions.setAutorization({
+                login: response.data.login,
+                isAuthorized: true,
+                warningMessage: null
+            }))
+        } else {
+            dispatch(actions.setAutorization({
+                login: null,
+                isAuthorized: false,
+                warningMessage: null
+            }))
+        }
     } else if (response.data.resultCode === ResultCodeTypes.Error) {
         dispatch(actions.setAutorization({
             login: null,
