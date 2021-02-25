@@ -9,11 +9,13 @@ import { useSubscribeOnData } from '../../Hooks/Hooks'
 import { PreloaderPageWithoutHeader } from '../CommonComponents/PreloaderPage/PreloaderPage'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 import UserBetsTable from './UserBetsTable/UserBetsTable'
+import LoginPage from '../LoginPage/LoginPage'
 
 
 const ProfilePageContainer: React.FC<PropsType> = (props: PropsType) => {
     useSubscribeOnData(props.setMyProfileDataTC, props.set_my_profile_page_initial_state, [props.user_login])
-    if(props.isGettingData || !props.my_profile_data) return <PreloaderPageWithoutHeader /> 
+    if(props.isGettingData || !props.my_profile_data) return <PreloaderPageWithoutHeader />
+    if(!props.user_login) return <LoginPage /> 
     return <ProfilePage {...props}/>
 }
 
