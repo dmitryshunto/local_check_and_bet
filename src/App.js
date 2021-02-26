@@ -17,19 +17,24 @@ import EmptyPage from './Components/CommonComponents/PreloaderPage/PreloaderPage
 import { useSubscribeOnData } from './Hooks/Hooks';
 import Footer from './Components/Footer/Footer';
 import MyNetMainPage from './Components/Content/MyNet/MyNetMainPage/MyNetMainPage'
+import store from './redux/redux';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-const AppContainer = (props) => {
+let App = (props) => {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   useSubscribeOnData(props.amIAuthorizedTC, null, [])
-  if(props.isLogingUser) return <EmptyPage />
-  return <App {...props}/>
+  return <RootComponent {...props}/>
 }
 
-const App = () => {
+
+
+const RootComponent = (props) => {
+  if(props.isLogingUser) return <EmptyPage />
   return (
     <div className='app-wrapper'>
       <Header />
@@ -68,4 +73,16 @@ let mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
+App = connect(mapStateToProps, mapDispatchToProps)(App);
+
+let AppContainer = (props) => {
+  return (
+    <BrowserRouter basename = {process.env.PUBLIC_URL}>
+        <Provider store = {store}>
+          <App {...props}/>
+        </Provider>
+    </BrowserRouter>
+  )
+}
+
+export default AppContainer

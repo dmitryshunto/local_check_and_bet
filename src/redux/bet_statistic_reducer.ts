@@ -4,7 +4,7 @@ import { PropertiesType, BaseThunkActionType } from "./redux"
 const SET_BET_STATISTIC = 'BET_STATISTIC_REDUCER/SET_BET_STATISTIC'
 const TOGGLE_IS_GETTING_DATA = 'BET_STATISTIC_REDUCER/TOGGLE_IS_GETTING_DATA'
 
-const actions = {
+export const actions = {
     set_bet_statistic : (object: typeof innitialObject) => ({type: SET_BET_STATISTIC, object} as const),
     toggle_is_getting_data : (isGettingData: boolean) => ({type: TOGGLE_IS_GETTING_DATA, isGettingData} as const)
 }

@@ -29,7 +29,6 @@ const Championship: React.FC<ChampionshipPropsType> = React.memo((props) => {
   }
   
   const checked_button_cn = championship.checked ? 'championship_checked_button' : 'championship_check_button'
-  const checked_championship_cn = championship.checked ? 'championship_checked' : 'championship_table'
   let items = championship.games.map(game => <Game addedBets={props.bets}
     addBet={props.addBet}
     removeBet={props.removeBet}

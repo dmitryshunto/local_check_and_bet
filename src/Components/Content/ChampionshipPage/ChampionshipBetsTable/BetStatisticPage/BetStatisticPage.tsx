@@ -15,7 +15,7 @@ type RoutePropsType = RouteComponentProps<{name_of_championship: string, kind_of
 const BetStatisticPage = ({data, setBetStatisticTC, isGettingData, match}: PropsType) => {
     useEffect(() => {
         setBetStatisticTC(match.params.name_of_championship, match.params.kind_of_bet, match.params.type_of_bet)
-    }, [match.params.name_of_championship, match.params.kind_of_bet, match.params.type_of_bet])
+    }, [match.params.name_of_championship, match.params.kind_of_bet, match.params.type_of_bet, setBetStatisticTC])
     if(isGettingData) return <PreloaderPageWithoutHeader/>
     return (
         <div className = {classes.bet_statistic_page}>

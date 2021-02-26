@@ -2,7 +2,7 @@ import React from 'react'
 import { FullBetStatisticDataType, FullBetStatisticItemType } from '../../../../../../redux/bet_statistic_reducer'
 import classes from './BetStatisticTable.module.css'
 
-type TablePropsType = {
+export type TablePropsType = {
     data: FullBetStatisticDataType
 }
 
@@ -53,7 +53,7 @@ type ItemPropsType = {
     data: FullBetStatisticItemType
 }
 
-const BetStatisticTableItem = ({data}: ItemPropsType) => {
+export const BetStatisticTableItem = ({data}: ItemPropsType) => {
     return (
         <div  className = {classes.bet_statistic_item}>
             <div className = {classes.teams_and_fulltime_block}>
