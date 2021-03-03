@@ -22,7 +22,8 @@ const MyNetChampionshipTable: React.FC<MyNetChampionship> = (props) => {
                         <div className={classes.my_net_kinds_of_bet_cell}>Ex. away IT</div>
                         <div className={classes.my_net_kinds_of_bet_cell}>Ex. result</div>
                         <div className={classes.my_net_kinds_of_bet_cell}>Ex. total</div>
-                        <div className={classes.my_net_kinds_of_bet_cell}>Bet</div>
+                        <div className={classes.my_net_kinds_of_bet_cell}>Out. Bet</div>
+                        <div className={classes.my_net_kinds_of_bet_cell}>Tot. Bet</div>
                     </div>
                 </div>
             </div>
@@ -59,18 +60,23 @@ interface KOF extends MyNetPredictionKindOfBetType {
 }
 
 const MyNetGameKindOfBet: React.FC<KOF> = (props) => {
+    let score = `${props.home_team_scored} - ${props.away_team_scored}`
+    if(props.home_team_scored === null || props.away_team_scored === null) {
+        score = ''
+    }
     return (
         <div className={classes.my_net_kinds_of_bet_row}>
             <div className={classes.my_net_kinds_of_bet_cell}>{props.kind_of_bet}</div>
             <div className={classes.my_net_kinds_of_bet_cell}>{props.book_w1}</div>
             <div className={classes.my_net_kinds_of_bet_cell}>{props.book_x}</div>
             <div className={classes.my_net_kinds_of_bet_cell}>{props.book_w2}</div>
-            <div className={classes.my_net_kinds_of_bet_cell}>{`${props.home_team_scored} - ${props.away_team_scored}`}</div>
+            <div className={classes.my_net_kinds_of_bet_cell}>{score}</div>
             <div className={classes.my_net_kinds_of_bet_cell}>{props.expected_home_team}</div>
             <div className={classes.my_net_kinds_of_bet_cell}>{props.expected_away_team}</div>
             <div className={classes.my_net_kinds_of_bet_cell}>{props.expected_result}</div>
             <div className={classes.my_net_kinds_of_bet_cell}>{props.expected_total}</div>
-            <div className={classes.my_net_kinds_of_bet_cell}>{`${props.outcome_bet_team} ${props.handicap}`}</div>
+            <div className={classes.my_net_kinds_of_bet_cell}>{`${props.outcome_bet_team || ''} ${props.handicap || ''}`}</div>
+            <div className={classes.my_net_kinds_of_bet_cell}>{`${props.over_under_bet_type || ''} ${props.over_under_bet_total || ''}`}</div>
         </div>
     )
 }

@@ -35,6 +35,8 @@ export interface MyNetPredictionKindOfBetType {
     expected_total: number | null;
     outcome_bet_team: string | null;
     handicap: number | null;
+    over_under_bet_type: string | null;
+    over_under_bet_total: number | null;
     book_w1: number | null;
     book_x: number | null;
     book_w2: number | null

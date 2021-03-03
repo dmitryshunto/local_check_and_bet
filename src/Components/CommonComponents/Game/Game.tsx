@@ -6,6 +6,7 @@ import OddItem from '../../Content/GameStats/ScoreBoardBlock/BetBlock/BetMarkets
 import { NavLink } from 'react-router-dom';
 import classes from './Game.module.css'
 import withAddedBets from '../../../HOC/withSelectionAddedBets';
+import cn from 'classnames'
 
 type GamePropsType = {
     basic_totals: BasicTotalsType
@@ -93,7 +94,7 @@ const Game: React.FC<GamePropsType> = React.memo((props) => {
           {odd_items}
           <td>{prediction_item_data['expected_of_home_team2']}</td>
           <td>{prediction_item_data['expected_of_away_team2']}</td>
-          <td className = {Math.abs(prediction_item_data['expected_result2']) > 1.5 ? classes.green_text_selection : ''}>{prediction_item_data['expected_result2']}</td>
+          <td className = {cn({[classes.green_text_selection]: Math.abs(prediction_item_data['expected_result2']) > 1.5})}>{prediction_item_data['expected_result2']}</td>
           <td>{prediction_item_data['expected_total2']}</td>
           <td className = {prediction_item_data['selection_over'] ? classes.green_text_selection : ''}>{prediction_item_data['expected_over']}</td>
           <td className = {prediction_item_data['selection_under'] ? classes.green_text_selection : ''}>{prediction_item_data['expected_under']}</td>

@@ -27,6 +27,11 @@
     transition: 0.5s all;
 }
 
+.modal_content:first-of-type div {
+    padding: 20px;
+    border-radius: 12px;
+}
+
 .modal_content.active {
     transform: scale(1);
 }

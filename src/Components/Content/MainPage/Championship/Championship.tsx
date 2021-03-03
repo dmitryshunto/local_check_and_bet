@@ -8,7 +8,7 @@ import GamesTableHead from '../../../CommonComponents/Game/GamesTableHead';
 import { getTodayDate } from '../../../../CommonFunctions/commonFunctions';
 import { CSSTransition } from 'react-transition-group';
 
-type ChampionshipPropsType = {
+export type ChampionshipPropsType = {
   bets: BetType[] | []
   championship: MainPageChampionshipDataType
   addBet: (bet: BetType) => void

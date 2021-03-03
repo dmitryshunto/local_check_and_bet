@@ -9,6 +9,12 @@ import { MainPageChampionshipDataType, MainPageGameDataType } from '../redux/cha
 import { BasicTotals, ChampionshipStatsDataType, BetStatisticType } from '../redux/championship_stats_reducer'
 import { MyNetChampionship } from "../redux/my_net_main_page_reducer";
 
+export const error_handler_selectors = {
+    get_warning_message: (state: AppStoreType) => {
+        return state.error_handler.error_message
+    }
+}
+
 export const create_new_user_page_selectors = {
     get_is_creating_user: (state: AppStoreType): boolean => {
         return state.createNU.isCreatingUser;

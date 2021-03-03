@@ -11,6 +11,7 @@ import betStatisticReducer from './bet_statistic_reducer';
 import championshipsPageReducer from './championships_page_reducer';
 import myProfileReducer from './my_profile_reducer';
 import my_net_main_page_reducer from './my_net_main_page_reducer'
+import error_handler_reducer from './error_handler_reducer';
 
 let rootReducer = combineReducers({
     form: formReducer,
@@ -23,7 +24,8 @@ let rootReducer = combineReducers({
     betsStatistic: betStatisticReducer,
     championshipsPage: championshipsPageReducer,
     myProfileReducer: myProfileReducer,
-    my_net_main_page_reducer: my_net_main_page_reducer
+    my_net_main_page_reducer: my_net_main_page_reducer,
+    error_handler: error_handler_reducer
 })
 
 type RootReducerType = typeof rootReducer

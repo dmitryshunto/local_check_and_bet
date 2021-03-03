@@ -17,7 +17,7 @@ type PropsType = {
 
 const ProfileInfo: React.FC<PropsType> = ({ number_of_bets, balance, isLoadingPhoto, photo_url, updatePhotoTC, user_login,
     winning_rating, average_odd }) => {
-    const [upload_mode, set_upload_mode] = useState<boolean>(false)
+    const [upload_mode, set_upload_mode] = useState<boolean | null>(false)
 
     return (
         <div className={classes.profile_info}>
@@ -62,7 +62,7 @@ const ProfileAvatar: React.FC<ProfileAvatarPropsType> = ({photo_url, cb}) => {
 
 type UploadNewPhotoWindow = {
     updatePhotoTC: (photo_file: File) => void
-    active: boolean
+    active: boolean | null
     isLoadingPhoto: boolean
 }
 

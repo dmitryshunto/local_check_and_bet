@@ -2,13 +2,14 @@ import { amIAuthorized, loginUser } from "../API/api";
 import { setCookie, deleteCookie } from "../Coookie/cookie";
 import { SetInitialStateCNUreducer, actions as createNewUserActions } from "./createNUReducer";
 import { SetInitialBetReducerState, actions as betReducerActions } from "./betReducer"
-import { ResultCodeTypes } from '../API/api_types'
+import { actions as error_handler_actions } from './error_handler_reducer'
 import { AppStoreType, PropertiesType } from "./redux"
 import { ThunkAction } from 'redux-thunk'
 
 
 const SET_AUTORIZATION = 'AUTH_REDUCER/SET_AUTORIZATION';
 const TOGGLE_IS_LOGGING_USER = 'AUTH_REDUCER/TOGGLE_IS_LOGGING_USER'
+const SET_WARNING_MESSAGE = 'AUTH_REDUCER/SET_WARNING_MESSAGE'
 
 type setAutorizationType = {
     login: string | null
@@ -18,7 +19,8 @@ type setAutorizationType = {
 
 export const actions = {
     setAutorization: (object: setAutorizationType) => ({ type: SET_AUTORIZATION, object} as const),
-    toggleIsLoggingUser: (isLoggingUser: boolean) => ({ type: TOGGLE_IS_LOGGING_USER, isLoggingUser} as const)
+    toggleIsLoggingUser: (isLoggingUser: boolean) => ({ type: TOGGLE_IS_LOGGING_USER, isLoggingUser} as const),
+    setWarningMessage: (message: string | null) => ({ type: SET_WARNING_MESSAGE, message} as const)
 }
 
 // по умолчанию устанавливаем isLoggingUser true, потому что при старете приложения
@@ -31,26 +33,35 @@ const innitialObject = {
     warningMessage: null as string | null
 };
 
-type ActionTypes = ReturnType<PropertiesType<typeof actions>> | SetInitialStateCNUreducer | SetInitialBetReducerState
+type ActionTypes = ReturnType<PropertiesType<typeof actions>> | SetInitialStateCNUreducer | SetInitialBetReducerState | 
+                   ReturnType<PropertiesType<typeof error_handler_actions>>
 
 let authReducer = (state = innitialObject, action: ActionTypes): typeof innitialObject => {
-    if (action.type === SET_AUTORIZATION) {
-        return {
-            ...state,
-            ...action.object
-        }
-    } else if (action.type === TOGGLE_IS_LOGGING_USER) {
-        return {
-            ...state,
-            isLoggingUser: action.isLoggingUser
-        }
-    } else return state
+    switch(action.type) {
+        case SET_AUTORIZATION: {
+            return {
+                ...state,
+                ...action.object
+            }
+        } case TOGGLE_IS_LOGGING_USER: {
+            return {
+                ...state,
+                isLoggingUser: action.isLoggingUser
+            }
+        } case SET_WARNING_MESSAGE: {
+            return {
+                ...state,
+                warningMessage: action.message
+            }
+        } default: return state
+    }
 }
 
 export const amIAuthorizedTC = (): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch) => {
     dispatch(actions.toggleIsLoggingUser(true));
+    try{
     const response = await amIAuthorized();
-    if (response.data.resultCode === ResultCodeTypes.Success) {
+    if (response.statusText === 'OK') {
         if(response.data.login) {
             dispatch(actions.setAutorization({
                 login: response.data.login,
@@ -64,14 +75,19 @@ export const amIAuthorizedTC = (): ThunkAction<Promise<void>, AppStoreType, unkn
                 warningMessage: null
             }))
         }
-    } else if (response.data.resultCode === ResultCodeTypes.Error) {
+        dispatch(error_handler_actions.set_error(null))
+    } else {
         dispatch(actions.setAutorization({
             login: null,
             isAuthorized: false,
-            warningMessage: response.data.message
+            warningMessage: response.statusText
         }))
     }
     dispatch(actions.toggleIsLoggingUser(false));
+    } catch(e) {
+        dispatch(actions.toggleIsLoggingUser(false))
+        dispatch(actions.setWarningMessage('Authorization error'))   
+    }
 }
 
 export const loginUserTC = (login: string, password: string): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch) => {

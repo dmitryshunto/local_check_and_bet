@@ -22,6 +22,13 @@ export const my_net_api = {
         let url = date_of_prediction ? `${date_of_prediction}/` : ''
         let response = await my_net_axios_instanse.get<ServerResponseType<MyNetChampionship[] | []>>(`my_net_main_page/${url}`)
         return response.data
+    },
+}
+
+export const users_api = {
+    am_i_authorized: async () => {
+        let response = await my_net_axios_instanse.get<AuthorizeType>(`users/authuser`)
+        return response
     }
 }
 

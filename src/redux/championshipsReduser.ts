@@ -41,7 +41,7 @@ export type MainPageGameKindOfBetDataType = {
     expected_over: number
     selection_over: boolean
     expected_under: number
-    selection_under: number
+    selection_under: boolean
 }
 
 export type MainPageGameDataType = {

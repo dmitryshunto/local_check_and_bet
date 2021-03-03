@@ -4,9 +4,9 @@ import LoginPage from './Components/LoginPage/LoginPage';
 import {Route, Switch, useLocation} from 'react-router-dom';
 import CreateNewUserPage from './Components/CreateNewUserPage/CreateNewUserPage';
 import Header from './Components/Header/Header';
-import { amIAuthorizedTC } from './redux/authReducer';
+import { actions as authuser_actions, amIAuthorizedTC } from './redux/authReducer';
 import { connect } from 'react-redux';
-import { auth_user_selectors } from './Selectors/selectors';
+import { auth_user_selectors, error_handler_selectors } from './Selectors/selectors';
 import MainPage from './Components/Content/MainPage/MainPage';
 import GameStats from './Components/Content/GameStats/GameStats';
 import ChampionshipPage from './Components/Content/ChampionshipPage/ChampionshipPage';
@@ -20,25 +20,32 @@ import MyNetMainPage from './Components/Content/MyNet/MyNetMainPage/MyNetMainPag
 import store from './redux/redux';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { actions as error_handler_actions } from './redux/error_handler_reducer';
+import ErrorPage, { ModalErrorPage } from './Components/CommonComponents/ErrorPage/ErrorPage';
 
 let App = (props) => {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0)
+    props.set_error_message(null)
   }, [pathname]);
+
+  useEffect(() => {
+    window.addEventListener('unhandledrejection', (e) => {props.set_error_message(e.reason.message)})
+    return window.removeEventListener('unhandledrejection', (e) => {props.set_error_message(e.reason.message)})
+  }, [])
 
   useSubscribeOnData(props.amIAuthorizedTC, null, [])
   return <RootComponent {...props}/>
 }
-
-
 
 const RootComponent = (props) => {
   if(props.isLogingUser) return <EmptyPage />
   return (
     <div className='app-wrapper'>
       <Header />
-      <div className='app-wrapper-content' >
+      {props.error_message && <ErrorPage message = {props.error_message}/>}
+      {!props.error_message && <div className='app-wrapper-content' >
         <Switch>
           
           <Route exact path='/profile_page' component={ProfilePage} />
@@ -53,10 +60,11 @@ const RootComponent = (props) => {
           <Route exact path='/my_net_main_page/:date_of_prediction?' component = {MyNetMainPage}/>
 
           <Route path='/:date_of_prediction?' component={MainPage} />
-
           
         </Switch>
-      </div>
+      </div>}
+      <ModalErrorPage active = {props.authorization_warning_message} 
+                      close_modal = {() => {props.set_authorization_error(null)}}/>
       <Footer />
     </div>
   );
@@ -64,12 +72,16 @@ const RootComponent = (props) => {
 }
 
 let mapDispatchToProps = {
-  amIAuthorizedTC
+  amIAuthorizedTC,
+  set_error_message: error_handler_actions.set_error,
+  set_authorization_error: authuser_actions.setWarningMessage
 }
 
 let mapStateToProps = (state) => {
   return {
-    isLogingUser: auth_user_selectors.get_is_logging_user(state)
+    isLogingUser: auth_user_selectors.get_is_logging_user(state),
+    error_message: error_handler_selectors.get_warning_message(state),
+    authorization_warning_message: auth_user_selectors.get_warning_message(state)
   }
 }
 
