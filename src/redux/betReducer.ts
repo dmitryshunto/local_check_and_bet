@@ -1,6 +1,9 @@
-import { addBetsToDB } from "../API/api"
+import { users_api } from "../API/api"
+import {actions as error_handler_actions} from "./error_handler_reducer"
 import { PropertiesType, BaseThunkActionType } from "./redux"
-import { getTodayDate } from "../CommonFunctions/commonFunctions"
+import { filterAddedBetsArray, getTodayDate } from "../CommonFunctions/commonFunctions"
+import { Kinds_of_bet_type } from "./my_net_main_page_reducer"
+import { transform_date_for_UI } from "../CommonFunctions/typed_functions"
 
 const ADD_BET = 'BET_REDUCER/ADD_BET'
 const REMOVE_BET = 'BET_REDUCER/REMOVE_BET'
@@ -14,49 +17,56 @@ export type removeBetActionType = ReturnType<typeof actions.removeBet>
 export type SetInitialBetReducerState = ReturnType<typeof actions.setInitialBetsReducerState>
 
 export const actions = {
-    removeBet: (bet: BetType) => ({type: REMOVE_BET, bet} as const),
-    addBet: (bet: BetType) => ({type: ADD_BET, bet} as const),
-    toggleIsAddingBet: (isAddingBetsToDB: boolean) => ({type: TOGGLE_IS_ADDING_BET, isAddingBetsToDB} as const),
-    addBetSuccess: (object: typeof innitialObject) => ({type: ADD_BET_SUCCESS, object} as const),
-    addBetError: (message: string) => ({type: ADD_BET_ERROR, message} as const),
-    setInitialBetsReducerState: () => ({type: SET_INITIAL_STATE} as const)
+    removeBet: (bet: BetType) => ({ type: REMOVE_BET, bet } as const),
+    addBet: (bet: BetType) => ({ type: ADD_BET, bet } as const),
+    toggleIsAddingBet: (isAddingBetsToDB: boolean) => ({ type: TOGGLE_IS_ADDING_BET, isAddingBetsToDB } as const),
+    addBetSuccess: (object: typeof innitialObject) => ({ type: ADD_BET_SUCCESS, object } as const),
+    addBetError: (message: string[]) => ({ type: ADD_BET_ERROR, message } as const),
+    setInitialBetsReducerState: () => ({ type: SET_INITIAL_STATE } as const)
 }
 
+export type Book_bet_name_type = 'w1' | 'w2' | 'x1' | 'x2' | 'x' | '!x' | 'TO' | 'TU' | 'h1' | 'h2'
+
+export type MarketType = 'totals' | 'main_outcomes' | 'double_chance' | 'handicaps'
+
+export type OddTypeType = 'home' | 'away' | 'TO' | 'TU' | 'x' | '!x'
 
 export type BetType = {
-    kind_of_bet: string;
-    date_of_match: string;
-    name_of_championship: string;
-    market: string;
-    name_of_team1: string;
-    name_of_team2: string;
-    odd_type: string;
-    odd: number;
+    kind_of_bet: Kinds_of_bet_type;
+    home_team: string
+    away_team: string
+    db_name: string;
+    market: MarketType;
+    game_id: number
+    date_of_match: string
+    value: number | null
+    odd_type: OddTypeType
+    odd: number | null
+    bet_size?: number
 }
 
 let innitialObject = {
     bets: [] as Array<BetType> | [],
     isAddingBetsToDB: false,
     addingBetsSuccess: null as boolean | null,
-    message: null as string | null
-}; 
+    warning_messages: null as string[] | null
+};
 
 type ActionsTypes = ReturnType<PropertiesType<typeof actions>>
 
 let betReducer = (state = innitialObject, action: ActionsTypes): typeof innitialObject => {
-    
-    if (action.type === ADD_BET && action.bet.date_of_match > getTodayDate()) {
+    if (action.type === ADD_BET) {
         return {
             ...state,
             bets: [...state.bets, action.bet],
-            message: null,
+            warning_messages: null,
             addingBetsSuccess: null
         }
     } else if (action.type === REMOVE_BET) {
-        if(state.bets) {
+        if (state.bets) {
             return {
                 ...state,
-                bets: state.bets.filter(bet => { return action.bet !== bet})
+                bets: state.bets.filter(bet => { return action.bet !== bet })
             }
         } else return state
     } else if (action.type === TOGGLE_IS_ADDING_BET) {
@@ -74,7 +84,7 @@ let betReducer = (state = innitialObject, action: ActionsTypes): typeof innitial
             ...state,
             isAddingBetsToDB: false,
             addingBetsSuccess: false,
-            message: action.message
+            warning_messages: action.message
         }
     }
     else if (action.type === SET_INITIAL_STATE) {
@@ -82,20 +92,47 @@ let betReducer = (state = innitialObject, action: ActionsTypes): typeof innitial
     } else return state;
 }
 
-export const addBetToDBTC = (login: string, bets: Array<BetType>): BaseThunkActionType<ActionsTypes> => async (dispatch: any) => {
-    dispatch(actions.toggleIsAddingBet(true))
-    let response = await addBetsToDB(login, bets)
-    if(response.resultCode === 0) {
-        dispatch(actions.toggleIsAddingBet(false))
-        dispatch(actions.addBetSuccess({
-            bets: [],
-            isAddingBetsToDB: false,
-            addingBetsSuccess: true,
-            message: response.message
-        }))
+export const addBetToDBTC = (login: string | null, bets: Array<BetType>): BaseThunkActionType<ActionsTypes | SetWarningMessagesAction> => async (dispatch) => {
+    if (login) {
+        dispatch(actions.toggleIsAddingBet(true))
+        let response = await users_api.add_bet(bets)
+        if (response.data.resultCode === 0) {
+            dispatch(actions.toggleIsAddingBet(false))
+            dispatch(actions.addBetSuccess({
+                bets: [],
+                isAddingBetsToDB: false,
+                addingBetsSuccess: true,
+                warning_messages: ['Your bet has been placed']
+            }))
+        } else {
+            dispatch(actions.toggleIsAddingBet(false))
+            dispatch(actions.addBetError(response.data.error_messages))
+        }
     } else {
-        dispatch(actions.toggleIsAddingBet(false))
-        dispatch(actions.addBetError(response.message))
+        dispatch(error_handler_actions.set_warning([`You are not logged in`]))
+    }
+}
+
+type SetWarningMessagesAction = ReturnType<typeof error_handler_actions.set_warning>
+
+export const selectBetTC = (bet: BetType): BaseThunkActionType<addBetActionType | removeBetActionType | SetWarningMessagesAction> => async (dispatch, getState) => {
+    // проверяем, есть ли в массиве bets объект с таким же маркетом, если есть получаем его
+    const today = getTodayDate()
+    if (bet.date_of_match > today) {
+        const bets = getState().bets.bets
+        const bet_with_same_market = bets.filter(bet_from_state => filterAddedBetsArray(bet, bet_from_state.game_id, bet_from_state.kind_of_bet, bet_from_state.market))
+        if (bet_with_same_market.length) {
+            if (bet.odd_type === bet_with_same_market[0].odd_type) {
+                dispatch(actions.removeBet(bet_with_same_market[0]))
+            } else {
+                dispatch(actions.removeBet(bet_with_same_market[0]))
+                dispatch(actions.addBet(bet))
+            }
+        } else {
+            dispatch(actions.addBet(bet))
+        }
+    } else {
+        dispatch(error_handler_actions.set_warning([`All bets on ${transform_date_for_UI(new Date(bet.date_of_match))} are made`]))
     }
 }
 

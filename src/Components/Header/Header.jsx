@@ -9,10 +9,10 @@ const Header = (props) => {
     return (
         <div className = {classes.header}>
             <div><NavLink to = '/'>Главная страница</NavLink></div>
-            <div><NavLink to = '/championships'>Лиги</NavLink></div>
+            <div><NavLink to = '/championships'>Leagues</NavLink></div>
             <div><NavLink to = '/my_net_main_page'>My Net</NavLink></div>
             {props.login ? <MyProfileLink   logoutUserTC = {props.logoutUserTC}
-                                            login = {props.login}/> : <div><NavLink to = '/loginpage'>Логин</NavLink></div>}
+                                            login = {props.login}/> : <div><NavLink to = '/loginpage'>Login</NavLink></div>}
         </div>
     )
 }

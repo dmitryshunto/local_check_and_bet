@@ -28,14 +28,15 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    border: 1px solid #858484;
 }
 
-.market_odd {
-    width: 33.33%;
+.market_content div {
+    width: 33.333%;
     background: #666666;
     height: 100%;
     text-align: center;
-    border-left: 0.5px solid #858484;
+    border: 0.5px solid #858484;
 }
 
 .market_odd:hover {
@@ -61,13 +62,7 @@
     width: 33.33%;
 }
 
-.odd_type_block {
-    width: 33.33%;
-    text-align: center;
-    height: 100%;
-}
-
-.two_way_bet_block div::before {
+.bet_market div::before {
     content: "";
     display: inline-block;
     height: 100%;

@@ -1,4 +1,4 @@
-import {createNewUser} from "../API/api";
+import {users_api} from "../API/api";
 import { loginUserTC } from "./authReducer";
 import { ResultCodeTypes } from '../API/api_types'
 import { BaseThunkActionType, PropertiesType } from "./redux"
@@ -20,7 +20,7 @@ export type SetInitialStateCNUreducer = ReturnType<typeof actions.set_initial_st
 type CreateNewUserSuccessObjectType = {
     createNewUserSuccess: boolean | null
     newUserLogin: string | null
-    createNUwarningMessage: string | null
+    warning_messages: string[] | null
     isCreatingUser?: boolean
 }
 
@@ -33,7 +33,7 @@ let innitialObject = {
     isCreatingUser: false,
     createNewUserSuccess: null as boolean | null,
     newUserLogin: null as string | null,
-    createNUwarningMessage: null as string | null
+    warning_messages: null as string[] | null
 };
 
 type ActionsTypes = ReturnType<PropertiesType<typeof actions>>
@@ -55,19 +55,19 @@ let createNUReducer = (state = innitialObject, action: ActionsTypes): typeof inn
 
 export const createNewUserTC = (login: string, password: string): BaseThunkActionType<ActionsTypes> => async (dispatch) => {
     dispatch(actions.toggle_of_creating_user_button(true));
-    let response = await createNewUser(login, password);
+    let response = await users_api.create_new_user(login, password);
     if (response.data.resultCode === ResultCodeTypes.Success) {
         dispatch(actions.toggle_of_createNewUserSuccess({
             createNewUserSuccess: true,
             newUserLogin: response.data.login,
-            createNUwarningMessage: null
+            warning_messages: null
         }))
         dispatch(loginUserTC(login, password));
     } else if (response.data.resultCode !== ResultCodeTypes.Success) {
         dispatch(actions.toggle_of_createNewUserSuccess({
             createNewUserSuccess: false,
             newUserLogin: null,
-            createNUwarningMessage: response.data.message
+            warning_messages: response.data.error_messages
         }));
     }
     dispatch(actions.toggle_of_creating_user_button(false));

@@ -37,7 +37,9 @@ export type BaseThunkActionType<A extends Action> = ThunkAction<Promise<void>, A
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export type KindOfBetType = 'goals' | 'ycard' | 'corners'
+export type NewKindOfBet = 'goals' | 'corners' | 'yellow_cards' | 'fouls' | 'shots_on_goal'
 export type KindsOfBetType = KindOfBetType[]
+export type NewKindsOfBet = NewKindOfBet[]
 export type HomeAwayItemsType = 'home' | 'away'
 
 let store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleWare)));

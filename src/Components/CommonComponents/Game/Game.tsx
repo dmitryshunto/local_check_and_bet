@@ -5,7 +5,6 @@ import { filterAddedBetsArray, translate_kind_of_bet_and_home_away } from '../..
 import OddItem from '../../Content/GameStats/ScoreBoardBlock/BetBlock/BetMarkets/OddItem';
 import { NavLink } from 'react-router-dom';
 import classes from './Game.module.css'
-import withAddedBets from '../../../HOC/withSelectionAddedBets';
 import cn from 'classnames'
 
 type GamePropsType = {
@@ -27,11 +26,13 @@ const Game: React.FC<GamePropsType> = React.memo((props) => {
       const basic_total = basic_totals[kind_of_bet]
       // @ts-ignore
       const odd_blocks = data[kind_of_bet].odd_blocks
-      return withAddedBets({
-        date_of_match: date_of_prediction, names_of_teams,
-        market: 'Результат', kind_of_bet, classes, odd_className: 'odd_item', odd_blocks,
-        filterAddedBetsArray: filterAddedBetsArray, index, basic_total, numOfKindsOfBet, ...props
-      })(PredictionItem)
+      return <PredictionItem kind_of_bet = {kind_of_bet}
+                             data = {data}
+                             basic_total = {basic_total!}
+                             numOfKindsOfBet = {numOfKindsOfBet}
+                             name_of_championship = {props.name_of_championship}
+                             odd_blocks = {odd_blocks}
+                             />
     })
     return (
       <>
@@ -50,13 +51,11 @@ const Game: React.FC<GamePropsType> = React.memo((props) => {
     numOfKindsOfBet: number
     name_of_championship: string
     odd_blocks: MainPageOddDataType[]
-    selectBet: (bet: MainPageOddDataType) => void
-    oddBlocksClasses: string[]
   }
   
   const PredictionItem: React.FC<PredictionItem> = React.memo((props) => {
     let { kind_of_bet, data, basic_total, numOfKindsOfBet, name_of_championship,
-      odd_blocks, selectBet, oddBlocksClasses } = props;
+      odd_blocks } = props;
     const text_selection_classes: Array<string | null> = [null, null, null];
     const types_of_bets = ['win1', 'x', 'win2'];
     const odd_items = odd_blocks.map((odd_block, index) => {
@@ -69,9 +68,7 @@ const Game: React.FC<GamePropsType> = React.memo((props) => {
       return (
       <td className={classes.odd_item_container}
         key={index}>
-        <OddItem oddClassName={oddBlocksClasses[index]}
-          name_of_championship={name_of_championship}
-          selectBet={selectBet}
+        <OddItem 
           odd_block={odd_block}
         />
       </td>)

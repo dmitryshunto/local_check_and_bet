@@ -56,7 +56,7 @@ const RootComponent = (props) => {
           <Route exact path='/championships/:name_of_championship' component={ChampionshipPage} />
           <Route exact path='/championships/:name_of_championship/:kind_of_bet/:type_of_bet' component={BetStatisticPage} />
   
-          <Route exact path='/game_stats/:name_of_championship/:games_id' component={GameStats} />
+          <Route exact path='/game_stats/:db_name/:game_id' component={GameStats} />
           <Route exact path='/my_net_main_page/:date_of_prediction?' component = {MyNetMainPage}/>
 
           <Route path='/:date_of_prediction?' component={MainPage} />
@@ -65,6 +65,8 @@ const RootComponent = (props) => {
       </div>}
       <ModalErrorPage active = {props.authorization_warning_message} 
                       close_modal = {() => {props.set_authorization_error(null)}}/>
+      <ModalErrorPage active = {props.warning_messages} 
+                      close_modal = {() => {props.set_warning_messages(null)}}/>
       <Footer />
     </div>
   );
@@ -74,13 +76,15 @@ const RootComponent = (props) => {
 let mapDispatchToProps = {
   amIAuthorizedTC,
   set_error_message: error_handler_actions.set_error,
+  set_warning_messages: error_handler_actions.set_warning,
   set_authorization_error: authuser_actions.setWarningMessage
 }
 
 let mapStateToProps = (state) => {
   return {
     isLogingUser: auth_user_selectors.get_is_logging_user(state),
-    error_message: error_handler_selectors.get_warning_message(state),
+    error_message: error_handler_selectors.get_error_message(state),
+    warning_messages: error_handler_selectors.get_warning_messages(state),
     authorization_warning_message: auth_user_selectors.get_warning_message(state)
   }
 }

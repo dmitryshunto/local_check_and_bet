@@ -15,15 +15,15 @@ export const deleteCookie = (cname) => {
 }
 
 export const changeCheckedChampionshipStatus = (name_of_championship, date) => {
+    console.log(name_of_championship)
     const checked_championships = JSON.parse(localStorage.getItem('checked_championships'))
     const championshipChecked = isChamponshipChecked(name_of_championship, date, checked_championships)
     if(championshipChecked === false) {
         checked_championships[date].push(name_of_championship)
-        localStorage.setItem('checked_championships', JSON.stringify(checked_championships))
     } else if (championshipChecked === true) {
         checked_championships[date].splice(checked_championships[date].indexOf(name_of_championship), 1)
-        localStorage.setItem('checked_championships', JSON.stringify(checked_championships))
     }
+    localStorage.setItem('checked_championships', JSON.stringify(checked_championships))
 }
 
 export const isChamponshipChecked = (name_of_championship, date) => {

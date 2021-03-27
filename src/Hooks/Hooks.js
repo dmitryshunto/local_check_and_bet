@@ -10,5 +10,5 @@ export const useSubscribeOnData = (setDataFunction, deleteDataFunction, [...para
   return useEffect(() => {
       setDataFunction(...parameters)
       if(deleteDataFunction) return () => deleteDataFunction()
-    }, [...parameters, setDataFunction, deleteDataFunction])
+    }, [...parameters])
 }

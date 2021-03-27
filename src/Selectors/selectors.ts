@@ -7,11 +7,14 @@ import { BetType } from '../redux/betReducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
 import { MainPageChampionshipDataType, MainPageGameDataType } from '../redux/championshipsReduser'
 import { BasicTotals, ChampionshipStatsDataType, BetStatisticType } from '../redux/championship_stats_reducer'
-import { MyNetChampionship } from "../redux/my_net_main_page_reducer";
+import { MyNetChampionship, MyNetGameType } from "../redux/my_net_main_page_reducer";
 
 export const error_handler_selectors = {
-    get_warning_message: (state: AppStoreType) => {
+    get_error_message: (state: AppStoreType) => {
         return state.error_handler.error_message
+    },
+    get_warning_messages: (state: AppStoreType) => {
+        return state.error_handler.warning_messages
     }
 }
 
@@ -22,8 +25,8 @@ export const create_new_user_page_selectors = {
     get_new_user_login: (state: AppStoreType): string | null => {
         return state.createNU.newUserLogin;
     },
-    get_warning_message: (state: AppStoreType): string | null => {
-        return state.createNU.createNUwarningMessage;
+    get_warning_message: (state: AppStoreType): string[] | null => {
+        return state.createNU.warning_messages
     },
     get_operation_success: (state: AppStoreType): boolean | null => {
         return state.createNU.createNewUserSuccess;
@@ -40,7 +43,7 @@ export const auth_user_selectors = {
     get_is_authorized: (state: AppStoreType): boolean => {
         return state.authUser.isAuthorized;
     },
-    get_warning_message: (state: AppStoreType): string | null => {
+    get_warning_message: (state: AppStoreType): string[] | null => {
         return state.authUser.warningMessage;
     }
 }
@@ -52,8 +55,8 @@ export const added_bets_selectors = {
     get_is_getting_data: (state: AppStoreType): boolean => {
         return state.bets.isAddingBetsToDB
     },
-    get_message: (state: AppStoreType): string | null => {
-        return state.bets.message
+    get_message: (state: AppStoreType): string[] | null => {
+        return state.bets.warning_messages
     }
 }
 
@@ -84,6 +87,9 @@ export const main_page_selectors = {
 export const championships_page_selectors = {
     get_data: (state: AppStoreType): ChampionshipsPageDataType => {
         return state.championshipsPage.data
+    },
+    get_is_getting_data: (state: AppStoreType): boolean => {
+        return state.championshipsPage.isGettingData
     }
 }
 
@@ -109,7 +115,7 @@ export const championship_page_selectors = {
     get_basic_totals: (state: AppStoreType): BasicTotals | undefined => {
         return state.championshipPage.data?.basic_totals
     },
-    get_games: (state: AppStoreType): MainPageGameDataType[] | [] | undefined => {
+    get_games: (state: AppStoreType): MyNetGameType[] | [] | undefined => {
         return state.championshipPage.data?.games
     }
 }
@@ -136,7 +142,10 @@ export const my_net_main_page_selectors = {
     get_data: (state: AppStoreType): MyNetChampionship[] | null => {
         return state.my_net_main_page_reducer.data
     },
-    selected_date_of_prediction: (state: AppStoreType) => {
+    selected_date_of_prediction: (state: AppStoreType): string => {
         return state.my_net_main_page_reducer.selected_date_of_prediction
+    },
+    get_date_of_prediction: (state: AppStoreType): string => {
+        return state.my_net_main_page_reducer.date_of_prediction
     }
 }

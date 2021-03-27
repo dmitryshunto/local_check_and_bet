@@ -6,16 +6,12 @@ export enum ResultCodeTypes {
 }
 
 export interface BaseAPIType {
-    message: string
+    error_messages: string[] | []
     resultCode: number
 }
 
 export interface AuthorizeType extends BaseAPIType {
     login: string
-}
-
-export interface LoginType extends AuthorizeType {
-    id: number
 }
 
 export interface UserDataType {

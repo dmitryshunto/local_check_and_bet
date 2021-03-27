@@ -14,12 +14,12 @@ export const validate = values => {
     if (!values.login) {
         errors.login = 'Обязательное поле'
     } else if (values.login.length > 15 || values.login.length < 6) {
-        errors.login = 'Имя пользователя должно иметь длину 6 - 12 символов'
+        errors.login = 'Имя пользователя должно иметь длину 6 - 15 символов'
     }
     if (!values.password) {
         errors.password = 'Обязательное поле'
-    } else if (values.password.length < 6) {
-        errors.password = 'Пароль должен быть больше 6 символов'
+    } else if (values.password.length < 8) {
+        errors.password = 'Пароль должен быть больше 8 символов'
     }
     if (!values.confirm_password) {
         errors.confirm_password = 'Обязательное поле'

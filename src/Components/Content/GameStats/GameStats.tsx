@@ -12,15 +12,15 @@ import ToggleButtons from '../../CommonComponents/ToggleButton/ToggleButton'
 import { PreloaderPageWithoutHeader } from '../../CommonComponents/PreloaderPage/PreloaderPage';
 import { useSubscribeOnData } from '../../../Hooks/Hooks';
 import { isEmpty } from '../../../CommonFunctions/commonFunctions';
-import {BetType} from '../../../redux/betReducer'
-import {AppStoreType, KindOfBetType} from '../../../redux/redux'
+import {BetType, selectBetTC} from '../../../redux/betReducer'
+import {AppStoreType, NewKindOfBet} from '../../../redux/redux'
 
 import { RouteComponentProps } from 'react-router-dom';
 
 type PropsTypes = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType &  RouteComponentProps<RoutePropsType>
 
 const GameStatsPageContainer: React.FC<PropsTypes> = (props) => {
-  useSubscribeOnData(props.setGameStatsTC, props.set_game_stats_initial_state, [props.match.params.name_of_championship, props.match.params.games_id])
+  useSubscribeOnData(props.setGameStatsTC, props.set_game_stats_initial_state, [props.match.params.db_name, props.match.params.game_id])
   if (!isEmpty(props.data)) {
     return <GameStatsPage {...props} />
   } else return <PreloaderPageWithoutHeader />
@@ -29,7 +29,7 @@ const GameStatsPageContainer: React.FC<PropsTypes> = (props) => {
 
 const GameStatsPage: React.FC<PropsTypes> = (props) => {
   const { data } = props;
-  const [kind_of_bet, set_kind_of_bet] = useState<KindOfBetType>('goals');
+  const [kind_of_bet, set_kind_of_bet] = useState<NewKindOfBet>('goals');
   return (
     <div className={classes.game_stats_page_container}>
       <div className={classes.game_stats_page_row}>
@@ -38,21 +38,26 @@ const GameStatsPage: React.FC<PropsTypes> = (props) => {
           set_selected_kind_of_bet={set_kind_of_bet} />
       </div>
       <div className={classes.game_stats_page_row}>
-        <ScoreBoardBlock name_of_championship={props.match.params.name_of_championship}
+        { true &&
+        <ScoreBoardBlock db_name={props.match.params.db_name}
+          game_id = {Number(props.match.params.game_id)}
+          selectBetTC = {props.selectBetTC}
           names_of_teams={data!.names_of_teams}
           score_board_block={data!.score_board_block[kind_of_bet]!}
           date_of_match={data!.date_of_match}
           addedBets={props.addedBets}
           kind_of_bet={kind_of_bet}
           basic_total={data!.basic_totals[kind_of_bet]!}
-        />
+        /> 
+      }
       </div>
       <div className={classes.game_stats_page_row}>
         <MatchStatistics data={data!.game[kind_of_bet]!} />
-        <MatchAnalysis analysis_block={data!.analysis_block[kind_of_bet]!}
+        {true &&
+        <MatchAnalysis 
           last_games_info={data!.info_about_last_matches[kind_of_bet]!}
-          names_of_teams={data!.names_of_teams}
-        />
+          names_of_teams={data!.names_of_teams}/>
+       }
       </div>
       <BetCoupon />
     </div>
@@ -65,17 +70,19 @@ type OwnPropsType = {
 }
 
 type RoutePropsType = {
-  name_of_championship: string  
-  games_id: string
+  db_name: string  
+  game_id: string
 }
 
 type MapDispatchToPropsType = {
   setGameStatsTC: (name_of_championship: string, games_id: number) => void
-  set_game_stats_initial_state: () => any
+  selectBetTC: (bet: BetType) => void
+  set_game_stats_initial_state: () => void
 }
 
 let mapDispatchToProps: MapDispatchToPropsType = {
-  setGameStatsTC, 
+  setGameStatsTC,
+  selectBetTC, 
   set_game_stats_initial_state: actions.set_game_stats_initial_state
 }
 

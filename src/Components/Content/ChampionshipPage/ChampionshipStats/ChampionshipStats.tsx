@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { ChampionshipStatsDataType, TeamStatistic, BasicTotals } from '../../../../redux/championship_stats_reducer'
+import { ChampionshipStatsDataType, TeamStatistic, BasicTotals, KindsOfBetTotalIntervalType } from '../../../../redux/championship_stats_reducer'
 import classes from './ChampionshipStats.module.css'
 import ToggleButton from '../../../CommonComponents/ToggleButton/ToggleButton';
-import { HomeAwayItemsType, KindOfBetType } from '../../../../redux/redux'
+import { HomeAwayItemsType, NewKindOfBet } from '../../../../redux/redux'
 import TotalSelector from '../../../CommonComponents/TotalSelector/TotalSelector';
 import { get_total_info } from '../../../../CommonFunctions/typed_functions';
 
-const kinds_of_bet_total_line = {
-	goals: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5],
-	ycard: [1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5],
-	corners: [6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5]
-};
+const kinds_of_bet_total_interval: KindsOfBetTotalIntervalType = {
+  goals: [0.5, 4.5],
+  corners: [8, 11.5],
+  yellow_cards: [1.5, 6],
+  fouls: [18, 36],
+  shots_on_goal: [5, 15]
+}
 
 type PropsType = {
   championship_stats: ChampionshipStatsDataType
@@ -20,7 +22,7 @@ type PropsType = {
 
 const ChampionshipStats: React.FC<PropsType> = ({ championship_stats, name_of_championship, basic_totals }) => {
  
-  const [selected_kind_of_bet, set_selected_kind_of_bet] = useState<KindOfBetType>('goals')
+  const [selected_kind_of_bet, set_selected_kind_of_bet] = useState<NewKindOfBet>('goals')
   const [selected_home_away, set_selected_home_away] = useState<HomeAwayItemsType>('home')
   const [sortConfig, setSortConfig] = useState<SortConfigType | null>({key: 'name_of_team', direction: 'ascending'})
   const basic_total = basic_totals![selected_kind_of_bet]!
@@ -52,10 +54,21 @@ const ChampionshipStats: React.FC<PropsType> = ({ championship_stats, name_of_ch
 
   if(sortConfig) {
     sortedData.sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
+      let first_elem, second_elem
+      if(sortConfig.key.includes('br')) {
+        const prop_name = sortConfig.key.slice(3)
+        first_elem = a['book_rating'][prop_name]
+        second_elem = b['book_rating'][prop_name]
+        
+      } else {
+        first_elem = a[sortConfig.key]
+        second_elem = b[sortConfig.key]
+      }
+      
+      if (first_elem < second_elem) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
       }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
+      if (first_elem > second_elem) {
         return sortConfig.direction === 'ascending' ? 1 : -1;
       }
       return 0;
@@ -78,7 +91,7 @@ const ChampionshipStats: React.FC<PropsType> = ({ championship_stats, name_of_ch
       </div>
         <ChampionshipTable data={sortedData} 
                            basic_total = {basic_totals![selected_kind_of_bet]!}
-                           totals_list = {kinds_of_bet_total_line[selected_kind_of_bet]}
+                           totals_interval = {kinds_of_bet_total_interval![selected_kind_of_bet]!}
                            setCurrentTotal = {setCurrentTotal}
                            requestSort = {requestSort}/>
     </div>
@@ -88,7 +101,7 @@ const ChampionshipStats: React.FC<PropsType> = ({ championship_stats, name_of_ch
 type ChampionshipTablePropType = {
   data: Array<TeamStatistic>
   basic_total: number
-  totals_list: number[]
+  totals_interval: number[]
   setCurrentTotal: (currentTotal: number) => void
   requestSort: (key: string) => void 
 }
@@ -96,14 +109,18 @@ type ChampionshipTablePropType = {
 type DirectionType = 'ascending' | 'descending'
 
 type SortConfigType = {
-  key: string
+  key: string | 'br_positive' | 'br_negative' | 'br_neutral'
   direction: DirectionType
 }
 
-const ChampionshipTable: React.FC<ChampionshipTablePropType> = ({ data, basic_total, setCurrentTotal, totals_list, requestSort }) => {
+const ChampionshipTable: React.FC<ChampionshipTablePropType> = ({ data, basic_total, setCurrentTotal, totals_interval, requestSort }) => {
       
   const rows = data.map(team => <TeamRow key = {team.name_of_team} team = {team}/>)
-  
+  const totals_list: number[] = []
+  const [start_interval, end_interval] = totals_interval
+  for(let i = start_interval; i <= end_interval; i += 0.5) {
+    totals_list.push(i)
+  }
   return (
     <table className={classes.championship_table}>
       <thead>
@@ -114,14 +131,12 @@ const ChampionshipTable: React.FC<ChampionshipTablePropType> = ({ data, basic_to
           <td onClick={() => requestSort('scored')} rowSpan = {2}>Забивает</td>
           <td onClick={() => requestSort('missed')} rowSpan = {2}>Пропускает</td>
           <td onClick={() => requestSort('total')} rowSpan = {2}>Тотал</td>
-          <td onClick={() => requestSort('win1')} rowSpan = {2}>П1</td>
-          <td onClick={() => requestSort('x')} rowSpan = {2}>Х</td>
-          <td onClick={() => requestSort('win2')} rowSpan = {2}>П2</td>
+          <td onClick={() => requestSort('win1')} rowSpan = {2}>Победа</td>
+          <td onClick={() => requestSort('x')} rowSpan = {2}>Ничья</td>
+          <td onClick={() => requestSort('win2')} rowSpan = {2}>Поражение</td>
           <td onClick={() => requestSort('over')}>Больше</td>
           <td onClick={() => requestSort('under')}>Меньше</td>
-          <td onClick={() => requestSort('power_of_scoring')} rowSpan = {2}>Рейтинг атаки</td>
-          <td onClick={() => requestSort('power_of_missing')} rowSpan = {2}>Рейтинг защиты</td>
-          <td onClick={() => requestSort('power_of_playing')} rowSpan = {2}>Рейтинг игры</td>
+          <td colSpan = {3}>Базовая фора</td>
         </tr>
         <tr>
           <td colSpan = {2}>
@@ -131,6 +146,8 @@ const ChampionshipTable: React.FC<ChampionshipTablePropType> = ({ data, basic_to
                              callback = {setCurrentTotal}/>
             </div>
           </td>
+          <td onClick={() => requestSort('br_positive')}>+</td><td onClick={() => requestSort('br_neutral')}>=</td>
+          <td onClick={() => requestSort('br_negative')}>-</td>
         </tr>
       </thead>
       <tbody>
@@ -153,8 +170,8 @@ const TeamRow: React.FC<TeamRowPropsTypes> = ({team}) => {
       <td>{team.name_of_team}</td><td>{team.number_of_games}</td>
       <td>{team.scored}</td><td>{team.missed}</td><td>{team.total}</td>
       <td>{team.win1}</td><td>{team.x}</td><td>{team.win2}</td>
-      <td>{team.over}</td><td>{team.under}</td>
-      <td>{team.power_of_scoring}</td><td>{team.power_of_missing}</td><td>{team.power_of_playing}</td>
+      <td>{team.over}</td><td>{team.under}</td><td>{team.book_rating.positive}</td>
+      <td>{team.book_rating.neutral}</td><td>{team.book_rating.negative}</td>
     </tr>
   )
 }

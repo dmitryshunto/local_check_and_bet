@@ -45,7 +45,7 @@ const BetItem = ({ bet_info, bet_name, kind_of_bet }: BetItemProps) => {
     let { url } = useRouteMatch()
     return (
         <NavLink to={`${url}/${kind_of_bet}/${bet_name}`}>
-            <div>{translate_kind_of_bet_and_home_away(bet_name)}</div>
+            <div>{bet_name}</div>
             <div>{`${bet_info.bet_success} (${bet_info.count})`}</div>
         </NavLink>
     )

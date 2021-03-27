@@ -34,7 +34,7 @@ const LoginPage: React.FC<LoginPagePropsTypes> = (props) => {
 
 type ContactFormOwnPropsType = {
     isLoggingUser: boolean
-    loginUserWarningMessage: string | null
+    loginUserWarningMessage: string[] | null
 }
 
 type LoginUserPropsType = {
@@ -47,15 +47,14 @@ let LoginForm: React.FC<InjectedFormProps<LoginUserPropsType, ContactFormOwnProp
         <>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <Field name="login" component="input" type="text" placeholder="Логин" />
+                    <Field name="login" component="input" type="text" placeholder="Login" />
                 </div>
                 <div>
-                    <Field name="password" component="input" type="password" placeholder="Пароль" />
+                    <Field name="password" component="input" type="password" placeholder="Password" />
                 </div>
-                <button disabled={isLoggingUser ? true : false} type="submit">Отправить</button>
-                {loginUserWarningMessage && <div>Не правильные логин или пароль</div>}
+                <button disabled={isLoggingUser ? true : false} type="submit">Submit</button>
             </form>
-            <NavLink to='/createnewuserpage'>Не зарегистрированы?</NavLink>
+            <NavLink to='/createnewuserpage'>Not registered?</NavLink>
         </>
     )
 }
@@ -76,7 +75,7 @@ let mapDispatchToProps: MapDispatchToProps = {
 type MapStateToPropsType = {
     isLoggingUser: boolean
     isAuthorized: boolean
-    loginUserWarningMessage: string | null
+    loginUserWarningMessage: string[] | null
     loginOfLU: string | null
 }
 

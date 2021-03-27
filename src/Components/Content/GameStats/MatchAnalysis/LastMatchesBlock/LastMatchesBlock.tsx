@@ -47,9 +47,9 @@ const LastMatchesBlock: React.FC<PropsType> = ({ last_games_info, names_of_teams
                     <span className={classes.before} />
                     Ож. тотал
                 </div>
-                <div className={classes.last_games_block_cell}>
+                <div className={classes.last_games_block_teams_name_cell}>
                     <span className={classes.before} />
-                    <span className={classes.inner}>К-т</span>
+                    <span className={classes.inner}>Линия</span>
                 </div>
             </div>
             {team === 'home' && home_team_last_games}
@@ -85,9 +85,9 @@ const LastMatchesBlockRow: React.FC<LastMatchBlockRowPropsType> = ({ payload }) 
                 <span className={classes.before} />
                 {payload.expected_total}
             </div>
-            <div className={classes.last_games_block_cell}>
+            <div className={classes.last_games_block_teams_name_cell}>
                 <span className={classes.before} />
-                {payload.opp_power}
+                {`${payload.book_line.w1} ${payload.book_line.x} ${payload.book_line.w2}`}
             </div>
         </div>
     )

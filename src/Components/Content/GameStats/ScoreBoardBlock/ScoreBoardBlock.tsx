@@ -3,19 +3,21 @@ import classes from './ScoreBoardBlock.module.css';
 import BetBlock from './BetBlock/BetBlock';
 import {ScoreBoardKindOfBetDataType} from '../../../../redux/game_stats_reducer'
 import {BetType} from '../../../../redux/betReducer'
-import {KindOfBetType} from '../../../../redux/redux'
+import {NewKindOfBet} from '../../../../redux/redux'
 
 type PropsTypes = {
     names_of_teams: string[]
     score_board_block: ScoreBoardKindOfBetDataType
     date_of_match: string
     addedBets: BetType[] | []
-    kind_of_bet: KindOfBetType
-    name_of_championship: string
+    kind_of_bet: NewKindOfBet
     basic_total: number
+    selectBetTC: (bet: BetType) => void
+    game_id: number
+    db_name: string
 }
 
-const ScoreBoardBlock: React.FC<PropsTypes> = ({ names_of_teams, score_board_block, date_of_match, addedBets, kind_of_bet, name_of_championship, basic_total }) => {
+const ScoreBoardBlock: React.FC<PropsTypes> = ({ names_of_teams, score_board_block, date_of_match, addedBets, kind_of_bet, ...props }) => {
     return (
         <div className={classes.score_board_table}>
             <div className={classes.score_board_table_head}>
@@ -29,8 +31,8 @@ const ScoreBoardBlock: React.FC<PropsTypes> = ({ names_of_teams, score_board_blo
                     <div className = {classes.main_block_item}>
                         <h3>{names_of_teams[0]}</h3>
                     </div>
-                        <Score team1 = {score_board_block.team1}
-                               team2 = {score_board_block.team2}/>
+                        <Score team1 = {score_board_block.home}
+                               team2 = {score_board_block.away}/>
                     <div className = {classes.main_block_item}>
                         <h3>{names_of_teams[1]}</h3>
                     </div>
@@ -49,13 +51,15 @@ const ScoreBoardBlock: React.FC<PropsTypes> = ({ names_of_teams, score_board_blo
                     </div>
                 </div>
             </div>
-            <BetBlock name_of_championship = {name_of_championship}
-                      names_of_teams = {names_of_teams}
-                      basic_total = {basic_total}
-                      bet_block = {score_board_block.bet_block}
+            <BetBlock bet_block = {score_board_block.bet_block}
                       addedBets = {addedBets}
                       kind_of_bet = {kind_of_bet}
                       date_of_match = {date_of_match}
+                      selectBetTC = {props.selectBetTC}
+                      game_id = {props.game_id}
+                      db_name = {props.db_name}
+                      home_team = {names_of_teams[0]}
+                      away_team = {names_of_teams[1]}
                       />
         </div>
     )

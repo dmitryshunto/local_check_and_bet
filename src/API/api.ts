@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { BetType } from '../redux/betReducer'
-import {AuthorizeType, LoginType, BaseAPIType, UserDataType, ServerResponseType} from './api_types'
+import {AuthorizeType, BaseAPIType, UserDataType, ServerResponseType} from './api_types'
 import {FullBetStatisticItemType} from '../redux/bet_statistic_reducer'
 import { ChampionshipDataType } from '../redux/championship_stats_reducer'
 import {GameStatsDataType} from '../redux/game_stats_reducer'
 import {MainPageChampionshipDataType} from '../redux/championshipsReduser'
 import { MyNetChampionship } from '../redux/my_net_main_page_reducer';
+import { ChampionshipsPageDataType } from '../redux/championships_page_reducer';
 
 let instanse = axios.create({
     baseURL: 'http://localhost/',
@@ -14,7 +15,8 @@ let instanse = axios.create({
 })
 
 const my_net_axios_instanse = axios.create({
-    baseURL: 'http://localhost:3001/'
+    baseURL: 'http://localhost:3001/',
+    withCredentials: true
 })
 
 export const my_net_api = {
@@ -23,13 +25,37 @@ export const my_net_api = {
         let response = await my_net_axios_instanse.get<ServerResponseType<MyNetChampionship[] | []>>(`my_net_main_page/${url}`)
         return response.data
     },
+    get_game_stats: async (db_name: string, game_id: number) => {
+        let response = await my_net_axios_instanse.get<ServerResponseType<GameStatsDataType>>(`game_stats/${db_name}/${game_id}`)
+        return response.data
+    },
+    get_championship_stats: async (db_name: string) => {
+        let response = await my_net_axios_instanse.get<ServerResponseType<ChampionshipDataType>>(`championship_stats/${db_name}`)
+        return response.data
+    },
+    get_championships_list: async () => {
+        let response = await my_net_axios_instanse.get<ServerResponseType<ChampionshipsPageDataType>>(`championships_list_page`)
+        return response.data
+    }
 }
 
 export const users_api = {
     am_i_authorized: async () => {
-        let response = await my_net_axios_instanse.get<AuthorizeType>(`users/authuser`)
+        let response = await my_net_axios_instanse.get<AuthorizeType>(`users/am_i_authorized`)
         return response
-    }
+    },
+    login_user: async (user_login: string, user_password: string) => {
+        return await my_net_axios_instanse.post(`users/login_user`, {user_login, user_password})
+    },
+    logout_user: async () => {
+        return await my_net_axios_instanse.get(`users/logout_user`)
+    },
+    create_new_user: async (user_login: string, user_password: string) => {
+        return await my_net_axios_instanse.post<AuthorizeType>(`users/create_new_user`, {user_login, user_password})
+    },
+    add_bet: async (bets: BetType[]) => {
+        return await my_net_axios_instanse.post<BaseAPIType>(`users/add_bet`, {bets})
+    }   
 }
 
 export const amIAuthorized = () => {
@@ -38,10 +64,6 @@ export const amIAuthorized = () => {
 
 export const createNewUser = (login: string, password: string) => {
     return instanse.post<AuthorizeType>(`createnewuser.php`, {login, password});
-}
-
-export const loginUser = (login: string, password: string) => {
-    return instanse.post<LoginType>(`loginuser.php`, {login, password});
 }
 
 export const getPredictions = async (date_of_prediction: string) => {

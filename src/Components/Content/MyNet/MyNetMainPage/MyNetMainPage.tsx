@@ -3,26 +3,38 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useSubscribeOnData } from '../../../../Hooks/Hooks';
 import { AppStoreType } from '../../../../redux/redux';
 import { actions, MyNetChampionship, set_my_net_predictionsTC } from './../../../../redux/my_net_main_page_reducer';
-import {my_net_main_page_selectors} from '../../../../Selectors/selectors'
+import {added_bets_selectors, my_net_main_page_selectors} from '../../../../Selectors/selectors'
 import { connect } from 'react-redux';
 import DateButton from '../../../CommonComponents/DateButton/DateButton';
 import classes from './MyNetMainPage.module.css'
 import { PreloaderPageWithoutHeader } from '../../../CommonComponents/PreloaderPage/PreloaderPage';
 import MyNetChampionshipTable from './MyNetChampionship/MyNetChampionship';
+import { BetType, addBetActionType, removeBetActionType, selectBetTC, actions as betReducerActions} from '../../../../redux/betReducer';
+import BetCoupon from '../../../CommonComponents/BetCoupon/BetCoupon';
+import { getTodayDate } from '../../../../CommonFunctions/commonFunctions';
 
 type PropsTypes = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType &  RouteComponentProps<RoutePropsType>
 
-const MyNetMainPageContainer: React.FC<PropsTypes> = (props) => {
-    useSubscribeOnData(props.set_my_net_predictionsTC, props.set_my_net_main_page_initial_state, [props.match.params.date_of_prediction])
+const MainPageContainer: React.FC<PropsTypes> = (props) => {
+    const date_of_prediction = props.match.params.date_of_prediction ? props.match.params.date_of_prediction
+                                                                     : getTodayDate()
+                                                                     
+    useSubscribeOnData(props.set_my_net_predictionsTC, props.set_my_net_main_page_initial_state, [date_of_prediction])
     if(props.isGettingData) return <PreloaderPageWithoutHeader />
+    return <MainPage {...props}/>
+  } 
+  
+
+let MainPage: React.FC<PropsTypes> = ({...props}) => {
     const championships = props.data?.map(item => {
-        return <MyNetChampionshipTable key = {item.country_name + item.name_of_championship} {...item}/>
+        return <MyNetChampionshipTable  key = {item.country_name + item.name_of_championship} 
+                                        changeChampionshipCheckedStatus = {props.changeChampionshipCheckedStatus}                                              
+                                        data = {item}
+                                        bets = {props.bets}
+                                        selectBetTC = {props.selectBetTC}
+                                        date_of_match = {props.date_of_prediction}/>
     })
-    if(!props.data) {
-        return (
-            <div>На этот день прогнозов нет</div>
-        )
-    }
+    
     return (
         <div className = {classes.my_net_main_page_container}>
             <DateButton selected_date_of_prediction = {props.selected_date_of_prediction}
@@ -31,9 +43,13 @@ const MyNetMainPageContainer: React.FC<PropsTypes> = (props) => {
             <div>
                 {championships}
             </div>
+            <BetCoupon />
         </div>
     )
 }
+
+
+
 
 type OwnPropsType = {
  
@@ -45,28 +61,40 @@ type RoutePropsType = {
 
 type MapDispatchToPropsType = {
     set_my_net_predictionsTC: (date_of_prediction: string) => void
-    set_my_net_main_page_initial_state: () => any
-    selectDateOfPrediction: (selected_date_of_prediction: string) => any
+    selectBetTC: (bet: BetType) => void
+    set_my_net_main_page_initial_state: () => void
+    selectDateOfPrediction: (selected_date_of_prediction: string) => void
+    addBet: (bet: BetType) => addBetActionType
+    removeBet: (bet: BetType) => removeBetActionType
+    changeChampionshipCheckedStatus: typeof actions.changeChampionshipCheckedStatus
 }
 
 const mapDispatchToProps: MapDispatchToPropsType = {
     set_my_net_predictionsTC,
+    selectBetTC,
     set_my_net_main_page_initial_state: actions.set_my_net_main_page_initial_state,
-    selectDateOfPrediction: actions.selectDateOfPrediction
+    selectDateOfPrediction: actions.selectDateOfPrediction,
+    addBet: betReducerActions.addBet,
+    removeBet: betReducerActions.removeBet,
+    changeChampionshipCheckedStatus: actions.changeChampionshipCheckedStatus
 }
 
 type MapStateToPropsType = {
     data: MyNetChampionship[] | null
     isGettingData: boolean
     selected_date_of_prediction: string
+    date_of_prediction: string
+    bets: BetType[] | []
 }
 
 const mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
     return {
       data: my_net_main_page_selectors.get_data(state),
       isGettingData: my_net_main_page_selectors.get_is_getting_data(state),
-      selected_date_of_prediction: my_net_main_page_selectors.selected_date_of_prediction(state)
+      selected_date_of_prediction: my_net_main_page_selectors.selected_date_of_prediction(state),
+      date_of_prediction: my_net_main_page_selectors.get_date_of_prediction(state),
+      bets: added_bets_selectors.get_data(state)
     }
 }
 
-export default connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStoreType>(mapStateToProps, mapDispatchToProps)(MyNetMainPageContainer)
+export default connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStoreType>(mapStateToProps, mapDispatchToProps)(MainPageContainer)
