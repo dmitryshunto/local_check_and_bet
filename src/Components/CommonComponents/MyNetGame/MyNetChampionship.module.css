@@ -36,6 +36,10 @@
     width: 300px 
 }
 
+.my_net_game_teams_block a {
+    color: aliceblue;
+}
+
 .my_net_kind_of_bet_items {
     display: table-cell;
 }

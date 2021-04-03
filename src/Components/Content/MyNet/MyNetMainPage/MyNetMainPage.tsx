@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useSubscribeOnData } from '../../../../Hooks/Hooks';
 import { AppStoreType } from '../../../../redux/redux';
@@ -25,7 +25,7 @@ const MainPageContainer: React.FC<PropsTypes> = (props) => {
   } 
   
 
-let MainPage: React.FC<PropsTypes> = ({...props}) => {
+let MainPage: React.FC<PropsTypes> = memo(({...props}) => {
     const championships = props.data?.map(item => {
         return <MyNetChampionshipTable  key = {item.country_name + item.name_of_championship} 
                                         changeChampionshipCheckedStatus = {props.changeChampionshipCheckedStatus}                                              
@@ -46,7 +46,7 @@ let MainPage: React.FC<PropsTypes> = ({...props}) => {
             <BetCoupon />
         </div>
     )
-}
+})
 
 
 

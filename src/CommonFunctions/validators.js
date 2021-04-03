@@ -12,19 +12,33 @@ export const alphaNumeric = value =>
 export const validate = values => {
     const errors = {}
     if (!values.login) {
-        errors.login = 'Обязательное поле'
+        errors.login = 'Required'
     } else if (values.login.length > 15 || values.login.length < 6) {
-        errors.login = 'Имя пользователя должно иметь длину 6 - 15 символов'
+        errors.login = 'Login must have length between 6 and 15 chars'
     }
     if (!values.password) {
-        errors.password = 'Обязательное поле'
+        errors.password = 'Required'
     } else if (values.password.length < 8) {
-        errors.password = 'Пароль должен быть больше 8 символов'
+        errors.password = 'Passworm must have length 8 chars or more'
     }
     if (!values.confirm_password) {
-        errors.confirm_password = 'Обязательное поле'
+        errors.confirm_password = 'Required'
     } else if (values.confirm_password !== values.password) {
-        errors.confirm_password = 'Пароли должны совпадать'
+        errors.confirm_password = 'Passwords must match'
     } 
     return errors
 }
+
+export const login_validate = values => {
+    const errors = {}
+    if (!values.login) {
+        errors.login = 'Required'
+    }
+    if (!values.password) {
+        errors.password = 'Required'
+    }
+    return errors
+
+}
+
+

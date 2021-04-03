@@ -57,6 +57,8 @@ let authReducer = (state = innitialObject, action: ActionTypes): typeof innitial
     }
 }
 
+export type AmIAuthorizedType = typeof amIAuthorizedTC
+
 export const amIAuthorizedTC = (): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch) => {
     dispatch(actions.toggleIsLoggingUser(true));
     try{

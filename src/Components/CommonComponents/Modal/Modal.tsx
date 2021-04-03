@@ -2,7 +2,7 @@ import React from 'react'
 import  classes from './Modal.module.css'
 
 export type ModalPropsType = {
-    active: boolean | string | null
+    active: boolean | string | null | string[]
     close_modal: (x: boolean | null) => void
 }
 

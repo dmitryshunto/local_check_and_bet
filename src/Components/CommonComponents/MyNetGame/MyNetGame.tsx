@@ -12,7 +12,7 @@ type MyNetGame = {
     bets: [] | BetType[]
 }
 
-const MyNetGame: React.FC<MyNetGame> = (props) => {
+const MyNetGame: React.FC<MyNetGame> = React.memo((props) => {
     const kinds_of_bet_items = my_net_kinds_of_bet.map((kind_of_bet, index) => {
         const payload: MyNetPredictionKindOfBetType | undefined = props.data[kind_of_bet]
         if (payload) {
@@ -42,7 +42,7 @@ const MyNetGame: React.FC<MyNetGame> = (props) => {
             </div>
         </div>
     )
-}
+})
 
 
 type KOF = {
@@ -59,7 +59,7 @@ type KOF = {
 
 
 
-const MyNetGameKindOfBet: React.FC<KOF> = ({kind_of_bet, db_name, game_id, date_of_match, ...props}) => {
+const MyNetGameKindOfBet: React.FC<KOF> = React.memo(({kind_of_bet, db_name, game_id, date_of_match, ...props}) => {
     let score = `${props.data.home_team_scored} - ${props.data.away_team_scored}`
     if (props.data.home_team_scored === null || props.data.away_team_scored === null) {
         score = ''
@@ -122,7 +122,7 @@ const MyNetGameKindOfBet: React.FC<KOF> = ({kind_of_bet, db_name, game_id, date_
             <div className={classes.my_net_kinds_of_bet_cell}>{`${props.data.over_under_bet_type || ''} ${props.data.over_under_bet_total || ''}`}</div>
         </div>
     )
-}
+})
 
 
 type ConditionsType = {
@@ -144,7 +144,7 @@ type Cn_object_type = {
     [key: string]: boolean | null
 }
 
-export const ItemWithTextSelection: React.FC<ItemWithTextSelectionType> = (props) => {
+export const ItemWithTextSelection: React.FC<ItemWithTextSelectionType> = React.memo((props) => {
     
     const cn_object: Cn_object_type = {}
     if(props.without_condition_classes) {
@@ -166,6 +166,6 @@ export const ItemWithTextSelection: React.FC<ItemWithTextSelectionType> = (props
             cn(cn_object)
         }>{props.value}</div>
     )
-}
+})
 
 export default MyNetGame

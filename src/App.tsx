@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './App.css';
+import "antd/dist/antd.css";
 import LoginPage from './Components/LoginPage/LoginPage';
 import {Route, Switch, useLocation} from 'react-router-dom';
 import CreateNewUserPage from './Components/CreateNewUserPage/CreateNewUserPage';
@@ -11,19 +11,22 @@ import MainPage from './Components/Content/MainPage/MainPage';
 import GameStats from './Components/Content/GameStats/GameStats';
 import ChampionshipPage from './Components/Content/ChampionshipPage/ChampionshipPage';
 import ChampionshipsPage from './Components/Content/ChampionshipsPage/ChampionshipsPage';
-import BetStatisticPage from './Components/Content/ChampionshipPage/ChampionshipBetsTable/BetStatisticPage/BetStatisticPage';
+import BetStatisticPage from './Components/Content/BetStatisticPage/BetStatisticPage';
 import ProfilePage from './Components/ProfilePage/ProfilePage'
 import EmptyPage from './Components/CommonComponents/PreloaderPage/PreloaderPage';
 import { useSubscribeOnData } from './Hooks/Hooks';
 import Footer from './Components/Footer/Footer';
 import MyNetMainPage from './Components/Content/MyNet/MyNetMainPage/MyNetMainPage'
-import store from './redux/redux';
+import store, { AppStoreType } from './redux/redux';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { actions as error_handler_actions } from './redux/error_handler_reducer';
 import ErrorPage, { ModalErrorPage } from './Components/CommonComponents/ErrorPage/ErrorPage';
+import WelcomeNewUserPage from './Components/WelcomeNUPage/WelcomeNUPage';
 
-let App = (props) => {
+type AppPropsType = MapStateToPropsType & MapDispatchToProps
+
+let App: React.FC<AppPropsType> = (props) => {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -39,7 +42,16 @@ let App = (props) => {
   return <RootComponent {...props}/>
 }
 
-const RootComponent = (props) => {
+type RootComponentPropsType = {
+  isLogingUser: boolean
+  error_message: string[] | null
+  authorization_warning_message: string[] | null
+  warning_messages: string[] | null
+  set_authorization_error: typeof authuser_actions.setWarningMessage
+  set_warning_messages: typeof error_handler_actions.set_warning
+}
+
+const RootComponent: React.FC<RootComponentPropsType> = (props) => {
   if(props.isLogingUser) return <EmptyPage />
   return (
     <div className='app-wrapper'>
@@ -47,21 +59,22 @@ const RootComponent = (props) => {
       {props.error_message && <ErrorPage message = {props.error_message}/>}
       {!props.error_message && <div className='app-wrapper-content' >
         <Switch>
-          
+          <Route exact path = '/welcome_new_user' component = {WelcomeNewUserPage} />
           <Route exact path='/profile_page' component={ProfilePage} />
           <Route exact path='/loginpage' render={() => <LoginPage />} />
           <Route exact path='/createnewuserpage' render={() => <CreateNewUserPage />} />
   
           <Route exact path='/championships' component={ChampionshipsPage} />
           <Route exact path='/championships/:name_of_championship' component={ChampionshipPage} />
-          <Route exact path='/championships/:name_of_championship/:kind_of_bet/:type_of_bet' component={BetStatisticPage} />
+          <Route exact path='/championships/:db_name/:kind_of_bet/:type_of_bet' component={BetStatisticPage} />
   
           <Route exact path='/game_stats/:db_name/:game_id' component={GameStats} />
           <Route exact path='/my_net_main_page/:date_of_prediction?' component = {MyNetMainPage}/>
 
           <Route path='/:date_of_prediction?' component={MainPage} />
-          
         </Switch>
+          
+        
       </div>}
       <ModalErrorPage active = {props.authorization_warning_message} 
                       close_modal = {() => {props.set_authorization_error(null)}}/>
@@ -80,7 +93,14 @@ let mapDispatchToProps = {
   set_authorization_error: authuser_actions.setWarningMessage
 }
 
-let mapStateToProps = (state) => {
+type MapDispatchToProps = {
+  amIAuthorizedTC: () => void
+  set_error_message: typeof error_handler_actions.set_error
+  set_warning_messages: typeof error_handler_actions.set_warning
+  set_authorization_error: typeof authuser_actions.setWarningMessage
+}
+
+let mapStateToProps = (state: AppStoreType) => {
   return {
     isLogingUser: auth_user_selectors.get_is_logging_user(state),
     error_message: error_handler_selectors.get_error_message(state),
@@ -89,13 +109,15 @@ let mapStateToProps = (state) => {
   }
 }
 
-App = connect(mapStateToProps, mapDispatchToProps)(App);
+type MapStateToPropsType = ReturnType<typeof mapStateToProps>
 
-let AppContainer = (props) => {
+const ConnectedApp = connect<MapStateToPropsType, MapDispatchToProps, {}, AppStoreType>(mapStateToProps, mapDispatchToProps)(App);
+
+let AppContainer = () => {
   return (
     <BrowserRouter basename = {process.env.PUBLIC_URL}>
         <Provider store = {store}>
-          <App {...props}/>
+          <ConnectedApp />
         </Provider>
     </BrowserRouter>
   )

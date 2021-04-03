@@ -96,3 +96,15 @@
     width: 100%;
     text-align: center;
 }
+
+.win_bet {
+    color: #548449
+}
+
+.back_bet {
+    color: #cec82a;
+}
+
+.lose_bet {
+    color: #be3f28;
+}

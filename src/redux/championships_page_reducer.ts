@@ -1,11 +1,13 @@
-import { getChampionshipsList, my_net_api } from "../API/api";
+import { my_net_api } from "../API/api";
 import { PropertiesType, BaseThunkActionType } from "./redux"
 
 const SET_CHAMPIONSHIPS_LIST = 'CHAMPIONSHIPS_PAGE_REDUCER/SET_CHAMPIONSHIPS_LIST'
+const SET_INITIAL_STATE = 'CHAMPIONSHIPS_PAGE_REDUCER/SET_INITIAL_STATE'
 const TOGGLE_IS_GETTING_DATA = 'CHAMPIONSHIPS_PAGE_REDUCER/TOGGLE_IS_GETTING_DATA'
 
-const actions = {
+export const actions = {
     set_championships_list: (object: typeof innitialObject) => ({type: SET_CHAMPIONSHIPS_LIST, object} as const),
+    set_initial_state: () => ({type: SET_INITIAL_STATE} as const),
     toggle_is_getting_data: (object: boolean) => ({type: TOGGLE_IS_GETTING_DATA, isGettingData: object} as const)
 }
 
@@ -35,7 +37,9 @@ const championshipsPageReducer = (state = innitialObject, action: ActionsTypes):
             ...state,
             isGettingData: action.isGettingData
         }
-    } else return state;
+    } else if(action.type === SET_INITIAL_STATE) {
+        return innitialObject
+    }else return state;
 }
 
 export const setChampionshipsListTC = (): BaseThunkActionType<ActionsTypes> => async (dispatch) => {

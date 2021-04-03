@@ -115,22 +115,27 @@ export const addBetToDBTC = (login: string | null, bets: Array<BetType>): BaseTh
 
 type SetWarningMessagesAction = ReturnType<typeof error_handler_actions.set_warning>
 
-export const selectBetTC = (bet: BetType): BaseThunkActionType<addBetActionType | removeBetActionType | SetWarningMessagesAction> => async (dispatch, getState) => {
+export const selectBetTC = (bet: BetType): BaseThunkActionType<ActionsTypes | SetWarningMessagesAction> => async (dispatch) => {
     // проверяем, есть ли в массиве bets объект с таким же маркетом, если есть получаем его
     const today = getTodayDate()
     if (bet.date_of_match > today) {
-        const bets = getState().bets.bets
-        const bet_with_same_market = bets.filter(bet_from_state => filterAddedBetsArray(bet, bet_from_state.game_id, bet_from_state.kind_of_bet, bet_from_state.market))
-        if (bet_with_same_market.length) {
-            if (bet.odd_type === bet_with_same_market[0].odd_type) {
-                dispatch(actions.removeBet(bet_with_same_market[0]))
-            } else {
-                dispatch(actions.removeBet(bet_with_same_market[0]))
-                dispatch(actions.addBet(bet))
-            }
-        } else {
-            dispatch(actions.addBet(bet))
-        }
+        dispatch(actions.setInitialBetsReducerState())
+        dispatch(actions.addBet(bet))
+
+        //КОД С ЛОГИКОЙ ДЛЯ ДОБАВЛЕНИЯ НЕСКОЛЬКИХ СТАВОК В МАССИВ BETS
+
+        // const bets = getState().bets.bets
+        // const bet_with_same_market = bets.filter(bet_from_state => filterAddedBetsArray(bet, bet_from_state.game_id, bet_from_state.kind_of_bet, bet_from_state.market))
+        // if (bet_with_same_market.length) {
+        //     if (bet.odd_type === bet_with_same_market[0].odd_type) {
+        //         dispatch(actions.removeBet(bet_with_same_market[0]))
+        //     } else {
+        //         dispatch(actions.removeBet(bet_with_same_market[0]))
+        //         dispatch(actions.addBet(bet))
+        //     }
+        // } else {
+        //     dispatch(actions.addBet(bet))
+        // }
     } else {
         dispatch(error_handler_actions.set_warning([`All bets on ${transform_date_for_UI(new Date(bet.date_of_match))} are made`]))
     }

@@ -15,7 +15,7 @@ type MyNetChampionshipType = {
     changeChampionshipCheckedStatus: typeof actions.changeChampionshipCheckedStatus
 }
 
-const MyNetChampionshipTable: React.FC<MyNetChampionshipType> = (props) => {
+const MyNetChampionshipTable: React.FC<MyNetChampionshipType> = React.memo((props) => {
 
     const checked_button_cn = props.data.checked ? 'green_text_selection' : 'red_text_selection'
 
@@ -72,5 +72,5 @@ const MyNetChampionshipTable: React.FC<MyNetChampionshipType> = (props) => {
             </div>
         </div>
     )
-}
+})
 export default MyNetChampionshipTable

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import classes from './DateButton.module.css';
 import { NavLink } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ const DateButton: React.FC<PropsTypes> = React.memo(({ selected_date_of_predicti
     <div className={classes.date_button}>
       <input type = "date" value = {selected_date_of_prediction} onChange = {(e) => selectDateOfPrediction(e.currentTarget.value)}/>
       <NavLink exact to = {`/${url}`}>
-        <button>Выбрать</button>
+        <button>Select</button>
       </NavLink>
     </div>
   )

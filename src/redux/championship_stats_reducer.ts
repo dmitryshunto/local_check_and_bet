@@ -1,6 +1,5 @@
-import { getInfoAboutChampionShip, my_net_api } from './../API/api';
+import { my_net_api } from './../API/api';
 import { PropertiesType, BaseThunkActionType } from "./redux"
-import { MainPageGameDataType } from './championshipsReduser';
 import { MyNetGameType } from './my_net_main_page_reducer';
 
 const SET_CHAMPIONSHIP_STATS = 'CHAMPIONSHIP_STATS_REDUCER/SET_CHAMPIONSHIP_STATS';

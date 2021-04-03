@@ -1,19 +1,24 @@
 import React from 'react'
-import { FullBetStatisticDataType, FullBetStatisticItemType } from '../../../../../../redux/bet_statistic_reducer'
+import { OddTypeType } from '../../../../redux/betReducer'
+import { FullBetStatisticDataType, FullBetStatisticItemType } from '../../../../redux/bet_statistic_reducer'
 import classes from './BetStatisticTable.module.css'
+import cn from 'classnames'
 
 export type TablePropsType = {
     data: FullBetStatisticDataType
+    odd_type: OddTypeType
 }
 
-const BetStatisticTable = ({data}: TablePropsType) => {
+const BetStatisticTable = ({data, odd_type}: TablePropsType) => {
     const betStatisticTableItems = data?.map((item, index) => <BetStatisticTableItem data = {item}
-                                                                                     key = {index}/>)
+                                                                                     odd_type = {odd_type}
+                                                                                     key = {index}
+                                                                                     index = {index + 1}/>)
     return (
         <div className = {classes.bets_statistic_table}>
             <div className = {classes.table_head}>
                 <div className = {classes.teams_and_fulltime_block}>
-                    Матч
+                    Match
                 </div>
                 <div className = {classes.odd_blocks}>
                     <div>
@@ -28,20 +33,17 @@ const BetStatisticTable = ({data}: TablePropsType) => {
                 </div>
                 <div className = {classes.predict_block}>
                     <div>
-                        ИТ1
+                        Ex. Total
                     </div>
                     <div>
-                        ИТ2
+                        Ex. Outcome
                     </div>
                     <div>
-                        Тотал
-                    </div>
-                    <div>
-                        Исход
+                        Bet
                     </div>
                 </div>
                 <div className = {classes.bet_success_block}>
-                    Результат
+                    Bet result
                 </div>
             </div>
             {betStatisticTableItems}
@@ -51,25 +53,30 @@ const BetStatisticTable = ({data}: TablePropsType) => {
 
 type ItemPropsType = {
     data: FullBetStatisticItemType
+    odd_type: OddTypeType
+    index: number
 }
 
-export const BetStatisticTableItem = ({data}: ItemPropsType) => {
+export const BetStatisticTableItem = ({data, odd_type, index}: ItemPropsType) => {
     return (
         <div  className = {classes.bet_statistic_item}>
             <div className = {classes.teams_and_fulltime_block}>
-                <div className = {data.team1_scored > data.team2_scored ? classes.team_block + ' ' + classes.win_team_block : classes.team_block}>
-                    {data.name_of_team1}
+                <div>
+                    {index}
+                </div>
+                <div className = {data.home_team_scored > data.away_team_scored ? classes.team_block + ' ' + classes.win_team_block : classes.team_block}>
+                    {data.home_team_name}
                 </div>
                 <div className = {classes.full_time_block}>
                     <div>
                         {data.date_of_match}
                     </div>
                     <div>
-                        {data.team1_scored + ':' + data.team2_scored}
+                        {data.home_team_scored !== null ? `${data.home_team_scored}:${data.away_team_scored}`: ':'}
                     </div>
                 </div>
-                <div className = {data.team2_scored > data.team1_scored ? classes.team_block + ' ' + classes.win_team_block : classes.team_block}>
-                    {data.name_of_team2}
+                <div className = {data.away_team_scored > data.home_team_scored ? classes.team_block + ' ' + classes.win_team_block : classes.team_block}>
+                    {data.away_team_name}
                 </div>
             </div>
             <div className = {classes.odd_blocks}> 
@@ -84,20 +91,25 @@ export const BetStatisticTableItem = ({data}: ItemPropsType) => {
             </div>
             <div className = {classes.predict_block}>
                 <div>
-                    {data.expected_of_team1}
-                </div>
-                <div>
-                    {data.expected_of_team2}
-                </div>
-                <div>
                     {data.expected_total}
                 </div>
                 <div>
                     {data.expected_result}
                 </div>
+                <div>
+                    {`${odd_type} ${data.value}`}
+                </div>
             </div>
-            <div className = {classes.bet_success_block} style = {{color: data.bet_success ? '#649e57' : 'rgb(204, 82, 44)'}}>
-                <div>{data.bet_success ? 'V' : 'X'}</div>
+            <div className = {classes.bet_success_block}>
+                <div className = {
+                    cn({[classes.win_bet]: data.bet_success === 1,
+                        [classes.back_bet]: data.bet_success === 0,
+                        [classes.lose_bet]: data.bet_success === -1
+                    })}>
+                    {data.bet_success === 1 && 'V'}
+                    {data.bet_success === 0 && '='}
+                    {data.bet_success === -1 && 'X'}
+                </div>
             </div>
         </div>
     )

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { BetStatisticType, KindOfBetStatisticItemType } from "./../../../../redux/championship_stats_reducer";
 import classes from './ChampionshipBetsTable.module.css';
-import { KindOfBetType } from '../../../../redux/redux'
+import { NewKindOfBet } from '../../../../redux/redux'
 import { NavLink, useRouteMatch } from 'react-router-dom';
-import { translate_kind_of_bet_and_home_away } from './../../../../CommonFunctions/commonFunctions';
 import ToggleButtons from '../../../CommonComponents/ToggleButton/ToggleButton';
 
 type PropsType = {
@@ -11,7 +10,7 @@ type PropsType = {
 }
 
 const ChampionshipBetsTable = ({ bet_statistic }: PropsType) => {
-    const [selected_kind_of_bet, set_selected_kind_of_bet] = useState<KindOfBetType>('goals')
+    const [selected_kind_of_bet, set_selected_kind_of_bet] = useState<NewKindOfBet>('goals')
     let types_of_bet: any[] = []
     for (const bet_name in bet_statistic[selected_kind_of_bet]) {
         types_of_bet = [...types_of_bet, <BetItem bet_info={bet_statistic[selected_kind_of_bet]![bet_name]}

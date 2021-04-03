@@ -1,35 +1,51 @@
-import React, { useEffect } from 'react';
-import { Field, reduxForm, WrappedFieldProps, InjectedFormProps } from 'redux-form'
-import { connect } from 'react-redux';
-import { createNewUserTC, SetInitialStateCNUreducer, actions } from '../../redux/createNUReducer';
-import { create_new_user_page_selectors } from '../../Selectors/selectors';
+import React from 'react';
+import { Field, reduxForm, InjectedFormProps } from 'redux-form'
+import { connect, useSelector } from 'react-redux';
+import { createNewUserTC, set_info_for_creating_userTC, add_user_photo_to_stateTC, actions } from '../../redux/createNUReducer';
+import { auth_user_selectors, create_new_user_page_selectors } from '../../Selectors/selectors';
 import WelcomeNewUserPage from '../WelcomeNUPage/WelcomeNUPage';
 import classes from './CreateNewUserPage.module.css'
 import { validate } from '../../CommonFunctions/validators';
 import { AppStoreType } from '../../redux/redux';
-import { useLocation } from 'react-router-dom';
+import RenderField from '../CommonComponents/FormRenderField/FormRenderField';
+import { useSubscribeOnData } from '../../Hooks/Hooks';
+import { withPreloader } from '../../HOC/withPreloader';
+import { PreloaderPageWithoutHeader } from '../CommonComponents/PreloaderPage/PreloaderPage';
+import AvatarComonent from '../CommonComponents/PhotoEditor/PhotoEditor';
+import { Redirect } from 'react-router';
 
 type CreateNewUserPropsType = {
     login: string
     password: string
 }
 
-const CreateNewUserPage: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (props) => {
+type PropType = MapStateToPropsType & MapDispatchToPropsType
 
-    const { pathname } = useLocation();
-    useEffect(() => {
-        if(!props.createNUsuccess) props.set_initial_state()
-    }, [pathname]);
-    
+const CreateNewUserPageContainer: React.FC<PropType> = (props) => {
+    useSubscribeOnData(props.set_info_for_creating_userTC, null, [])
+    return <CreateNewUserPage {...props}/>
+}
+
+
+let CreateNewUserPage: React.FC<PropType> = (props) => {
+   
     let createNewUser = ({ login, password }: CreateNewUserPropsType) => {
         props.createNewUserTC(login, password);
     }
 
+    const user_login = useSelector(auth_user_selectors.get_login)
+
     if (props.createNUsuccess === null || props.warning_messages) {
         const warning_messages_elems = props.warning_messages?.map((msg, i) => <div key={i}>{msg}</div>)
+        if(user_login) return <Redirect to = 'profile_page' />
         return (
             <div className={classes.create_new_user_page}>
                 <div className={classes.create_new_user_form}>
+                    <AvatarComonent updatePhotoTC = {props.add_user_photo_to_stateTC}
+                                    photo_url = {props.avatar_photo_url}
+                                    default_photo_url = {props.default_photo_url}
+                                    isLoadingPhoto = {props.isLoadingPhoto}
+                                    />
                     <CreateNewUserReduxForm onSubmit={createNewUser} {...props} />
                 </div>
                 {warning_messages_elems &&
@@ -39,39 +55,12 @@ const CreateNewUserPage: React.FC<MapStateToPropsType & MapDispatchToPropsType> 
             </div>
         )
     } else if (props.createNUsuccess) {
-        return (
-            <WelcomeNewUserPage login={props.loginOfNU} />
-        )
-    } else return null
+        return <Redirect to = 'welcome_new_user' />
+    } 
+    return null
 }
 
-type InputType = 'text' | 'password'
-
-type RenderFieldOwnParamsType = {
-    label: string
-    type: InputType
-}
-
-type RenderField = RenderFieldOwnParamsType & WrappedFieldProps
-
-const renderField = ({
-    input,
-    label,
-    type,
-    meta: { touched, error, warning }
-}: RenderField): React.ReactNode => (
-    <div className={classes.input_block}>
-        <div className={classes.label_class}>
-            {label}
-        </div>
-        <div className={classes.input_class}>
-            <input {...input} type={type} />
-            {touched &&
-                ((error && <span>{error}</span>) ||
-                    (warning && <span>{warning}</span>))}
-        </div>
-    </div>
-)
+CreateNewUserPage = withPreloader<PropType>(PreloaderPageWithoutHeader, 'isGettingData')(CreateNewUserPage)
 
 type FormDataType = {
     login: string
@@ -85,23 +74,23 @@ const CreateNewUserForm: React.FC<InjectedFormProps<FormDataType>> = (props) => 
         <form onSubmit={handleSubmit}>
 
             <Field name="login"
-                label="Логин"
-                component={renderField}
+                label="login"
+                component={RenderField}
                 type="text"
             />
 
             <Field name="password"
-                label="Пароль"
-                component={renderField}
+                label="password"
+                component={RenderField}
                 type="password"
             />
 
             <Field name="confirm_password"
-                label="Подтвердите пароль"
-                component={renderField}
+                label="confirm password"
+                component={RenderField}
                 type="password"
             />
-            <button disabled={submitting} type="submit">Создать аккаунт</button>
+            <button disabled={submitting} type="submit">Create account</button>
         </form>
     )
 }
@@ -113,28 +102,29 @@ const CreateNewUserReduxForm = reduxForm<FormDataType>({
 
 type MapDispatchToPropsType = {
     createNewUserTC: (login: string, password: string) => void
+    set_info_for_creating_userTC: () => void
     set_initial_state: typeof actions.set_initial_state
+    add_user_photo_to_stateTC: (photo_file: File) => void
 }
 
 let mapDispatchToProps: MapDispatchToPropsType = {
     createNewUserTC,
-    set_initial_state: actions.set_initial_state
+    set_info_for_creating_userTC,
+    set_initial_state: actions.set_initial_state,
+    add_user_photo_to_stateTC
 }
 
-type MapStateToPropsType = {
-    isCreatingUser: boolean
-    loginOfNU: string | null
-    warning_messages: string[] | null
-    createNUsuccess: boolean | null
-}
-
-let mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
+let mapStateToProps = (state: AppStoreType) => {
     return {
-        isCreatingUser: create_new_user_page_selectors.get_is_creating_user(state),
-        loginOfNU: create_new_user_page_selectors.get_new_user_login(state),
+        isGettingData: create_new_user_page_selectors.get_is_getting_data(state),
         warning_messages: create_new_user_page_selectors.get_warning_message(state),
-        createNUsuccess: create_new_user_page_selectors.get_operation_success(state)
+        createNUsuccess: create_new_user_page_selectors.get_operation_success(state),
+        default_photo_url: create_new_user_page_selectors.get_default_photo_url(state),
+        avatar_photo_url: create_new_user_page_selectors.get_avatar_photo_url(state),
+        isLoadingPhoto: create_new_user_page_selectors.get_is_loading_photo(state)
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateNewUserPage);
+type MapStateToPropsType = ReturnType<typeof mapStateToProps>
+
+export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStoreType>(mapStateToProps, mapDispatchToProps)(CreateNewUserPageContainer);

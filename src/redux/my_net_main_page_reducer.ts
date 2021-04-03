@@ -100,7 +100,7 @@ let my_net_main_page_reducer = (state = innitialObject, action: ActionsTypes): t
             const with_checking_predictions = action.data.map(prediction => {
                 return {
                     ...prediction,
-                    checked: isChamponshipChecked(prediction.name_of_championship, state.date_of_prediction)
+                    checked: isChamponshipChecked(prediction.db_name, state.date_of_prediction)
                 }
             })
             return {

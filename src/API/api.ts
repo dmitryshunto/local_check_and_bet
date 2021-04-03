@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { BetType } from '../redux/betReducer'
-import {AuthorizeType, BaseAPIType, UserDataType, ServerResponseType} from './api_types'
-import {FullBetStatisticItemType} from '../redux/bet_statistic_reducer'
+import { BetType, OddTypeType } from '../redux/betReducer'
+import { AuthorizeType, BaseAPIType, ServerResponseType } from './api_types'
+import { FullBetStatisticItemType } from '../redux/bet_statistic_reducer'
 import { ChampionshipDataType } from '../redux/championship_stats_reducer'
-import {GameStatsDataType} from '../redux/game_stats_reducer'
-import {MainPageChampionshipDataType} from '../redux/championshipsReduser'
-import { MyNetChampionship } from '../redux/my_net_main_page_reducer';
+import { GameStatsDataType } from '../redux/game_stats_reducer'
+import { MainPageChampionshipDataType } from '../redux/championshipsReduser'
+import { Kinds_of_bet_type, MyNetChampionship } from '../redux/my_net_main_page_reducer';
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer';
+import { UserDataType } from '../redux/my_profile_reducer';
 
 let instanse = axios.create({
     baseURL: 'http://localhost/',
@@ -36,6 +37,10 @@ export const my_net_api = {
     get_championships_list: async () => {
         let response = await my_net_axios_instanse.get<ServerResponseType<ChampionshipsPageDataType>>(`championships_list_page`)
         return response.data
+    },
+    get_full_bet_statistic: async (db_name: string, kind_of_bet: Kinds_of_bet_type, type_of_bet: OddTypeType) => {
+        let response = await my_net_axios_instanse.get<ServerResponseType<FullBetStatisticItemType[]>>(`full_bet_info/${db_name}/${kind_of_bet}/${type_of_bet}`)
+        return response.data
     }
 }
 
@@ -45,69 +50,57 @@ export const users_api = {
         return response
     },
     login_user: async (user_login: string, user_password: string) => {
-        return await my_net_axios_instanse.post(`users/login_user`, {user_login, user_password})
+        return await my_net_axios_instanse.post(`users/login_user`, { user_login, user_password })
     },
     logout_user: async () => {
         return await my_net_axios_instanse.get(`users/logout_user`)
     },
     create_new_user: async (user_login: string, user_password: string) => {
-        return await my_net_axios_instanse.post<AuthorizeType>(`users/create_new_user`, {user_login, user_password})
+        return await my_net_axios_instanse.post<AuthorizeType>(`users/create_new_user`, { user_login, user_password })
+    },
+    get_create_new_user_page_info: async () => {
+        const response = await my_net_axios_instanse.get<ServerResponseType<{ default_photo_url: string }>>(`users/create_new_user_page`)
+        return response.data
     },
     add_bet: async (bets: BetType[]) => {
-        return await my_net_axios_instanse.post<BaseAPIType>(`users/add_bet`, {bets})
-    }   
+        return await my_net_axios_instanse.post<BaseAPIType>(`users/add_bet`, { bets })
+    },
+    get_my_profile: async () => {
+        const response = await my_net_axios_instanse.get<ServerResponseType<UserDataType>>(`users/get_my_profile`)
+        return response.data
+    },
+    upload_profile_avatar: async (photo_file: File | Blob) => {
+        const formData = new FormData()
+        formData.append('avatar', photo_file)
+        const response = await my_net_axios_instanse.post<ServerResponseType<string | null>>(`users/upload_profile_avatar`, formData)
+        return response.data
+    }
 }
 
-export const amIAuthorized = () => {
-    return instanse.get<AuthorizeType>(`authuser.php`);
-} 
-
-export const createNewUser = (login: string, password: string) => {
-    return instanse.post<AuthorizeType>(`createnewuser.php`, {login, password});
+export const get_blob_file =  async (blob_url: string) => {
+    const response = await axios({
+        method: 'get',
+        url: blob_url,
+        responseType: 'blob'
+    })
+    var reader = new FileReader();
+    reader.readAsDataURL(response.data)
+    reader.onloadend = () => {
+        let base64data = reader.result;
+        return base64data
+    }
+    return reader.result
 }
+
+// .then(function (response) {
+//     var reader = new FileReader();
+//     reader.readAsDataURL(response.data);
+//     return reader.onloadend = function () {
+//         return reader.result;    
+//     }
+// })
 
 export const getPredictions = async (date_of_prediction: string) => {
-    let response = await instanse.post<ServerResponseType<MainPageChampionshipDataType[] | null>>(`mainpage.php`, {date_of_prediction});
+    let response = await instanse.post<ServerResponseType<MainPageChampionshipDataType[] | null>>(`mainpage.php`, { date_of_prediction });
     return response.data;
-}
-
-export const getGameStats = async (name_of_championship: string, games_id: number) => {
-    let response = await instanse.get<ServerResponseType<GameStatsDataType>>(`game_stats.php?name_of_championship=${name_of_championship}&games_id=${games_id}`)
-    return response.data;
-}
-
-export const addBetsToDB = async (user_login: string, bets: Array<BetType>) => {
-    let response = await instanse.post<BaseAPIType>(`add_bet.php`, {user_login, bets});
-    return response.data;
-}
-
-export const getInfoAboutChampionShip = async (name_of_championship: string) => {
-    let response = await instanse.get<ServerResponseType<ChampionshipDataType>>(`championship_stats.php?name_of_championship=${name_of_championship}`)
-    return response.data
-}
-
-export const getFullBetStatistic = async (name_of_championship: string, kind_of_bet: string, type_of_bet: string) => {
-    let response = await instanse.get<ServerResponseType<FullBetStatisticItemType[]>>(`bets_statistic.php?name_of_championship=${name_of_championship}&kind_of_bet=${kind_of_bet}&type_of_bet=${type_of_bet}`)
-    return response.data
-}
-
-export const getChampionshipsList = async () => {
-    let response = await instanse.get<ServerResponseType<string[]>>('championships_page.php')
-    return response.data
-}
-
-export const getUserData = async (user_login: string) => {
-    let response = await instanse.post<UserDataType>(`my_profile.php`, {user_login});
-    return response.data;
-}
-
-export const uploadProfilePhoto = async (photo_file: File) => {
-    const formData = new FormData()
-    formData.append('profile_photo', photo_file)
-    const response = await instanse.post<ServerResponseType<string | null>>(`upload_photo.php`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
-    return response.data
 }

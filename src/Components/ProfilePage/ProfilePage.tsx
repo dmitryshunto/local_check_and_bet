@@ -1,122 +1,98 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { MyProfileDataType, MyProfileDataItemType, setMyProfileDataTC, updatePhotoTC, actions } from '../../redux/my_profile_reducer'
+import { setMyProfileDataTC, updatePhotoTC, actions } from '../../redux/my_profile_reducer'
 import { auth_user_selectors, propfile_selectors } from '../../Selectors/selectors'
 import { AppStoreType } from '../../redux/redux'
 import classes from './ProfilePage.module.css'
-import { round_plus, translate_kind_of_bet_and_home_away } from '../../CommonFunctions/commonFunctions'
+import { round_plus } from '../../CommonFunctions/commonFunctions'
 import { useSubscribeOnData } from '../../Hooks/Hooks'
 import { PreloaderPageWithoutHeader } from '../CommonComponents/PreloaderPage/PreloaderPage'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 import UserBetsTable from './UserBetsTable/UserBetsTable'
-import LoginPage from '../LoginPage/LoginPage'
+import { withPreloader } from '../../HOC/withPreloader'
+import { withAuthRedirect } from './../../HOC/withAuthReirect';
 
 
-const ProfilePageContainer: React.FC<PropsType> = (props: PropsType) => {
+let ProfilePageContainer: React.FC<PropsType> = (props: PropsType) => {
     useSubscribeOnData(props.setMyProfileDataTC, props.set_my_profile_page_initial_state, [props.user_login])
-    if(props.isGettingData || !props.my_profile_data) return <PreloaderPageWithoutHeader />
-    if(!props.user_login) return <LoginPage /> 
-    return <ProfilePage {...props}/>
+    return <ProfilePage {...props} />
 }
 
-const ProfilePage: React.FC<PropsType> = ({my_profile_data, photo_url, isLoadingPhoto, updatePhotoTC, user_login}) => {
+ProfilePageContainer= withAuthRedirect<PropsType>()(ProfilePageContainer)
 
+let ProfilePage: React.FC<PropsType> = ({ my_profile_data, photo_url, isLoadingPhoto, updatePhotoTC,
+    default_photo_url, user_login, }) => {
     let balance = 0
     let win_bets = 0
     let overall_bets = 0
     let odds_sum = 0
     my_profile_data?.forEach(item => {
-        balance = balance + +item.balance
-        if(+item.result > 0) {
-            win_bets = win_bets + 1
+        if (item.balance !== null && item.result !== null) {
+            balance = balance + +item.balance
+            if (+item.result > 0) {
+                win_bets = win_bets + 1
+            }
+            if (+item.result !== 0) {
+                overall_bets = overall_bets + 1
+            }
+            odds_sum = odds_sum + +item.odd
         }
-        if(+item.result !== 0) {
-            overall_bets = overall_bets + 1
-        }
-        odds_sum = odds_sum + +item.odd
     })
 
-    const winning_rating = overall_bets ? Math.round(win_bets*100 / overall_bets) : 0;
+    const winning_rating = overall_bets ? Math.round(win_bets * 100 / overall_bets) : 0;
 
-    const average_odd = my_profile_data? round_plus(odds_sum / my_profile_data.length, 2) : 0;
+    const average_odd = my_profile_data?.length ? round_plus(odds_sum / my_profile_data.length, 2) : 0;
+
+    const number_of_bets = my_profile_data ? my_profile_data.length : 0
 
     return (
-        <div className = {classes.my_profile_page}>
-            <ProfileInfo number_of_bets = {my_profile_data!.length}
-                         user_login = {user_login}
-                         average_odd = {average_odd}
-                         balance = {balance}
-                         winning_rating = {winning_rating}
-                         photo_url = {photo_url}
-                         isLoadingPhoto = {isLoadingPhoto}
-                         updatePhotoTC = {updatePhotoTC}/>
-            <UserBetsTable my_profile_data_items = {my_profile_data}
-                           classes = {classes}/>
+        <div className={classes.my_profile_page}>
+            <ProfileInfo number_of_bets={number_of_bets}
+                user_login={user_login}
+                default_photo_url = {default_photo_url}
+                average_odd={average_odd}
+                balance={balance}
+                winning_rating={winning_rating}
+                photo_url={photo_url}
+                isLoadingPhoto={isLoadingPhoto}
+                updatePhotoTC={updatePhotoTC} />
+            <UserBetsTable my_profile_data_items={my_profile_data}
+                           classes={classes} />
         </div>
     )
 }
 
-export const MyProfileDataItem: React.FC<MyProfileDataItemType> = (props) => {
-    let result_className = ''
-    let result_content = '-'
-    if(+props.result === 1) {
-        result_className = 'win_bet'
-        result_content = 'Победа'
-    } else if (+props.result === 0 && props.result !== null) {
-        result_className = 'back_bet'
-        result_content = 'Возврат'
-    } else if (+props.result === -1) {
-        result_className = 'lose_bet'
-        result_content = 'Проигрыш'
-    } 
-    return (
-        <div className = {classes.my_profile_data_item}>
-            <div className = {classes.date_of_match_block}>{props.date_of_match}</div>
-            <div className = {classes.name_of_championship_block}>{props.name_of_championship.toUpperCase()}</div>
-            <div className = {classes.teams_block}>{props.name_of_team1 + ' - ' + props.name_of_team2}</div>
-            <div className = {classes.kind_of_bet_block}>{translate_kind_of_bet_and_home_away(props.kind_of_bet)}</div>
-            <div className = {classes.odd_block}>{props.odd_type + ' ' + props.odd}</div>
-            <div className = {classes.result_of_match_block}>{props.result_of_match}</div>
-            <div className = {classes.result_of_bet_block + ' ' + classes[result_className]}>{result_content}</div>
-            <div className = {classes.balance_block}>{props.balance}</div>
-        </div>
-    )
-}
-
-type MapStatePropsType = {
-    my_profile_data: MyProfileDataType
-    user_login: string | null
-    isGettingData: boolean
-    photo_url: string | null
-    isLoadingPhoto: boolean
-}
+ProfilePage = withPreloader<PropsType>(PreloaderPageWithoutHeader, 'isGettingData')(ProfilePage)
 
 type MapDispatchPropsType = {
-    setMyProfileDataTC: (user_login: string) => any
+    setMyProfileDataTC: () => void
     set_my_profile_page_initial_state: () => void
     updatePhotoTC: (photo_file: File) => void
 }
 
 type OwnPropsType = {
-   
+
 }
 
 type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
 
-let mapStateToProps = (state: AppStoreType): MapStatePropsType => {
+let mapStateToProps = (state: AppStoreType) => {
     return {
         my_profile_data: propfile_selectors.get_data(state),
-        user_login: auth_user_selectors.get_login(state),       
+        user_login: auth_user_selectors.get_login(state),
         isGettingData: propfile_selectors.get_is_getting_data(state),
         photo_url: propfile_selectors.get_profile_photo_url(state),
-        isLoadingPhoto: propfile_selectors.get_is_loading_profile_photo(state)
+        isLoadingPhoto: propfile_selectors.get_is_loading_profile_photo(state),
+        default_photo_url: propfile_selectors.get_default_photo_url(state)
     }
 }
 
+type MapStatePropsType = ReturnType<typeof mapStateToProps>
+
 let mapDispatchToProps: MapDispatchPropsType = {
-    setMyProfileDataTC, 
+    setMyProfileDataTC,
     set_my_profile_page_initial_state: actions.set_my_profile_page_initial_state,
-    updatePhotoTC   
+    updatePhotoTC
 }
 
 export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStoreType>(mapStateToProps, mapDispatchToProps)(ProfilePageContainer)

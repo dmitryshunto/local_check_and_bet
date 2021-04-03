@@ -43,21 +43,17 @@ type BetCouponItem = {
 
 const BetCouponItem: React.FC<BetCouponItem> = ({ bet, removeBet, selectBetTC }) => {
     const { market, odd_type, odd, kind_of_bet, home_team, away_team, value } = bet
-    let [bet_size_input_value, set_bet_size_input_value] = useState<string>('')
-
     const max_size = 1000
     const min_size = 1
 
-    const onBetSizeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onBetSizeInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         let bet_size
-        if (Number(e.currentTarget.value) > max_size) {
-            set_bet_size_input_value(String(max_size))
+        let bet_size_to_num = Number(e.currentTarget.value)
+        if (bet_size_to_num > max_size) {
             bet_size = max_size
         } 
-        else if (Number(e.currentTarget.value) < min_size) set_bet_size_input_value('')
-        else if (Number(e.currentTarget.value) >= min_size && Number(e.currentTarget.value) <= max_size) {
-            set_bet_size_input_value(e.currentTarget.value)
-            bet_size = Number(e.currentTarget.value)
+        else if (bet_size_to_num >= min_size && bet_size_to_num <= max_size) {
+            bet_size = bet_size_to_num
         }
         let new_bet = return_bet_object(kind_of_bet, bet.db_name, market, bet.game_id, bet.date_of_match, home_team, away_team)(
             value, odd_type, odd, bet_size
@@ -79,7 +75,7 @@ const BetCouponItem: React.FC<BetCouponItem> = ({ bet, removeBet, selectBetTC })
             <div>
                 <input type={'number'}
                     placeholder={'Insert bet size. Max is 1000$'}
-                    value={bet_size_input_value}
+                    value={bet.bet_size ? bet.bet_size : ''}
                     onChange={onBetSizeInputChange}
                 />
 

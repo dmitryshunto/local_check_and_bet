@@ -2,7 +2,7 @@ import { getTodayDate } from "../CommonFunctions/commonFunctions";
 import { AppStoreType } from '../redux/redux'
 import { FullBetStatisticDataType } from '../redux/bet_statistic_reducer'
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer'
-import { MyProfileDataType } from '../redux/my_profile_reducer'
+import { MyProfileBets } from '../redux/my_profile_reducer'
 import { BetType } from '../redux/betReducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
 import { MainPageChampionshipDataType, MainPageGameDataType } from '../redux/championshipsReduser'
@@ -19,8 +19,8 @@ export const error_handler_selectors = {
 }
 
 export const create_new_user_page_selectors = {
-    get_is_creating_user: (state: AppStoreType): boolean => {
-        return state.createNU.isCreatingUser;
+    get_is_getting_data: (state: AppStoreType): boolean => {
+        return state.createNU.is_getting_data;
     },
     get_new_user_login: (state: AppStoreType): string | null => {
         return state.createNU.newUserLogin;
@@ -30,6 +30,15 @@ export const create_new_user_page_selectors = {
     },
     get_operation_success: (state: AppStoreType): boolean | null => {
         return state.createNU.createNewUserSuccess;
+    },
+    get_default_photo_url: (state: AppStoreType) => {
+        return state.createNU.default_photo_url
+    },
+    get_avatar_photo_url: (state: AppStoreType) => {
+        return state.createNU.avatar_photo_file_url
+    },
+    get_is_loading_photo: (state: AppStoreType) => {
+        return state.createNU.isLoadingPhoto
     }
 }
 
@@ -124,14 +133,17 @@ export const propfile_selectors = {
     get_is_getting_data: (state: AppStoreType): boolean => {
         return state.myProfileReducer.isGettingData
     },
-    get_data: (state: AppStoreType): MyProfileDataType => {
-        return state.myProfileReducer.data
+    get_data: (state: AppStoreType): MyProfileBets => {
+        return state.myProfileReducer.bets
     },
     get_is_loading_profile_photo: (state: AppStoreType): boolean => {
         return state.myProfileReducer.isLoadingPhoto
     },
     get_profile_photo_url: (state: AppStoreType): string | null => {
         return state.myProfileReducer.photo_url
+    },
+    get_default_photo_url: (state: AppStoreType): string | null => {
+        return state.myProfileReducer.default_photo_url
     }
 }
 

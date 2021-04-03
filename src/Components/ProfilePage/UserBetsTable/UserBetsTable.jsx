@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import TableFilter from 'react-table-filter'
-import { translate_kind_of_bet_and_home_away } from '../../../CommonFunctions/commonFunctions'
-import { } from './styles.css'
+import './styles.css'
 import classes from './UserBetsTable.module.css'
 
 const UserBetsTable = (props) => {
@@ -11,60 +10,60 @@ const UserBetsTable = (props) => {
   const filterUpdated = (newData) => {
     set_current_data(newData)
   }
+  let items
 
-  const items = current_data == null ? props.my_profile_data_items : current_data
-  const elementsHtml = items.map((item, index) => {
+  if(current_data === null) {
+    if(props.my_profile_data_items) items = props.my_profile_data_items
+    else items = null
+  } else{
+    items = current_data
+  } 
+  const elementsHtml = items ? items.map((item, index) => {
     if (index < number_of_visible_items) {
       return (
         <DataItem key={index}
-          date_of_match={item.date_of_match}
-          name_of_championship={item.name_of_championship}
-          name_of_team1={item.name_of_team1}
-          name_of_team2={item.name_of_team2}
-          kind_of_bet={item.kind_of_bet}
-          odd_type={item.odd_type}
-          odd={item.odd}
-          result_of_match={item.result_of_match}
-          result={item.result}
-          balance={item.balance}
+          {...item}
           classes={props.classes}
         />
       )
     } else return null
-  });
+  }) : null
   return (
-    <div className = {classes.table_container}>
-      <table className = {classes.user_bets_table}>
+    <div className={classes.table_container}>
+      <table className={classes.user_bets_table}>
         <thead>
           <TableFilter
             rows={items}
             onFilterUpdate={filterUpdated}>
             <th key="date_of_match" filterkey="date_of_match" className={props.classes.date_of_match_block} casesensitive={'true'} showsearch={'true'}>
-              Дата
+              Date
             </th>
             <th key="name_of_championship" filterkey="name_of_championship">
-              Лига
+              League
             </th>
             <th key="match" filterkey="match">
-              Матч
+              Match
             </th>
             <th key="kind_of_bet" filterkey="kind_of_bet">
-              Вид
+              Kind of bet
             </th>
             <th key="odd_type" filterkey="odd_type">
-              Ставка
+              Bet
+            </th>
+            <th key="bet_size" filterkey="bet_size">
+              Bet Size
             </th>
             <th key="odd" filterkey="odd">
-              Коэф.
+              Odd
             </th>
             <th key="match_result" filterkey="match_result">
-              Результат матча
+              Match result
             </th>
             <th key="result" filterkey="result">
-              Результат
+              Bet result
             </th>
             <th key="balance" filterkey="balance">
-              Баланс
+              Balance
             </th>
           </TableFilter>
         </thead>
@@ -72,9 +71,9 @@ const UserBetsTable = (props) => {
           {elementsHtml}
         </tbody>
       </table>
-      {elementsHtml.length > number_of_visible_items &&
+      {elementsHtml && elementsHtml.length > number_of_visible_items &&
         <div className={classes.show_more_button}>
-          <button onClick={() => set_number_of_visible_items(number_of_visible_items + 10)}>Показать больше</button>
+          <button onClick={() => set_number_of_visible_items(number_of_visible_items + 10)}>Show more</button>
         </div>
       }
     </div>
@@ -85,25 +84,30 @@ const UserBetsTable = (props) => {
 const DataItem = (props) => {
   let result_className = ''
   let result_content = '-'
-  if (+props.result === 1) {
-    result_className = 'win_bet'
-    result_content = 'Победа'
-  } else if (+props.result === 0 && props.result !== null) {
-    result_className = 'back_bet'
-    result_content = 'Возврат'
-  } else if (+props.result === -1) {
-    result_className = 'lose_bet'
-    result_content = 'Проигрыш'
+
+  if (props.result !== null) {
+    if (+props.result === 1) {
+      result_className = 'win_bet'
+      result_content = 'win'
+    } else if (+props.result === 0 && props.result !== null) {
+      result_className = 'back_bet'
+      result_content = 'back'
+    } else if (+props.result === -1) {
+      result_className = 'lose_bet'
+      result_content = 'lose'
+    }
   }
+
   return (
-    <tr className = {classes.user_bet}>
+    <tr className={classes.user_bet}>
       <td>{props.date_of_match}</td>
       <td>{props.name_of_championship.toUpperCase()}</td>
-      <td>{props.name_of_team1 + '-' + props.name_of_team2}</td>
-      <td>{translate_kind_of_bet_and_home_away(props.kind_of_bet)}</td>
-      <td>{props.odd_type}</td>
+      <td>{props.home_team + '-' + props.away_team}</td>
+      <td>{props.kind_of_bet}</td>
+      <td>{`${props.odd_type}${props.value ? ` ${props.value}` : ''}`}</td>
+      <td>{props.bet_size}</td>
       <td>{props.odd}</td>
-      <td>{props.result_of_match}</td>
+      <td>{props.result_of_match ? props.result_of_match : '-'}</td>
       <td className={classes.result_of_bet_block + ' ' + classes[result_className]}>{result_content}</td>
       <td>{props.balance}</td>
     </tr>
