@@ -1,15 +1,22 @@
-.game_stats_page_container {
-  width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  background: #575757;
-  height: 100%;
-}
-
 .game_stats_page_row {
   width: 98%;
-  margin-top: 20px;
-  margin-right: 1%;
-  margin-left: 1%;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
 }
+
+.game_stats_page_row > div {
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0, 0.5);
+  overflow: hidden;
+}
+
+.block_header {
+  height: 28px;
+  background:#056146;
+  text-align: center;
+  width: 100%;
+  color: aliceblue;
+  font-size: medium;
+}
+

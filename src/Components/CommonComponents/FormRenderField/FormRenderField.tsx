@@ -1,36 +1,31 @@
 import React from 'react'
 import { WrappedFieldProps } from 'redux-form'
+import { Form, Input } from "antd";
 
-type InputType = 'text' | 'password'
+const FormItem = Form.Item;
 
-type RenderFieldOwnParamsType = {
+type FormItemProps = {
+    hasFeedback: boolean,
     label: string
-    type: InputType
-    placeholder?: string
+    children: React.ReactNode
 }
 
-type RenderFieldType = RenderFieldOwnParamsType & WrappedFieldProps
-
-const RenderField = ({
-    input,
-    label,
-    type,
-    meta: { touched, error, warning },
-    ...props
-}: RenderFieldType): React.ReactNode => {
-    return (
-        <div>
-            <div>
-                {label}
-            </div>
-            <div>
-                <input {...input} placeholder = {props.placeholder} type={type} />
-                {touched &&
-                    ((error && <span>{error}</span>) ||
-                        (warning && <span>{warning}</span>))}
-            </div>
-        </div>
-    )
+const antRenderField = (Component: React.ComponentType) => {
+    return ({ input, meta, children, hasFeedback, label, ...props }: FormItemProps & WrappedFieldProps) => {
+        const hasError = meta.touched && meta.invalid;
+        return (
+            <FormItem                
+                label={label}
+                validateStatus={hasError ? "error" : "success"}
+                hasFeedback={hasFeedback && hasError}
+                help={hasError && meta.error}
+            >
+                <Component {...input} {...props} children={children} />
+            </FormItem>
+        );
+    }
 }
 
-export default RenderField
+export const AntInput = antRenderField(Input);
+
+export default antRenderField

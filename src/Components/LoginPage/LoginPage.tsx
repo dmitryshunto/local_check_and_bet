@@ -1,14 +1,14 @@
 import React from 'react'
-import { Field, reduxForm, InjectedFormProps } from 'redux-form'
-import { NavLink, Redirect } from 'react-router-dom';
+import { Field, reduxForm, InjectedFormProps, Form } from 'redux-form'
+import { Link, Redirect } from 'react-router-dom';
 import { loginUserTC } from '../../redux/authReducer';
 import { auth_user_selectors } from '../../Selectors/selectors';
 import { connect } from 'react-redux';
-import WelcomeNewUserPage from '../WelcomeNUPage/WelcomeNUPage';
 import classes from './LoginPage.module.css';
 import { AppStoreType } from '../../redux/redux'
 import { login_validate as validate } from '../../CommonFunctions/validators';
-import RenderField from '../CommonComponents/FormRenderField/FormRenderField';
+import RenderField, { AntInput } from '../CommonComponents/FormRenderField/FormRenderField';
+import { Button, Col, Row } from 'antd';
 
 type LoginPagePropsTypes = MapDispatchToProps & MapStateToPropsType
 
@@ -19,16 +19,14 @@ const LoginPage: React.FC<LoginPagePropsTypes> = (props) => {
     }
     if (props.isAuthorized) {
         return (
-            <Redirect to = {'profile_page'} />
+            <Redirect to={'profile_page'} />
         )
     } else {
         return (
-            <div className={classes.login_page}>
-                <div className={classes.login_form}>
-                    <LoginReduxForm onSubmit={loginUser}
-                                    isLoggingUser = {props.isLoggingUser}
-                                    loginUserWarningMessage = {props.loginUserWarningMessage}/>
-                </div>
+            <div>
+                <LoginReduxForm onSubmit={loginUser}
+                    isLoggingUser={props.isLoggingUser}
+                    loginUserWarningMessage={props.loginUserWarningMessage} />
             </div>
         )
     }
@@ -44,27 +42,36 @@ type LoginUserPropsType = {
     password: string
 }
 
-let LoginForm: React.FC<InjectedFormProps<LoginUserPropsType, ContactFormOwnPropsType> & ContactFormOwnPropsType> = ({handleSubmit,
-    submitting}) => {
+const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+}
+
+let LoginForm: React.FC<InjectedFormProps<LoginUserPropsType, ContactFormOwnPropsType> & ContactFormOwnPropsType> = ({ handleSubmit,
+    submitting }) => {
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <Field name="login"
-                           component={RenderField}
-                           type="text"
-                           placeholder="Login" />
-                </div>
-                <div>
-                    <Field name="password"
-                           component={RenderField}
-                           type="password"
-                           placeholder="Password" />
-                </div>
-                <button disabled={submitting} type="submit">Submit</button>
-            </form>
-            <NavLink to='/createnewuserpage'>Not registered?</NavLink>
-        </>
+        <Row>
+            <Col span={6} offset={9}>
+                <Form {...layout} onSubmit={handleSubmit}>
+                    <div>
+                        <Field name="login"
+                            component={AntInput}
+                            type="text"
+                            placeholder="Login" />
+                    </div>
+                    <div>
+                        <Field name="password"
+                            component={AntInput}
+                            type="password"
+                            placeholder="Password" />
+                    </div>
+                    <Button disabled={submitting} type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                    <Link className={classes.link} to='/createnewuserpage'>Not registered?</Link>
+                </Form>
+            </Col>
+        </Row>
     )
 }
 

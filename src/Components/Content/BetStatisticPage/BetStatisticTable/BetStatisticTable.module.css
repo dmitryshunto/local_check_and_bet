@@ -1,110 +1,16 @@
-.bets_statistic_table {
-    border-top: 1px solid #707070;
-    border-bottom: 1px solid #707070;
-    background: #575757;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-.table_head {
-    height: 48px;
-    display: flex;
-    border-bottom: 2px solid #707070;
-}
-
-.bet_statistic_item {
-    border-bottom: 1px solid #707070;
-    display: flex;
-}
-
-.odd_blocks {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    color: #ecf6f8;
-    width: 15%;
-    border-left: 1px solid #707070;
-    border-right: 1px solid #707070;  
-}
-
-.odd_blocks div {
-    text-align: center;
-    width: 25%;
-    border: 1.5px solid #d8dbdb;
-    border-radius: 5px;
-}
-
-.odd_blocks div:before{
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-}
-
-.teams_and_fulltime_block {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #ecf6f8;
-    border-left: 1px solid #707070;
-    border-right: 1px solid #707070;   
-    width: 35%
-}
-
-.teams_and_fulltime_block div {
-    text-align: center;
-}
-
-.full_time_block {
-    width: 30%
-}
-
-.team_block {
-    width: 35%
-}
 
 .win_team_block {
-    color: #548449;
-}
-
-.predict_block {
-    color:  #ecf6f8;
-    border-left: 1px solid #707070;
-    border-right: 1px solid #707070;
-    width: 40%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.predict_block div {
-    text-align: center;
-    width: 15%;
-}
-
-.bet_success_block {
-   width: 10%;
-   display: flex;
-   justify-content: center;
-   align-items: center; 
-   color:  #ecf6f8;
-   border-left: 1px solid #707070;
-   border-right: 1px solid #707070;
-
-}
-
-.bet_success_block div {
-    width: 100%;
-    text-align: center;
+    color: #68e64b;
 }
 
 .win_bet {
-    color: #548449
+    color: #68e64b
 }
 
 .back_bet {
-    color: #cec82a;
+    color: #dcd63e;
 }
 
 .lose_bet {
-    color: #be3f28;
+    color: #f53e1d;
 }

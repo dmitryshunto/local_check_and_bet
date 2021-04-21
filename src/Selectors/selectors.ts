@@ -5,7 +5,7 @@ import { ChampionshipsPageDataType } from '../redux/championships_page_reducer'
 import { MyProfileBets } from '../redux/my_profile_reducer'
 import { BetType } from '../redux/betReducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
-import { MainPageChampionshipDataType, MainPageGameDataType } from '../redux/championshipsReduser'
+import { MainPageChampionshipDataType } from '../redux/championshipsReduser'
 import { BasicTotals, ChampionshipStatsDataType, BetStatisticType } from '../redux/championship_stats_reducer'
 import { MyNetChampionship, MyNetGameType } from "../redux/my_net_main_page_reducer";
 
@@ -126,7 +126,14 @@ export const championship_page_selectors = {
     },
     get_games: (state: AppStoreType): MyNetGameType[] | [] | undefined => {
         return state.championshipPage.data?.games
-    }
+    },
+    get_name_of_championship: (state: AppStoreType) => {
+        return state.championshipPage.data?.name_of_championship
+    },
+    get_season: (state: AppStoreType) => {
+        return state.championshipPage.data?.season
+    },
+    get_country_name: (state: AppStoreType) => state.championshipPage.data?.country_name
 }
 
 export const propfile_selectors = {

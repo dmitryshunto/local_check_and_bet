@@ -1,7 +1,10 @@
 import React from 'react';
 import classes from './MatchStatistics.module.css';
+import common_classes from '../GameStats.module.css'
 import styled from 'styled-components';
 import { GameKindOfBetDataType } from '../../../../redux/game_stats_reducer'
+import { Row, Col } from 'antd';
+import { transform_name_for_ui } from '../../../../CommonFunctions/typed_functions';
 
 type PropsType = {
     data: GameKindOfBetDataType
@@ -17,7 +20,9 @@ const MatchStatistics: React.FC<PropsType> = ({ data }) => {
     })
     return (
         <div className={classes.match_statistics_table_container}>
-            <div className={classes.match_statistics_head}>Статистика матча</div>
+            <div className={common_classes.block_header}>
+                Match statistic
+            </div>
             {matchStatisticsRows}
         </div>
     )
@@ -30,7 +35,7 @@ type MatchStatisticsRowPropsType = {
 }
 
 const MatchStatisticsRow: React.FC<MatchStatisticsRowPropsType> = ({ leftblock, centerblock, rightblock }) => {
-    const styles = { leftblockWidth: 100, rightblockWidth: 100, float: 'right'};
+    const styles = { leftblockWidth: 100, rightblockWidth: 100, float: 'right' };
     if (typeof (leftblock) === 'number') {
         if (leftblock < rightblock) {
             styles.leftblockWidth = leftblock / rightblock * 100;
@@ -48,19 +53,28 @@ const MatchStatisticsRow: React.FC<MatchStatisticsRowPropsType> = ({ leftblock, 
         width: ${styles.leftblockWidth}%;
         margin-left: 0.5%;
         margin-right: 0.5%;
+        background: #dddddd;
         height: 15px;
         float: ${styles.float};
     `
     const Team2Grafic = styled(Team1Grafic)`
         width: ${styles.rightblockWidth}%;
+        background: #8f8f8f
     `
     return (
         <div className={classes.match_statistics_row}>
-            <div className={classes.match_statistics_row_numbers}>
-                <div><span>{leftblock}</span></div>
-                <div><span>{centerblock}</span></div>
-                <div><span>{rightblock}</span></div>
-            </div>
+            <Row>
+                <Col span={8}>
+                    <div>{leftblock}</div>
+                </Col>
+                <Col span={8}>
+                    <div style = {{textAlign: "center"}}>{transform_name_for_ui(centerblock)}</div>
+                </Col>
+                <Col span={8}>
+                    <div style = {{textAlign: "right"}}>{rightblock}</div>
+                </Col>
+            </Row>
+
             <div className={classes.match_statistics_row_grafics}>
                 <div className={classes.match_statistics_row_grafics_cell}>
                     <Team1Grafic />

@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { setChampionshipStatsTC, ChampionshipStatsDataType, BetStatisticType, BasicTotals,
          actions } from '../../../redux/championship_stats_reducer';
 import {AppStoreType} from '../../../redux/redux'
-import ChampionshipStats from './ChampionshipStats/ChampionshipStats';
 import { added_bets_selectors, championship_page_selectors } from '../../../Selectors/selectors';
 import { RouteComponentProps } from "react-router-dom"
 import classes from './ChampionshipPage.module.css'
@@ -16,29 +15,35 @@ import { BetType, selectBetTC } from '../../../redux/betReducer';
 import BetCoupon from '../../CommonComponents/BetCoupon/BetCoupon';
 import { useEffect } from 'react';
 import { MyNetGameType } from '../../../redux/my_net_main_page_reducer';
+import ChampionshipStats from './ChampionshipStats/ChampionshipStats';
+
 
 const ChampionshipPageContainer: React.FC<PropsType> = (props) => {
     useEffect(() => {
-        document.title = props.match.params.name_of_championship.toUpperCase()
-        return () => {document.title = 'Check and Bet'}}, [props.match.params.name_of_championship])
-    useSubscribeOnData(props.setChampionshipStatsTC, props.set_championship_page_initial_state, [props.match.params.name_of_championship])
-    if(isEmpty(props.championship_stats)  || props.isGettingData) return <PreloaderPageWithoutHeader />
+        document.title = props.match.params.db_name.toUpperCase()
+        return () => {document.title = 'Check and Bet'}}, [props.match.params.db_name])
+    useSubscribeOnData(props.setChampionshipStatsTC, props.set_championship_page_initial_state, [props.match.params.db_name])
+    if(props.isGettingData) return <PreloaderPageWithoutHeader />
     return <ChampionshipPage {...props}/>
 }
 
 let ChampionshipPage: React.FC<PropsType> =  ({championship_stats, bet_statistic, basic_totals, games, match, ...props}) => {
-    
+    const country_name = useSelector(championship_page_selectors.get_country_name)
+    const name_of_championship = useSelector(championship_page_selectors.get_name_of_championship)
+    const season = useSelector(championship_page_selectors.get_season)
     return (
         <div className = {classes.championship_page}>
+            <h2>{`${country_name?.toUpperCase()} ${name_of_championship?.toUpperCase()} ${season}`}</h2>
             <ChampionshipStats championship_stats = {championship_stats!}
-                               name_of_championship =  {match.params.name_of_championship}
-                               basic_totals = {basic_totals!}
-                               />
+                               name_of_championship =  {match.params.db_name}
+                               basic_totals = {basic_totals!}/>
             <ChampionshipBetsTable bet_statistic = {bet_statistic!}/>
             {games && games.length && 
             <GamesTable games = {games}
+                        db_name = {match.params.db_name}
                         bets = {props.bets}
                         selectBetTC = {props.selectBetTC}
+
                         />}
             <BetCoupon />
         </div>
@@ -64,7 +69,7 @@ type OwnPropsType = {
    
 }
 
-type RoutePropsType = RouteComponentProps<{name_of_championship: string}>
+type RoutePropsType = RouteComponentProps<{db_name: string}>
 
 type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType & RoutePropsType
 

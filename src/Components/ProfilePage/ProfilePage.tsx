@@ -8,9 +8,9 @@ import { round_plus } from '../../CommonFunctions/commonFunctions'
 import { useSubscribeOnData } from '../../Hooks/Hooks'
 import { PreloaderPageWithoutHeader } from '../CommonComponents/PreloaderPage/PreloaderPage'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
-import UserBetsTable from './UserBetsTable/UserBetsTable'
 import { withPreloader } from '../../HOC/withPreloader'
 import { withAuthRedirect } from './../../HOC/withAuthReirect';
+import UserBets from './UserBetsTable/UserBets'
 
 
 let ProfilePageContainer: React.FC<PropsType> = (props: PropsType) => {
@@ -22,10 +22,12 @@ ProfilePageContainer= withAuthRedirect<PropsType>()(ProfilePageContainer)
 
 let ProfilePage: React.FC<PropsType> = ({ my_profile_data, photo_url, isLoadingPhoto, updatePhotoTC,
     default_photo_url, user_login, }) => {
+
     let balance = 0
     let win_bets = 0
     let overall_bets = 0
     let odds_sum = 0
+    let number_of_settled_bets = 0
     my_profile_data?.forEach(item => {
         if (item.balance !== null && item.result !== null) {
             balance = balance + +item.balance
@@ -36,18 +38,21 @@ let ProfilePage: React.FC<PropsType> = ({ my_profile_data, photo_url, isLoadingP
                 overall_bets = overall_bets + 1
             }
             odds_sum = odds_sum + +item.odd
+            number_of_settled_bets++
         }
     })
 
+
     const winning_rating = overall_bets ? Math.round(win_bets * 100 / overall_bets) : 0;
 
-    const average_odd = my_profile_data?.length ? round_plus(odds_sum / my_profile_data.length, 2) : 0;
-
+    const average_odd = odds_sum && number_of_settled_bets ? round_plus(odds_sum / number_of_settled_bets, 2) : 0;
+    
     const number_of_bets = my_profile_data ? my_profile_data.length : 0
-
+    
     return (
         <div className={classes.my_profile_page}>
             <ProfileInfo number_of_bets={number_of_bets}
+                number_of_setled_bets = {number_of_settled_bets}
                 user_login={user_login}
                 default_photo_url = {default_photo_url}
                 average_odd={average_odd}
@@ -56,8 +61,7 @@ let ProfilePage: React.FC<PropsType> = ({ my_profile_data, photo_url, isLoadingP
                 photo_url={photo_url}
                 isLoadingPhoto={isLoadingPhoto}
                 updatePhotoTC={updatePhotoTC} />
-            <UserBetsTable my_profile_data_items={my_profile_data}
-                           classes={classes} />
+            <UserBets user_bets = {my_profile_data}/>
         </div>
     )
 }

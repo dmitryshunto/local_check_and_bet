@@ -1,0 +1,36 @@
+
+.my_node_enter {
+    opacity: 0;
+}
+.my_node_enter_active {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+.my_node_exit {
+    opacity: 1;
+}
+.my_node_exit_active {
+    opacity: 0;
+    transition: opacity 200ms;
+}
+
+.my_net_championship_table {
+    margin-top: 1%;
+}
+
+.checked_championship {
+    transition-duration: 1s;
+    opacity: 0;
+}
+
+.green_text_selection {
+    color: rgb(111, 218, 17);
+}
+
+.red_text_selection {
+    color: rgb(236, 48, 48);
+}
+
+.selected_bet {
+    background: rgb(209, 209, 53);
+}

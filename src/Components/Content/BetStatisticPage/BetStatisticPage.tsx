@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom';
 import { setBetStatisticTC } from '../../../redux/bet_statistic_reducer';
-import { AppStoreType } from '../../../redux/redux'
+import { AppStoreType, NewKindOfBet } from '../../../redux/redux'
 import { connect } from 'react-redux';
 import { bet_statistic_page_selectors } from '../../../Selectors/selectors'
 import BetStatisticTable from './BetStatisticTable/BetStatisticTable';
 import { FullBetStatisticDataType } from '../../../redux/bet_statistic_reducer'
 import classes from "./BetStatisticPage.module.css"
 import { PreloaderPageWithoutHeader } from '../../CommonComponents/PreloaderPage/PreloaderPage';
-import { Kinds_of_bet_type } from '../../../redux/my_net_main_page_reducer';
 import { OddTypeType } from '../../../redux/betReducer';
 import { useSubscribeOnData } from '../../../Hooks/Hooks';
 import { actions } from './../../../redux/bet_statistic_reducer';
 import { withPreloader } from '../../../HOC/withPreloader';
 
-type RoutePropsType = RouteComponentProps<{ db_name: string, kind_of_bet: Kinds_of_bet_type, type_of_bet: OddTypeType }>
+type RoutePropsType = RouteComponentProps<{ db_name: string, kind_of_bet: NewKindOfBet, type_of_bet: OddTypeType }>
 
 const BetStatisticPageContainer = ({ data, setBetStatisticTC, isGettingData, set_initial_state, match }: PropsType) => {
     useSubscribeOnData(setBetStatisticTC, set_initial_state, [match.params.db_name, match.params.kind_of_bet, match.params.type_of_bet])
@@ -49,7 +48,7 @@ type MapStatePropsType = {
 }
 
 type MapDispatchPropsType = {
-    setBetStatisticTC: (db_name: string, kind_of_bet: Kinds_of_bet_type, type_of_bet: OddTypeType) => void
+    setBetStatisticTC: (db_name: string, kind_of_bet: NewKindOfBet, type_of_bet: OddTypeType) => void
     set_initial_state: typeof actions.set_initial_state
 }
 

@@ -1,9 +1,8 @@
 import { users_api } from "../API/api"
-import {actions as error_handler_actions} from "./error_handler_reducer"
-import { PropertiesType, BaseThunkActionType } from "./redux"
-import { filterAddedBetsArray, getTodayDate } from "../CommonFunctions/commonFunctions"
-import { Kinds_of_bet_type } from "./my_net_main_page_reducer"
+import { actions as error_handler_actions, SetWarningMessagesAction } from "./error_handler_reducer"
+import { PropertiesType, BaseThunkActionType, NewKindOfBet } from "./redux"
 import { transform_date_for_UI } from "../CommonFunctions/typed_functions"
+import { getTodayDate } from "../CommonFunctions/commonFunctions"
 
 const ADD_BET = 'BET_REDUCER/ADD_BET'
 const REMOVE_BET = 'BET_REDUCER/REMOVE_BET'
@@ -32,7 +31,7 @@ export type MarketType = 'totals' | 'main_outcomes' | 'double_chance' | 'handica
 export type OddTypeType = 'home' | 'away' | 'TO' | 'TU' | 'x' | '!x'
 
 export type BetType = {
-    kind_of_bet: Kinds_of_bet_type;
+    kind_of_bet: NewKindOfBet;
     home_team: string
     away_team: string
     db_name: string;
@@ -113,31 +112,31 @@ export const addBetToDBTC = (login: string | null, bets: Array<BetType>): BaseTh
     }
 }
 
-type SetWarningMessagesAction = ReturnType<typeof error_handler_actions.set_warning>
-
 export const selectBetTC = (bet: BetType): BaseThunkActionType<ActionsTypes | SetWarningMessagesAction> => async (dispatch) => {
     // проверяем, есть ли в массиве bets объект с таким же маркетом, если есть получаем его
     const today = getTodayDate()
-    if (bet.date_of_match > today) {
-        dispatch(actions.setInitialBetsReducerState())
-        dispatch(actions.addBet(bet))
+    if (bet.odd) {
+        if (bet.date_of_match > today) {
+            dispatch(actions.setInitialBetsReducerState())
+            dispatch(actions.addBet(bet))
 
-        //КОД С ЛОГИКОЙ ДЛЯ ДОБАВЛЕНИЯ НЕСКОЛЬКИХ СТАВОК В МАССИВ BETS
+            //КОД С ЛОГИКОЙ ДЛЯ ДОБАВЛЕНИЯ НЕСКОЛЬКИХ СТАВОК В МАССИВ BETS
 
-        // const bets = getState().bets.bets
-        // const bet_with_same_market = bets.filter(bet_from_state => filterAddedBetsArray(bet, bet_from_state.game_id, bet_from_state.kind_of_bet, bet_from_state.market))
-        // if (bet_with_same_market.length) {
-        //     if (bet.odd_type === bet_with_same_market[0].odd_type) {
-        //         dispatch(actions.removeBet(bet_with_same_market[0]))
-        //     } else {
-        //         dispatch(actions.removeBet(bet_with_same_market[0]))
-        //         dispatch(actions.addBet(bet))
-        //     }
-        // } else {
-        //     dispatch(actions.addBet(bet))
-        // }
-    } else {
-        dispatch(error_handler_actions.set_warning([`All bets on ${transform_date_for_UI(new Date(bet.date_of_match))} are made`]))
+            // const bets = getState().bets.bets
+            // const bet_with_same_market = bets.filter(bet_from_state => filterAddedBetsArray(bet, bet_from_state.game_id, bet_from_state.kind_of_bet, bet_from_state.market))
+            // if (bet_with_same_market.length) {
+            //     if (bet.odd_type === bet_with_same_market[0].odd_type) {
+            //         dispatch(actions.removeBet(bet_with_same_market[0]))
+            //     } else {
+            //         dispatch(actions.removeBet(bet_with_same_market[0]))
+            //         dispatch(actions.addBet(bet))
+            //     }
+            // } else {
+            //     dispatch(actions.addBet(bet))
+            // }
+        } else {
+            dispatch(error_handler_actions.set_warning([`All bets on ${transform_date_for_UI(new Date(bet.date_of_match))} are made`]))
+        }
     }
 }
 

@@ -2,7 +2,7 @@
     display: flex;
     background: #076649;
     justify-content: space-around;
-    height: 48px
+    height: 48px;
 }
 
 .toogle_buttons div {

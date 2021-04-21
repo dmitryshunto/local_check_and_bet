@@ -5,6 +5,10 @@
     color: #575757;
 }
 
+.avatar > img {
+    margin-bottom: 1%;
+}
+
 .oncrop_button {
     width: 40%;
     margin-top: 1%;
@@ -19,21 +23,25 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    
 }
-
-.input_photo_label, .oncrop_button  {
+.input_photo_label {
     height: 32px;
-    border: 2px solid #575757;
-    border-radius: 10px;
+    border: 1px solid #575757;
+    border-radius: 2px;
     padding: 5px;
     color: #575757;
     margin-left: auto;
     margin-right: auto;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
 }
 
-.input_photo_label, .oncrop_button:hover {
+.input_photo_label:hover, .oncrop_button:hover {
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
 }
 
 .input_photo_label span::before {
@@ -59,5 +67,5 @@ div.warning_message {
 }
 
 .scale_input {
-    width: 50%
+    width: 100%;
 }

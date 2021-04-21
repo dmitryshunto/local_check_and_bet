@@ -20,7 +20,7 @@ const ChampionshipBetsTable = ({ bet_statistic }: PropsType) => {
     }
     return (
         <div className = {classes.bets_block}>
-            <h3>Статистика прогнозов</h3>
+            <h3>Statistic of prediction</h3>
             <div className={classes.bets_table}>
                 <ToggleButtons kinds_of_bet={Object.keys(bet_statistic)}
                     selected_kind_of_bet={selected_kind_of_bet}

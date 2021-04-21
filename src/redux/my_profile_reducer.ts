@@ -1,7 +1,6 @@
 import { users_api } from "../API/api";
 import { ResultCodeTypes } from "../API/api_types";
-import { Kinds_of_bet_type } from "./my_net_main_page_reducer";
-import { PropertiesType, BaseThunkActionType } from "./redux"
+import { PropertiesType, BaseThunkActionType, NewKindOfBet } from "./redux"
 import { actions as error_handler_actions } from './error_handler_reducer';
 
 const SET_MY_PROFILE_DATA = 'MY_PROFILE_REDUCER/SET_MY_PROFILE_DATA'
@@ -22,22 +21,24 @@ export const actions = {
     }
 }
 
-export type MyProfileDataItemType = {
+export type MyProfileBetType = {
     bet_id: number
     name_of_championship: string
-    kind_of_bet: Kinds_of_bet_type
+    kind_of_bet: NewKindOfBet
     home_team: string
     away_team: string
     market: string
     odd_type: string
     odd: number
+    value: number | null
     result: number | null
     balance: number | null
     result_of_match: string | null
+    result_for_ui: 'win' | 'lose' | 'back' | 'accepted'
     date_of_match: string
 }
 
-export type MyProfileBets = Array<MyProfileDataItemType> | null
+export type MyProfileBets = Array<MyProfileBetType> | null
 
 
 export interface UserDataType {

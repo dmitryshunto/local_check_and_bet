@@ -1,12 +1,6 @@
 .bet_block {
-    width: 100%; 
-}
-
-.bet_block_head {
-    height: 28px;
-    background:#454545;
-    text-align: center;
-    width: 100%
+    width: 100%;
+    color: aliceblue; 
 }
 
 .fulltime_result_block {
@@ -26,6 +20,7 @@
 .market_content {
     height: 32px;
     display: flex;
+    background: #666666;
     justify-content: space-around;
     align-items: center;
     border: 1px solid #858484;
@@ -33,7 +28,6 @@
 
 .market_content div {
     width: 33.333%;
-    background: #666666;
     height: 100%;
     text-align: center;
     border: 0.5px solid #858484;
@@ -46,7 +40,7 @@
 }
 
 .odd_button_active {
-    background: #cfcfcf;
+    background-color: #cfcfcf;
     color: #0a6e51;
 }
 

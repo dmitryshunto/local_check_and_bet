@@ -7,6 +7,10 @@ export const actions = {
     set_error: (error_message: string[] | null) => ({type: SET_ERROR, error_message} as const),
     set_warning: (warning_messages: string[] | null) =>({type: SET_WARNING, warning_messages} as const)
 }
+
+export type SetWarningMessagesAction = ReturnType<typeof actions.set_warning>
+export type SetErrorMessageAction = ReturnType<typeof actions.set_error>
+
 let innitialObject = {
     error_message: null as string[] | null,
     warning_messages: null as string[] | null

@@ -1,10 +1,10 @@
 import React from 'react';
-import classes from './BetBlock.module.css';
+import classes from './BetBlock.module.css'
+import common_classes from '../GameStats.module.css'
 import BetMarket from './BetMarkets/BetMarket'
-import { BetItemType, ScoreBoardBetBlockType, TwoWayBetsItem } from '../../../../../redux/game_stats_reducer'
-import { NewKindOfBet } from '../../../../../redux/redux'
-import { BetType } from '../../../../../redux/betReducer'
-import { Kinds_of_bet_type } from '../../../../../redux/my_net_main_page_reducer';
+import { BetItemType, ScoreBoardBetBlockType, TwoWayBetsItem } from '../../../../redux/game_stats_reducer'
+import { NewKindOfBet } from '../../../../redux/redux'
+import { BetType } from '../../../../redux/betReducer'
 
 type OwnPropsTypes = {
     bet_block: ScoreBoardBetBlockType
@@ -41,7 +41,7 @@ const create_all_bet_markets = (props: OwnPropsTypes) => {
     return result
 }
 
-const create_bet_markets = (data: BetItemType[] | TwoWayBetsItem[], kind_of_bet: Kinds_of_bet_type, date_of_match: string, bets: BetType[] | [],
+const create_bet_markets = (data: BetItemType[] | TwoWayBetsItem[], kind_of_bet: NewKindOfBet, date_of_match: string, bets: BetType[] | [],
     selectBetTC: (bet: BetType) => void, game_id: number, db_name: string, bet_market: string, bet_market_type: string,
     home_team: string, away_team: string) => {
     const result = []
@@ -64,7 +64,7 @@ const create_bet_markets = (data: BetItemType[] | TwoWayBetsItem[], kind_of_bet:
 
 type BetMarketsElemsType = ReturnType<typeof create_bet_markets>
 
-const create_bet_market = (data: BetItemType[], kind_of_bet: Kinds_of_bet_type, date_of_match: string, bets: BetType[] | [],
+const create_bet_market = (data: BetItemType[], kind_of_bet: NewKindOfBet, date_of_match: string, bets: BetType[] | [],
     selectBetTC: (bet: BetType) => void, game_id: number, db_name: string, bet_market: string, with_over_line: boolean, key: number,
     home_team: string, away_team: string) => {
     return <BetMarket data={data}
@@ -87,8 +87,8 @@ const BetBlock: React.FC<OwnPropsTypes> = (props) => {
     const bet_markets = create_all_bet_markets(props)
     return (
         <div className={classes.bet_block}>
-            <div className={classes.bet_block_head}>
-                Линия
+            <div className={common_classes.block_header}>
+                Book Line
             </div>
             {bet_markets[1]}
             {bet_markets[0]}

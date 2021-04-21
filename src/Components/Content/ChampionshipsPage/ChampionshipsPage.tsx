@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChampionshipListItem, ChampionshipsPageDataType, setChampionshipsListTC } from '../../../redux/championships_page_reducer'
+import { ChampionshipListItem, setChampionshipsListTC } from '../../../redux/championships_page_reducer'
 import { AppStoreType } from '../../../redux/redux'
 import { championships_page_selectors } from '../../../Selectors/selectors';
 import { connect } from 'react-redux';
@@ -9,6 +9,7 @@ import { filterFunction } from '../../../CommonFunctions/commonFunctions';
 import { useSubscribeOnData } from '../../../Hooks/Hooks';
 import { PreloaderPageWithoutHeader } from '../../CommonComponents/PreloaderPage/PreloaderPage';
 import { actions } from './../../../redux/championships_page_reducer';
+import { Input } from 'antd';
 
 const ChampionshipsPageContainer = (props: PropsType) => {
     useSubscribeOnData(props.setChampionshipsListTC, props.set_initial_state, [])
@@ -21,10 +22,10 @@ let ChampionshipsPage = ({data}: PropsType) => {
                                                          key = {item.db_name}/>)
     return (
         <div className = {classes.championship_page}>
-            <input type="text" id="myInput" onKeyUp={filterFunction} placeholder="Insert league name..."></input>
-            <ul id = 'championships_list'>
+            <Input type="text" id="myInput" onKeyUp={filterFunction} placeholder="Insert league name..."></Input>
+            <div id = 'championships_list'>
                 {championhips}
-            </ul>
+            </div>
         </div>
     )
 }
@@ -32,11 +33,9 @@ let ChampionshipsPage = ({data}: PropsType) => {
 
 const Championship = (props: ChampionshipListItem) => {
     return (
-        <li>
-            <div>
-                <NavLink to = {`/championships/${props.db_name}`}>{`${props.country_name} ${props.name_of_championship}`.toUpperCase()}</NavLink>
-            </div>
-        </li>
+        <div className = {classes.list_item}>
+            <NavLink to = {`/championships/${props.db_name}`}>{`${props.country_name} ${props.name_of_championship}`.toUpperCase()}</NavLink>
+        </div>
     )
 }
 

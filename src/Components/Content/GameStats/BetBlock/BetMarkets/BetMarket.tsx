@@ -1,14 +1,14 @@
 import React from 'react'
 import classes from './../BetBlock.module.css'
-import { BetType, MarketType } from '../../../../../../redux/betReducer'
-import { BetItemType } from '../../../../../../redux/game_stats_reducer'
-import { return_bet_object } from '../../../../../../CommonFunctions/typed_functions';
-import { Kinds_of_bet_type } from '../../../../../../redux/my_net_main_page_reducer';
-import { ItemWithTextSelection } from '../../../../../CommonComponents/MyNetGame/MyNetGame';
+import { BetType, MarketType } from '../../../../../redux/betReducer'
+import { BetItemType } from '../../../../../redux/game_stats_reducer'
+import { return_bet_object, transform_name_for_ui } from '../../../../../CommonFunctions/typed_functions';
+import { ItemWithTextSelection } from '../../../../CommonComponents/MyNetChampionship/MyNetGame/ItemWithTextSelection';
+import { NewKindOfBet } from '../../../../../redux/redux';
 
 type PropsTypes = {
     data: BetItemType[]
-    kind_of_bet: Kinds_of_bet_type
+    kind_of_bet: NewKindOfBet
     date_of_match: string
     db_name: string
     market: MarketType
@@ -33,7 +33,8 @@ const BetMarket: React.FC<PropsTypes> = ({ market, data, selectBetTC, with_head_
                                       key = {index} 
                                       bet = {bet}
                                       bets = {props.bets}
-                                      selected_bet_cn = {classes.selected_bet}
+                                      without_condition_classes = {[classes.market_odd]}
+                                      selected_bet_cn = {classes.odd_button_active}
                                       value={item.odd_type_for_UI}
                                      />
     })
@@ -43,7 +44,7 @@ const BetMarket: React.FC<PropsTypes> = ({ market, data, selectBetTC, with_head_
         <div className = {classes.bet_market}>
             {with_head_line &&
             <div className={classes.market_head}>
-                <span>{market}</span>
+                <span>{transform_name_for_ui(market)}</span>
             </div>
             }
             {with_over_under_line &&

@@ -5,9 +5,10 @@ import { FullBetStatisticItemType } from '../redux/bet_statistic_reducer'
 import { ChampionshipDataType } from '../redux/championship_stats_reducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
 import { MainPageChampionshipDataType } from '../redux/championshipsReduser'
-import { Kinds_of_bet_type, MyNetChampionship } from '../redux/my_net_main_page_reducer';
+import { MyNetChampionship } from '../redux/my_net_main_page_reducer';
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer';
 import { UserDataType } from '../redux/my_profile_reducer';
+import { NewKindOfBet } from '../redux/redux';
 
 let instanse = axios.create({
     baseURL: 'http://localhost/',
@@ -38,7 +39,7 @@ export const my_net_api = {
         let response = await my_net_axios_instanse.get<ServerResponseType<ChampionshipsPageDataType>>(`championships_list_page`)
         return response.data
     },
-    get_full_bet_statistic: async (db_name: string, kind_of_bet: Kinds_of_bet_type, type_of_bet: OddTypeType) => {
+    get_full_bet_statistic: async (db_name: string, kind_of_bet: NewKindOfBet, type_of_bet: OddTypeType) => {
         let response = await my_net_axios_instanse.get<ServerResponseType<FullBetStatisticItemType[]>>(`full_bet_info/${db_name}/${kind_of_bet}/${type_of_bet}`)
         return response.data
     }
@@ -91,14 +92,6 @@ export const get_blob_file =  async (blob_url: string) => {
     }
     return reader.result
 }
-
-// .then(function (response) {
-//     var reader = new FileReader();
-//     reader.readAsDataURL(response.data);
-//     return reader.onloadend = function () {
-//         return reader.result;    
-//     }
-// })
 
 export const getPredictions = async (date_of_prediction: string) => {
     let response = await instanse.post<ServerResponseType<MainPageChampionshipDataType[] | null>>(`mainpage.php`, { date_of_prediction });

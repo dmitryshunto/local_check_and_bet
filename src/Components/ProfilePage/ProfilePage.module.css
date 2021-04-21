@@ -1,15 +1,6 @@
-.my_profile_page {
-    margin: 0 auto;
-    width: 1200px;
-    background: #575757;
-    height: 100%;
-    overflow: hidden;
-}
-
 .profile_info {
     padding-left: 20px;
     padding-top: 10px;
-    color: aliceblue;
     font-size: large;
     display: flex
 }
@@ -19,8 +10,14 @@
     margin: 1%
 }
 
+.user_info_container {
+    width: 60%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
 .avatar_container {
-    width: 20%;
+    width: 30%;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }

@@ -1,16 +1,19 @@
 import { my_net_api } from './../API/api';
 import { PropertiesType, BaseThunkActionType } from "./redux"
 import { MyNetGameType } from './my_net_main_page_reducer';
+import { ResultCodeTypes } from '../API/api_types';
+import { actions as error_handler_actons, SetErrorMessageAction } from './error_handler_reducer'
 
 const SET_CHAMPIONSHIP_STATS = 'CHAMPIONSHIP_STATS_REDUCER/SET_CHAMPIONSHIP_STATS';
 const TOGGLE_IS_GETTING_DATA = 'CHAMPIONSHIP_STATS_REDUCER/TOGGLE_IS_GETTING_DATA'
 const SET_INITIAL_STATE = 'CHAMPIONSHIP_STATS_REDUCER/SET_INITIAL_STATE'
+const SET_ERROR_MESSAGES = 'CHAMPIONSHIP_STATS_REDUCER/SET_ERROR_MESSAGES'
 
 export const actions = {
     set_championship_stats: (data: ChampionshipDataType) => ({ type: SET_CHAMPIONSHIP_STATS, data } as const),
     toggle_is_getting_data: (isGettingData: boolean) => ({ type: TOGGLE_IS_GETTING_DATA, isGettingData } as const),
     set_championship_page_initial_state: () => ({ type: SET_INITIAL_STATE } as const),
-
+    set_error_messages: (error_messages: [] | string[]) => ({type: SET_ERROR_MESSAGES, error_messages} as const)
 }
 
 export type TotalsInfoType = { over: number, under: number, total: number }[]
@@ -98,11 +101,15 @@ export type ChampionshipDataType = {
     kinds_of_bet_total_interval: KindsOfBetTotalIntervalType
     bet_statistic: BetStatisticType
     basic_totals: BasicTotals
+    country_name: string
+    name_of_championship: string
+    season: string
     games: MyNetGameType[] | []
 }
 
 let innitialObject = {
-    isGettingData: false,
+    isGettingData: true,
+    error_messages: [] as [] | string[],
     data: null as ChampionshipDataType | null
 };
 
@@ -121,14 +128,24 @@ let championshipStatsReducer = (state = innitialObject, action: ActionsTypes): t
         }
     } else if (action.type === SET_INITIAL_STATE) {
         return innitialObject
+    } else if (action.type === SET_ERROR_MESSAGES) {
+        return {
+            ...state,
+            error_messages: action.error_messages
+        }
     } else return state;
 }
 
-export const setChampionshipStatsTC = (name_of_championship: string): BaseThunkActionType<ActionsTypes> => async (dispatch) => {
+export const setChampionshipStatsTC = (db_name: string): BaseThunkActionType<ActionsTypes | SetErrorMessageAction> => async (dispatch) => {
     dispatch(actions.toggle_is_getting_data(true));
-    let response = await my_net_api.get_championship_stats(name_of_championship);
-    dispatch(actions.set_championship_stats(response.data));
-    dispatch(actions.toggle_is_getting_data(false));
+    let response = await my_net_api.get_championship_stats(db_name)
+    if(response.resultCode === ResultCodeTypes.Success) {
+        dispatch(actions.set_championship_stats(response.data))
+    } else if (response.resultCode === ResultCodeTypes.Error) {
+        dispatch(error_handler_actons.set_error(response.error_messages))
+        dispatch(actions.set_championship_page_initial_state())
+    }
+    dispatch(actions.toggle_is_getting_data(false))
 }
 
 export default championshipStatsReducer;

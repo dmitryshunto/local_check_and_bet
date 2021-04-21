@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import { Button } from 'antd';
+import React, { useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import { withPreloader } from '../../../HOC/withPreloader';
 import Modal from '../Modal/Modal';
@@ -13,7 +14,7 @@ class PhotoEditor extends React.Component {
       selectedImage: null,
       userProfilePic: '',
       editor: null,
-      scaleValue: 2,
+      scaleValue: 1,
       warning_message: null,
       save_button_disabled: false
     };
@@ -76,15 +77,15 @@ class PhotoEditor extends React.Component {
   render() {
     return (
       <div>
-        <div className={classes.input_file_wrapper}>
+        <div className={classes.input_file_wrapper}> 
           <input className={classes.photo_input}
             id="input_file"
             type="file"
             name="profilePicBtn"
             accept="image/png, image/jpeg, image/jpg"
             onChange={this.profilePicChange} />
-          <label for="input_file" className={classes.input_photo_label}>
-            <span>Select the photo</span>
+          <label  className={classes.input_photo_label} htmlFor="input_file">
+            <span>Select photo</span>
           </label>
           {this.state.warning_message && <div className={classes.warning_message}>{this.state.warning_message}</div>}
         </div>
@@ -107,43 +108,27 @@ const ImageCrop = ({ imageSrc, onCrop, setEditorRef, scaleValue, onScaleChange, 
   <div className={classes.avatar}>
     <AvatarEditor image={imageSrc}
       border={30}
-      scale={scaleValue / 3}
+      scale={scaleValue}
       rotate={0}
       ref={setEditorRef} />
     <div className={classes.range_input_container}>
-      <label className={classes.scale_input_label} for={'scale_input'}>Scale</label>
-      <input id={"scale_input"} className={classes.scale_input} type="range" value={scaleValue} name="points" min="2" max="8" onChange={onScaleChange} />
+      <label className={classes.scale_input_label} htmlFor={'scale_input'}>Scale</label>
+      <input id={"scale_input"} className={classes.scale_input} type="range" value={scaleValue} name="points" min="1" max="3" step = "0.1" onChange={onScaleChange} />
     </div>
-    <button disabled={isLoadingPhoto} className={classes.oncrop_button} onClick={onCrop}>
+    <Button disabled={isLoadingPhoto} onClick={onCrop}>
       Save
-    </button>
+    </Button>
   </div>
 )
-
-// type UploadNewPhotoWindow = {
-//     updatePhotoTC: (photo_file: File) => void
-//     active: boolean | null
-//     isLoadingPhoto: boolean
-// }
-
-// const UploadNewPhotoWindow: React.FC<UploadNewPhotoWindow> = ({updatePhotoTC, active, isLoadingPhoto}) => {
-//     return (
-//         <div className = {classes.upload_new_photo_window}>
-//             <div className = {classes.signing_block}>You can upload JPG, JPEG or PNG file (size less than 4MB).</div>
-//             <PhotoEditor updatePhotoTC = {updatePhotoTC}
-//                          active = {active}
-//                          isLoadingPhoto = {isLoadingPhoto}/>
-//         </div>
-// )}
 
 const UploadNewPhotoWindow = ({ set_upload_mode, upload_mode, updatePhotoTC, active, isLoadingPhoto }) => {
   return (
     <Modal close_modal={set_upload_mode}
       active={upload_mode}>
       <div className={classes.upload_new_photo_window}>
-        <div className={classes.signing_block}>You can upload JPG, JPEG or PNG file (size less than 4MB).</div>
+        <div className={classes.signing_block}>You can upload JPG, JPEG or PNG file (size must be less than 4MB).</div>
         <PhotoEditor updatePhotoTC={updatePhotoTC}
-          set_upload_mode = {set_upload_mode}
+          set_upload_mode={set_upload_mode}
           active={active}
           isLoadingPhoto={isLoadingPhoto} />
       </div>
@@ -154,22 +139,22 @@ const UploadNewPhotoWindow = ({ set_upload_mode, upload_mode, updatePhotoTC, act
 let ProfileAvatar = ({ photo_url, default_photo_url, cb }) => {
   let avatar_photo_url = photo_url ? photo_url : default_photo_url
   return (
-      <div>
-          <img src={avatar_photo_url} alt={'avatar'} />
-          <button onClick={() => cb(true)}>Edit</button>
-      </div>
+    <div className={classes.avatar}>
+      <img src={avatar_photo_url} alt={'avatar'} />
+      <Button onClick={() => cb(true)}>Edit Photo</Button>
+    </div>
   )
 }
 
 ProfileAvatar = withPreloader(PreloaderPageWithoutHeader, 'isLoadingPhoto')(ProfileAvatar)
 
-const AvatarComonent = ({updatePhotoTC, photo_url, isLoadingPhoto, default_photo_url}) => {
+const AvatarComonent = ({ updatePhotoTC, photo_url, isLoadingPhoto, default_photo_url }) => {
   const [upload_mode, set_upload_mode] = useState(false)
   return (
     <div>
       <ProfileAvatar photo_url={photo_url}
-        isLoadingPhoto = {isLoadingPhoto}
-        default_photo_url = {default_photo_url}
+        isLoadingPhoto={isLoadingPhoto}
+        default_photo_url={default_photo_url}
         cb={set_upload_mode} />
       <UploadNewPhotoWindow updatePhotoTC={updatePhotoTC}
         set_upload_mode={set_upload_mode}

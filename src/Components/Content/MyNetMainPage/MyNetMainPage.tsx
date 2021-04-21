@@ -1,17 +1,16 @@
 import React, { memo } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { useSubscribeOnData } from '../../../../Hooks/Hooks';
-import { AppStoreType } from '../../../../redux/redux';
-import { actions, MyNetChampionship, set_my_net_predictionsTC } from './../../../../redux/my_net_main_page_reducer';
-import {added_bets_selectors, my_net_main_page_selectors} from '../../../../Selectors/selectors'
+import { useSubscribeOnData } from '../../../Hooks/Hooks';
+import { AppStoreType } from '../../../redux/redux';
+import { actions, MyNetChampionship, set_my_net_predictionsTC } from './../../../redux/my_net_main_page_reducer';
+import {added_bets_selectors, my_net_main_page_selectors} from '../../../Selectors/selectors'
 import { connect } from 'react-redux';
-import DateButton from '../../../CommonComponents/DateButton/DateButton';
-import classes from './MyNetMainPage.module.css'
-import { PreloaderPageWithoutHeader } from '../../../CommonComponents/PreloaderPage/PreloaderPage';
-import MyNetChampionshipTable from './MyNetChampionship/MyNetChampionship';
-import { BetType, addBetActionType, removeBetActionType, selectBetTC, actions as betReducerActions} from '../../../../redux/betReducer';
-import BetCoupon from '../../../CommonComponents/BetCoupon/BetCoupon';
-import { getTodayDate } from '../../../../CommonFunctions/commonFunctions';
+import DateButton from '../../CommonComponents/DateButton/DateButton';
+import { PreloaderPageWithoutHeader } from '../../CommonComponents/PreloaderPage/PreloaderPage';
+import MyNetChampionshipTable from '../../CommonComponents/MyNetChampionship/MyNetChampionship';
+import { BetType, addBetActionType, removeBetActionType, selectBetTC, actions as betReducerActions} from '../../../redux/betReducer';
+import BetCoupon from '../../CommonComponents/BetCoupon/BetCoupon';
+import { getTodayDate } from '../../../CommonFunctions/commonFunctions';
 
 type PropsTypes = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType &  RouteComponentProps<RoutePropsType>
 
@@ -36,7 +35,7 @@ let MainPage: React.FC<PropsTypes> = memo(({...props}) => {
     })
     
     return (
-        <div className = {classes.my_net_main_page_container}>
+        <div>
             <DateButton selected_date_of_prediction = {props.selected_date_of_prediction}
                         selectDateOfPrediction = {props.selectDateOfPrediction}
                         additional_url = {'my_net_main_page'}/>

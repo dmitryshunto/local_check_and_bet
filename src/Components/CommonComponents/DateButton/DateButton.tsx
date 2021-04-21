@@ -1,7 +1,7 @@
 import React from 'react';
-
-import classes from './DateButton.module.css';
 import { NavLink } from 'react-router-dom';
+import { Button, DatePicker } from 'antd';
+import moment from 'moment';
 
 type PropsTypes = {
   selectDateOfPrediction: (selected_date_of_prediction: string) => void
@@ -10,12 +10,15 @@ type PropsTypes = {
 }
 
 const DateButton: React.FC<PropsTypes> = React.memo(({ selected_date_of_prediction, selectDateOfPrediction, additional_url }) => {
-  const url = additional_url ? `${additional_url}/${selected_date_of_prediction}` : `${selected_date_of_prediction}` 
+  const url = additional_url ? `${additional_url}/${selected_date_of_prediction}` : `${selected_date_of_prediction}`
   return (
-    <div className={classes.date_button}>
-      <input type = "date" value = {selected_date_of_prediction} onChange = {(e) => selectDateOfPrediction(e.currentTarget.value)}/>
+    <div>
+      <DatePicker
+      defaultValue = {moment(new Date(selected_date_of_prediction))}
+      onChange = {
+        (value) => selectDateOfPrediction(value?.format('YYYY-MM-DD') as string)}/>
       <NavLink exact to = {`/${url}`}>
-        <button>Select</button>
+        <Button type = {'primary'}>Select</Button>
       </NavLink>
     </div>
   )

@@ -4,20 +4,20 @@ import { connect } from 'react-redux';
 import { game_stats_selectors, added_bets_selectors } from '../../../Selectors/selectors';
 import MatchStatistics from './MatchStatistics/MatchStatistics';
 import classes from './GameStats.module.css';
-import MatchAnalysis from './MatchAnalysis/MatchAnalysis';
-import ScoreBoardBlock from './ScoreBoardBlock/ScoreBoardBlock';
 import { useState } from 'react';
 import BetCoupon from '../../CommonComponents/BetCoupon/BetCoupon';
 import ToggleButtons from '../../CommonComponents/ToggleButton/ToggleButton'
 import { PreloaderPageWithoutHeader } from '../../CommonComponents/PreloaderPage/PreloaderPage';
 import { useSubscribeOnData } from '../../../Hooks/Hooks';
 import { isEmpty } from '../../../CommonFunctions/commonFunctions';
-import {BetType, selectBetTC} from '../../../redux/betReducer'
-import {AppStoreType, NewKindOfBet} from '../../../redux/redux'
-
+import { BetType, selectBetTC } from '../../../redux/betReducer'
+import { AppStoreType, NewKindOfBet } from '../../../redux/redux'
 import { RouteComponentProps } from 'react-router-dom';
+import GameStatsHeader from './GameStatsHeader/GameStatsHeader';
+import BetBlock from './BetBlock/BetBlock';
+import LastMatchesBlock from './LastMatchesBlock/LastMatchesBlock';
 
-type PropsTypes = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType &  RouteComponentProps<RoutePropsType>
+type PropsTypes = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType & RouteComponentProps<RoutePropsType>
 
 const GameStatsPageContainer: React.FC<PropsTypes> = (props) => {
   useSubscribeOnData(props.setGameStatsTC, props.set_game_stats_initial_state, [props.match.params.db_name, props.match.params.game_id])
@@ -31,33 +31,33 @@ const GameStatsPage: React.FC<PropsTypes> = (props) => {
   const { data } = props;
   const [kind_of_bet, set_kind_of_bet] = useState<NewKindOfBet>('goals');
   return (
-    <div className={classes.game_stats_page_container}>
+    <div>
+      <div className={classes.game_stats_page_row}>
+        <GameStatsHeader date_of_match={data!.date_of_match}
+                         names_of_teams={data!.names_of_teams}
+                         home_team_scored = {data!.score_board_block[kind_of_bet]!.home}
+                         away_team_scored = {data!.score_board_block[kind_of_bet]!.away}/>
+      </div>
       <div className={classes.game_stats_page_row}>
         <ToggleButtons kinds_of_bet={props.data!.kinds_of_bet}
           selected_kind_of_bet={kind_of_bet}
           set_selected_kind_of_bet={set_kind_of_bet} />
       </div>
       <div className={classes.game_stats_page_row}>
-        { true &&
-        <ScoreBoardBlock db_name={props.match.params.db_name}
-          game_id = {Number(props.match.params.game_id)}
-          selectBetTC = {props.selectBetTC}
-          names_of_teams={data!.names_of_teams}
-          score_board_block={data!.score_board_block[kind_of_bet]!}
+        <BetBlock db_name={props.match.params.db_name}
+          game_id={Number(props.match.params.game_id)}
+          home_team = {props.data!.names_of_teams[0]}
+          away_team = {props.data!.names_of_teams[1]}
+          bet_block = {props.data!.score_board_block![kind_of_bet]!.bet_block}
+          selectBetTC={props.selectBetTC}
           date_of_match={data!.date_of_match}
           addedBets={props.addedBets}
-          kind_of_bet={kind_of_bet}
-          basic_total={data!.basic_totals[kind_of_bet]!}
-        /> 
-      }
+          kind_of_bet={kind_of_bet}/>
       </div>
       <div className={classes.game_stats_page_row}>
         <MatchStatistics data={data!.game[kind_of_bet]!} />
-        {true &&
-        <MatchAnalysis 
-          last_games_info={data!.info_about_last_matches[kind_of_bet]!}
-          names_of_teams={data!.names_of_teams}/>
-       }
+        <LastMatchesBlock last_games_info={data!.info_about_last_matches[kind_of_bet]!}
+                          names_of_teams={data!.names_of_teams} />
       </div>
       <BetCoupon />
     </div>
@@ -66,11 +66,11 @@ const GameStatsPage: React.FC<PropsTypes> = (props) => {
 
 
 type OwnPropsType = {
-   
+
 }
 
 type RoutePropsType = {
-  db_name: string  
+  db_name: string
   game_id: string
 }
 
@@ -82,7 +82,7 @@ type MapDispatchToPropsType = {
 
 let mapDispatchToProps: MapDispatchToPropsType = {
   setGameStatsTC,
-  selectBetTC, 
+  selectBetTC,
   set_game_stats_initial_state: actions.set_game_stats_initial_state
 }
 

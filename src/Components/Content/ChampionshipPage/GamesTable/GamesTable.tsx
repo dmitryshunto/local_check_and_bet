@@ -1,30 +1,27 @@
 import React from 'react'
 import classes from './GamesTable.module.css'
 import { MyNetGameType } from '../../../../redux/my_net_main_page_reducer';
-import MyNetGame from '../../../CommonComponents/MyNetGame/MyNetGame';
 import { BetType } from '../../../../redux/betReducer';
+import { GamesTable } from '../../../CommonComponents/MyNetChampionship/MyNetChampionship';
 
 type GamesBlockProps = {
     games: MyNetGameType[]
     selectBetTC: (bet: BetType) => void
     bets: [] | BetType[]
+    db_name: string
 }
 
-const GamesBlock: React.FC<GamesBlockProps> = ({games, ...props}) => {
-    let items = games.map((game: MyNetGameType, index: number) => <MyNetGame    key = {index}
-                                                                                bets = {props.bets} 
-                                                                                data = {game}
-                                                                                selectBetTC = {props.selectBetTC}
-                                                                                
-     />)
+const GamesBlock: React.FC<GamesBlockProps> = ({ games, ...props }) => {
     return (
         <div className={classes.games_block}>
-            <h3>Следующие матчи</h3>
-            <table className={classes.games_table}>
-                <tbody>
-                    {items}
-                </tbody>
-            </table>
+            <h3>Next matches</h3>
+            <div className = {classes.games_table}>
+                <GamesTable predictions={games}
+                    selectBetTC={props.selectBetTC}
+                    bets={props.bets}
+                    db_name={props.db_name} />
+
+            </div>
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
-import { withRenderByCondition } from '../../../../../../HOC/withPreloader'
-import EmptyOdd from '../../../../../CommonComponents/EmptyOdd'
+import { withRenderByCondition } from '../../../../../HOC/withPreloader'
+import EmptyOdd from '../../../../CommonComponents/EmptyOdd'
 
 type PropsTypes = {
     odd_block: {

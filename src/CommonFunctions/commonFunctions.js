@@ -40,11 +40,6 @@ export const translate_kind_of_bet_and_home_away = (str) => {
 }
 // проверяет есть ли ставка с выбранным типом (тотал, исход) в массиве ставок
 
-export const filterAddedBetsArray = (addedBet, game_id, kind_of_bet, market) => {
-    if (addedBet['game_id'] === game_id && addedBet.market === market && addedBet.kind_of_bet === kind_of_bet) {
-        return true
-    } else return false
-}
 export const isEmpty = (prop) => {
     return (
         prop === null
@@ -59,7 +54,7 @@ export const filterFunction = () => {
     input = document.getElementById('myInput');
     filter = input.value.toUpperCase();
     championships_list = document.getElementById("championships_list");
-    championship_item = championships_list.getElementsByTagName('li');
+    championship_item = championships_list.getElementsByTagName('div');
 
     for (i = 0; i < championship_item.length; i++) {
         a = championship_item[i].getElementsByTagName("a")[0];
@@ -79,3 +74,5 @@ export const round_plus = (x, n) => { //x - число, n - количество
     const m = Math.pow(10, n);
     return Math.round(x * m) / m;
 }
+
+

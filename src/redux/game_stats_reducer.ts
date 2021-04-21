@@ -1,16 +1,19 @@
 import { my_net_api } from "../API/api"
+import { ResultCodeTypes } from "../API/api_types"
 import { OddTypeType } from "./betReducer"
 import { KindsOfBetType, PropertiesType, BaseThunkActionType } from "./redux"
-
+import { actions as error_handler_actons, SetErrorMessageAction } from './error_handler_reducer'
 
 const SET_GAME_STATS = 'GAME_STATS_REDUCER/SET_GAME_STATS'
 const SET_INITIAL_STATE = 'GAME_STATS_REDUCER/SET_INITIAL_STATE'
+const SET_ERROR_MESSAGES = 'GAME_STATS_REDUCER/SET_ERROR_MESSAGES'
 const TOGGLE_IS_GETTING_DATA = 'GAME_STATS_REDUCER/TOGGLE_IS_GETTING_DATA'
 
 export const actions = {
     set_game_stats_initial_state: () => ({ type: SET_INITIAL_STATE } as const),
     toggle_is_getting_data: (isGettingData: boolean) => ({ type: TOGGLE_IS_GETTING_DATA, isGettingData } as const),
-    set_game_stats: (data: GameStatsDataType) => ({ type: SET_GAME_STATS, data } as const)
+    set_game_stats: (data: GameStatsDataType) => ({ type: SET_GAME_STATS, data } as const),
+    set_error_messages: (error_messages: [] | string[]) => ({type: SET_ERROR_MESSAGES, error_messages} as const)
 }
 
 interface GameParameterBaseType {
@@ -100,6 +103,7 @@ export type InfoAboutMatchType = {
 }
 
 export type InfoAboutLastMatchesItemType = {
+    [key: string]: Array<InfoAboutMatchType>
     home_team_results: Array<InfoAboutMatchType>
     away_team_results: Array<InfoAboutMatchType>
 }
@@ -130,6 +134,7 @@ export type GameStatsDataType = {
 
 let innitialObject = {
     isGettingData: false,
+    error_messages: [] as [] | string[],
     data: null as GameStatsDataType | null
 };
 
@@ -148,14 +153,24 @@ let gameStatsReducer = (state = innitialObject, action: ActionsTypes): typeof in
             ...state,
             isGettingData: action.isGettingData
         }
-    } else return state;
+    } else if (action.type === SET_ERROR_MESSAGES) {
+        return {
+            ...state,
+            error_messages: action.error_messages
+        }
+    }else return state;
 }
 
-export const setGameStatsTC = (name_of_championship: string, games_id: number): BaseThunkActionType<ActionsTypes> => async dispatch => {
+export const setGameStatsTC = (name_of_championship: string, games_id: number): BaseThunkActionType<ActionsTypes | SetErrorMessageAction> => async dispatch => {
     dispatch(actions.toggle_is_getting_data(true));
     let response = await my_net_api.get_game_stats(name_of_championship, games_id);
-    dispatch(actions.set_game_stats(response.data));
+    if(response.resultCode === ResultCodeTypes.Success) {
+        dispatch(actions.set_game_stats(response.data));
+    } else {
+        dispatch(error_handler_actons.set_error(response.error_messages))
+        dispatch(actions.set_game_stats_initial_state())
+    }
     dispatch(actions.toggle_is_getting_data(false));
 }
 
-export default gameStatsReducer;
+export default gameStatsReducer

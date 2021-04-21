@@ -1,7 +1,7 @@
 import { my_net_api } from "../API/api";
 import { getTodayDate } from "../CommonFunctions/commonFunctions";
 import { ResultCodeTypes } from '../API/api_types'
-import { PropertiesType, BaseThunkActionType } from "./redux"
+import { PropertiesType, BaseThunkActionType, NewKindsOfBet } from "./redux"
 import { changeCheckedChampionshipStatus, create_new_date_for_checked_championsips_storage, delete_data_about_checked_championship_from_storage, isChamponshipChecked } from "../Coookie/cookie";
 
 const SET_ALL_PREDICTIONS = 'MY_NET_MAIN_PAGE_REDUCER/SET_ALL_PREDICTION';
@@ -11,9 +11,7 @@ const TOGGLE_IS_GETTING_DATA = 'MY_NET_MAIN_PAGE_REDUCER/TOGGLE_IS_GETTING_DATA'
 const SET_INITIAL_STATE = 'MY_NET_MAIN_PAGE_REDUCER/SET_INITIAL_STATE'
 const CHANGE_CHAMPIONSHIP_CHECKED_STATUS = 'MY_NET_MAIN_PAGE_REDUCER/CHANGE_CHAMPIONSHIP_CHECKED_STATUS'
 
-export type Kinds_of_bet_type = 'goals' | 'yellow_cards' | 'corners' | 'shots_on_goal' | 'fouls'
-
-export const my_net_kinds_of_bet: Kinds_of_bet_type[] = ['goals', 'yellow_cards', 'corners', 'shots_on_goal', 'fouls']
+export const my_net_kinds_of_bet: NewKindsOfBet = ['goals', 'yellow_cards', 'corners', 'shots_on_goal', 'fouls']
 
 export interface MyNetGameType {
     [key: string]: string | MyNetPredictionKindOfBetType | undefined | number

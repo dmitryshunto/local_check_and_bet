@@ -6,9 +6,9 @@ const SET_INITIAL_STATE = 'CHAMPIONSHIPS_PAGE_REDUCER/SET_INITIAL_STATE'
 const TOGGLE_IS_GETTING_DATA = 'CHAMPIONSHIPS_PAGE_REDUCER/TOGGLE_IS_GETTING_DATA'
 
 export const actions = {
-    set_championships_list: (object: typeof innitialObject) => ({type: SET_CHAMPIONSHIPS_LIST, object} as const),
+    set_championships_list: (data: ChampionshipsPageDataType) => ({type: SET_CHAMPIONSHIPS_LIST, data} as const),
     set_initial_state: () => ({type: SET_INITIAL_STATE} as const),
-    toggle_is_getting_data: (object: boolean) => ({type: TOGGLE_IS_GETTING_DATA, isGettingData: object} as const)
+    toggle_is_getting_data: (isGettingData: boolean) => ({type: TOGGLE_IS_GETTING_DATA, isGettingData} as const)
 }
 
 export type ChampionshipListItem = {
@@ -20,7 +20,7 @@ export type ChampionshipListItem = {
 export type ChampionshipsPageDataType = Array<ChampionshipListItem> | null
 
 let innitialObject =  {
-    isGettingData: false,
+    isGettingData: true,
     data: null as ChampionshipsPageDataType
 };
 
@@ -30,7 +30,7 @@ const championshipsPageReducer = (state = innitialObject, action: ActionsTypes):
     if(action.type === SET_CHAMPIONSHIPS_LIST) {
         return {
             ...state,
-            ...action.object
+            data: action.data
         }
     } else if(action.type === TOGGLE_IS_GETTING_DATA) {
         return {
@@ -45,8 +45,8 @@ const championshipsPageReducer = (state = innitialObject, action: ActionsTypes):
 export const setChampionshipsListTC = (): BaseThunkActionType<ActionsTypes> => async (dispatch) => {
     dispatch(actions.toggle_is_getting_data(true))
     let response = await my_net_api.get_championships_list()
-    dispatch(actions.set_championships_list({ data: response.data,
-                                              isGettingData: false}))
+    dispatch(actions.set_championships_list(response.data))
+    dispatch(actions.toggle_is_getting_data(false))
 }
 
 

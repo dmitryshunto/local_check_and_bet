@@ -1,18 +1,19 @@
 import React from 'react';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form'
+import { Field, reduxForm, InjectedFormProps, Form } from 'redux-form'
 import { connect, useSelector } from 'react-redux';
 import { createNewUserTC, set_info_for_creating_userTC, add_user_photo_to_stateTC, actions } from '../../redux/createNUReducer';
 import { auth_user_selectors, create_new_user_page_selectors } from '../../Selectors/selectors';
-import WelcomeNewUserPage from '../WelcomeNUPage/WelcomeNUPage';
 import classes from './CreateNewUserPage.module.css'
 import { validate } from '../../CommonFunctions/validators';
 import { AppStoreType } from '../../redux/redux';
-import RenderField from '../CommonComponents/FormRenderField/FormRenderField';
+import { AntInput } from '../CommonComponents/FormRenderField/FormRenderField';
 import { useSubscribeOnData } from '../../Hooks/Hooks';
 import { withPreloader } from '../../HOC/withPreloader';
 import { PreloaderPageWithoutHeader } from '../CommonComponents/PreloaderPage/PreloaderPage';
 import AvatarComonent from '../CommonComponents/PhotoEditor/PhotoEditor';
 import { Redirect } from 'react-router';
+import { Button, Col, Row } from 'antd';
+
 
 type CreateNewUserPropsType = {
     login: string
@@ -23,12 +24,12 @@ type PropType = MapStateToPropsType & MapDispatchToPropsType
 
 const CreateNewUserPageContainer: React.FC<PropType> = (props) => {
     useSubscribeOnData(props.set_info_for_creating_userTC, null, [])
-    return <CreateNewUserPage {...props}/>
+    return <CreateNewUserPage {...props} />
 }
 
 
 let CreateNewUserPage: React.FC<PropType> = (props) => {
-   
+
     let createNewUser = ({ login, password }: CreateNewUserPropsType) => {
         props.createNewUserTC(login, password);
     }
@@ -37,17 +38,23 @@ let CreateNewUserPage: React.FC<PropType> = (props) => {
 
     if (props.createNUsuccess === null || props.warning_messages) {
         const warning_messages_elems = props.warning_messages?.map((msg, i) => <div key={i}>{msg}</div>)
-        if(user_login) return <Redirect to = 'profile_page' />
+        if (user_login) return <Redirect to='profile_page' />
         return (
-            <div className={classes.create_new_user_page}>
-                <div className={classes.create_new_user_form}>
-                    <AvatarComonent updatePhotoTC = {props.add_user_photo_to_stateTC}
-                                    photo_url = {props.avatar_photo_url}
-                                    default_photo_url = {props.default_photo_url}
-                                    isLoadingPhoto = {props.isLoadingPhoto}
-                                    />
-                    <CreateNewUserReduxForm onSubmit={createNewUser} {...props} />
-                </div>
+            <div>
+                <Row style = {{marginBottom: '0.5%'}}>
+                    <Col span={4} offset={10}>
+                        <AvatarComonent updatePhotoTC={props.add_user_photo_to_stateTC}
+                            photo_url={props.avatar_photo_url}
+                            default_photo_url={props.default_photo_url}
+                            isLoadingPhoto={props.isLoadingPhoto}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={6} offset={9}>
+                        <CreateNewUserReduxForm onSubmit={createNewUser} {...props} />
+                    </Col>
+                </Row>
                 {warning_messages_elems &&
                     <div className={classes.warning_message}>
                         {warning_messages_elems}
@@ -55,8 +62,8 @@ let CreateNewUserPage: React.FC<PropType> = (props) => {
             </div>
         )
     } else if (props.createNUsuccess) {
-        return <Redirect to = 'welcome_new_user' />
-    } 
+        return <Redirect to='welcome_new_user' />
+    }
     return null
 }
 
@@ -71,27 +78,27 @@ type FormDataType = {
 const CreateNewUserForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     const { handleSubmit, submitting } = props
     return (
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
 
             <Field name="login"
-                label="login"
-                component={RenderField}
+                placeholder="login"
+                component={AntInput}
                 type="text"
             />
 
             <Field name="password"
-                label="password"
-                component={RenderField}
+                placeholder="password"
+                component={AntInput}
                 type="password"
             />
 
             <Field name="confirm_password"
-                label="confirm password"
-                component={RenderField}
+                placeholder="confirm password"
+                component={AntInput}
                 type="password"
             />
-            <button disabled={submitting} type="submit">Create account</button>
-        </form>
+            <Button disabled={submitting} htmlType="submit" type={'primary'}>Create account</Button>
+        </Form>
     )
 }
 

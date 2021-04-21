@@ -15,7 +15,6 @@ export const deleteCookie = (cname) => {
 }
 
 export const changeCheckedChampionshipStatus = (name_of_championship, date) => {
-    console.log(name_of_championship)
     const checked_championships = JSON.parse(localStorage.getItem('checked_championships'))
     const championshipChecked = isChamponshipChecked(name_of_championship, date, checked_championships)
     if(championshipChecked === false) {

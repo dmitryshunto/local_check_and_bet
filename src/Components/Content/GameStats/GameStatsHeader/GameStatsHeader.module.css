@@ -1,14 +1,22 @@
-.score_board_table {
-    width: 100%;
+.game_stats_header {
     color: aliceblue;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    overflow: hidden;
 }
 
 .score_board_table_head {
-    height: 30px;
+    height: 48px;
     background:#0c815e;
+    font-size: large;
     text-align: center;
     width: 100%
+}
+
+.score_board_table_head::before {
+    content: "";
+    display: inline-block;
+    min-height: inherit;
+    height: 100%;
+    vertical-align: middle;
 }
 
 .score_board_content {
@@ -22,26 +30,11 @@
     justify-content: space-around;
 }
 
-.more_info_block {
-    width: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-
 .main_block_item {
     width: 33.33%;
+    font-size: medium;
+    padding-bottom: 10px;
     text-align: center;
-}
-
-.line {
-    width: 42%;
-}
-
-.more_info_button:hover {
-    cursor: pointer;
 }
 
 .date_of_match_block {

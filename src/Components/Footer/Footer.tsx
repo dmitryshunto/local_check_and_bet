@@ -1,15 +1,10 @@
 import React from 'react'
-import classes from './Footer.module.css'
+import { Footer } from 'antd/lib/layout/layout';
 
-const Footer = () => {
+const MyFooter = () => {
     return (
-        <footer>
-            <div className = {classes.footer_content}>
-                <h3>checkandbet</h3>
-                <p>&copy; 2021 checkandbet. All rights reserved.</p>
-            </div>
-        </footer>
+        <Footer style={{ textAlign: 'center' }}>Check and Bet ©2021 Created by Dmitry Shunto</Footer>
     )
 }
 
-export default Footer
+export default MyFooter

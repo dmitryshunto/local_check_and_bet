@@ -1,16 +1,14 @@
 .games_block {
-    height: 100%;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .games_table {
     border-color: #969696;
     margin-left: auto;
     margin-right: auto;
+    width: 98%;
     height: 100%;
 }
 

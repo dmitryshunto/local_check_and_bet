@@ -1,20 +1,27 @@
 import React from 'react';
-import classes from './PreloaderPage.module.css';
-import Preloader from '../Preloader/Preloader';
+import classes from './PreloaderPage.module.css'
+import { Spin } from 'antd';
+import Layout, { Content, Header } from 'antd/lib/layout/layout';
+import MyFooter from '../../Footer/Footer';
 
 const PreloaderPage: React.FC = () => {
     return (
-        <div className={classes.empty_page}>
-            <div className={classes.empty_page_header} />
-            <PreloaderPageWithoutHeader />
-        </div>
+        <Layout className='layout'>
+            <Header />
+            <Content style={{ padding: '0 50px' }}>
+                <div className="site-layout-content">
+                    <PreloaderPageWithoutHeader />
+                </div>
+            </Content>
+            <MyFooter />
+        </Layout>
     )
 }
 
 export const PreloaderPageWithoutHeader: React.FC = () => {
     return (
-        <div className={classes.empty_page_content}>
-            <Preloader />
+        <div className = {classes.preloader}>
+            <Spin size={'large'} />
         </div>
     )
 }

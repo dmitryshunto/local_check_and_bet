@@ -1,0 +1,35 @@
+.last_matches_block {
+  width: 49%;
+  background: #575757;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.toggle_team_buttons {
+  display: flex;
+  justify-content: space-around;
+  color: #c7c7c7;
+  height: 48px;
+  border-top: 1px solid #757575;
+}
+
+.toggle_team_buttons div span::before {
+  content: "";
+  display: inline-block;
+  min-height: inherit;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.toggle_team_button:hover {
+  cursor: pointer;
+}
+
+.toggle_team_button {
+  text-align: center;
+  width: 50%;
+}
+
+.toggle_team_button_active {
+  background: #6e6e6e;
+}

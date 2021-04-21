@@ -1,11 +1,12 @@
 import React from 'react';
 import { BasicTotalsType, MainPageGameDataType, MainPageOddDataType } from '../../../redux/championshipsReduser';
 import { BetType } from '../../../redux/betReducer';
-import { filterAddedBetsArray, translate_kind_of_bet_and_home_away } from '../../../CommonFunctions/commonFunctions';
-import OddItem from '../../Content/GameStats/ScoreBoardBlock/BetBlock/BetMarkets/OddItem';
+import { translate_kind_of_bet_and_home_away } from '../../../CommonFunctions/commonFunctions';
 import { NavLink } from 'react-router-dom';
 import classes from './Game.module.css'
 import cn from 'classnames'
+import OddItem from '../../Content/GameStats/BetBlock/BetMarkets/OddItem';
+
 
 type GamePropsType = {
     basic_totals: BasicTotalsType
@@ -18,10 +19,9 @@ type GamePropsType = {
 }
 
 const Game: React.FC<GamePropsType> = React.memo((props) => {
-    let { basic_totals, data, date_of_prediction } = props;
+    let { basic_totals, data } = props;
     let kindsOfBet = Object.keys(basic_totals);
-    let predictionitems = kindsOfBet.map((kind_of_bet, index) => {
-      const names_of_teams = [data.name_of_team1, data.name_of_team2]
+    let predictionitems = kindsOfBet.map((kind_of_bet) => {
       const numOfKindsOfBet = kindsOfBet.length
       const basic_total = basic_totals[kind_of_bet]
       // @ts-ignore

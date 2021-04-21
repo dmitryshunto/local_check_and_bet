@@ -1,7 +1,7 @@
 import React from 'react'
 import  classes from './ToggleButton.module.css'
 import {HomeAwayItemsType, KindOfBetType, NewKindOfBet} from '../../../redux/redux'
-import { translate_kind_of_bet_and_home_away } from '../../../CommonFunctions/commonFunctions';
+import { transform_name_for_ui } from '../../../CommonFunctions/typed_functions'
 
 type PropsType = {
     kinds_of_bet: string[]
@@ -21,14 +21,14 @@ const ToggleButtons = ({kinds_of_bet, selected_home_away, set_selected_home_away
                                                                                 key = {index} 
                                                                                 kind = {home_away_item}
                                                                                 callback = {set_selected_home_away}
-                                                                                content = {translate_kind_of_bet_and_home_away(home_away_item)}
+                                                                                content = {home_away_item}
                                                                                 classes = {classes}/>))
     }
     kinds_of_bet?.forEach((kind_of_bet, index) => toggle_buttons.push(<ToggleButton selected = {selected_kind_of_bet}
                                                                           kind = {kind_of_bet}
                                                                           key = {index + 2}
                                                                           callback = {set_selected_kind_of_bet}
-                                                                          content = {translate_kind_of_bet_and_home_away(kind_of_bet)}
+                                                                          content = {kind_of_bet}
                                                                           classes = {classes}/>))
     
     
@@ -50,7 +50,7 @@ type ToggleButtonItem = {
 
 const ToggleButton = ({selected, kind, callback, content, classes}: ToggleButtonItem) => {
     return (
-        <div className = {selected === kind ? classes.active_button : undefined} onClick = {() => callback(kind)} >{content}</div>
+        <div className = {selected === kind ? classes.active_button : undefined} onClick = {() => callback(kind)} >{transform_name_for_ui(content)}</div>
     )
 }
 

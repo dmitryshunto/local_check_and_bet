@@ -1,0 +1,11 @@
+.green_text_selection {
+    color: rgb(24, 177, 34);
+}
+
+.red_text_selection {
+    color: rgb(204, 15, 15);
+}
+
+.selected_bet {
+    background: rgb(209, 209, 53);
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from '../MatchAnalysis.module.css'
+import classes from '../LastMatchesBlock.module.css'
 
 const ToggleTeamButton = ({team, setTeam, names_of_teams}) => {
     
@@ -13,13 +13,11 @@ const ToggleTeamButton = ({team, setTeam, names_of_teams}) => {
     }
 
     return (
-        <div className={classes.last_game_block_row}>
+        <div className={classes.toggle_team_buttons}>
             <div className={team1_button_class_name} onClick={() => setTeam('home')}>
-                <span className={classes.before} />
                 <span>{names_of_teams[0]}</span>
             </div>
             <div className={team2_button_class_name} onClick={() => setTeam('away')}>
-                <span className={classes.before} />
                 <span>{names_of_teams[1]}</span>
             </div>
         </div>
