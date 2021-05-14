@@ -32,5 +32,15 @@
 }
 
 .selected_bet {
-    background: rgb(209, 209, 53);
+    background: rgb(235, 235, 66);
+    box-shadow: 0 0 2px rgba(0,0,0, 0.2);
+}
+
+.odd_item {
+    width: 100%;
+}
+
+.odd_item:hover {
+    cursor: pointer;
+    box-shadow: 0 0 2px rgba(0,0,0, 0.2);
 }

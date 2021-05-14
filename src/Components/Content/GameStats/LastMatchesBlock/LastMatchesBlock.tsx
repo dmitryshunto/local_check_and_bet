@@ -67,7 +67,7 @@ const LastMatchesBlock: React.FC<PropsType> = ({ last_games_info, names_of_teams
             <ToggleTeamButton   names_of_teams = {names_of_teams}
                                 setTeam = {setTeam}
                                 team = {team} />
-            <Table columns = {columns} dataSource = {data} size = {'small'}/>
+            <Table columns = {columns} dataSource = {data} rowKey = {r => r['date_of_match']} size = {'small'}/>
             
         </div>
     )

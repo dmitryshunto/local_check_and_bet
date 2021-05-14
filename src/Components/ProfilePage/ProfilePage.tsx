@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setMyProfileDataTC, updatePhotoTC, actions } from '../../redux/my_profile_reducer'
 import { auth_user_selectors, propfile_selectors } from '../../Selectors/selectors'
@@ -15,6 +15,9 @@ import UserBets from './UserBetsTable/UserBets'
 
 let ProfilePageContainer: React.FC<PropsType> = (props: PropsType) => {
     useSubscribeOnData(props.setMyProfileDataTC, props.set_my_profile_page_initial_state, [props.user_login])
+    useEffect(() => {
+        document.title = 'My profile'
+    }, [])
     return <ProfilePage {...props} />
 }
 
@@ -41,7 +44,7 @@ let ProfilePage: React.FC<PropsType> = ({ my_profile_data, photo_url, isLoadingP
             number_of_settled_bets++
         }
     })
-
+    balance = round_plus(balance, 2)
 
     const winning_rating = overall_bets ? Math.round(win_bets * 100 / overall_bets) : 0;
 

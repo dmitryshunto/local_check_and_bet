@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import { withPreloader } from '../../../HOC/withPreloader';
 import Modal from '../Modal/Modal';
-import { PreloaderPageWithoutHeader } from '../PreloaderPage/PreloaderPage';
+import { PreloaderBlock } from '../PreloaderPage/PreloaderPage';
 import classes from './PhotoEditor.module.css'
 
 class PhotoEditor extends React.Component {
@@ -146,7 +146,7 @@ let ProfileAvatar = ({ photo_url, default_photo_url, cb }) => {
   )
 }
 
-ProfileAvatar = withPreloader(PreloaderPageWithoutHeader, 'isLoadingPhoto')(ProfileAvatar)
+ProfileAvatar = withPreloader(PreloaderBlock, 'isLoadingPhoto')(ProfileAvatar)
 
 const AvatarComonent = ({ updatePhotoTC, photo_url, isLoadingPhoto, default_photo_url }) => {
   const [upload_mode, set_upload_mode] = useState(false)

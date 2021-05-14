@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Field, reduxForm, InjectedFormProps, Form } from 'redux-form'
 import { Link, Redirect } from 'react-router-dom';
 import { loginUserTC } from '../../redux/authReducer';
@@ -7,12 +7,16 @@ import { connect } from 'react-redux';
 import classes from './LoginPage.module.css';
 import { AppStoreType } from '../../redux/redux'
 import { login_validate as validate } from '../../CommonFunctions/validators';
-import RenderField, { AntInput } from '../CommonComponents/FormRenderField/FormRenderField';
+import { AntInput } from '../CommonComponents/FormRenderField/FormRenderField';
 import { Button, Col, Row } from 'antd';
 
 type LoginPagePropsTypes = MapDispatchToProps & MapStateToPropsType
 
 const LoginPage: React.FC<LoginPagePropsTypes> = (props) => {
+
+    useEffect(()=> {
+        document.title = 'Login Page'
+    }, [])
 
     let loginUser = ({ login, password }: LoginUserPropsType) => {
         props.loginUserTC(login, password);

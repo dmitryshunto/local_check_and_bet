@@ -17,6 +17,9 @@ type RoutePropsType = RouteComponentProps<{ db_name: string, kind_of_bet: NewKin
 
 const BetStatisticPageContainer = ({ data, setBetStatisticTC, isGettingData, set_initial_state, match }: PropsType) => {
     useSubscribeOnData(setBetStatisticTC, set_initial_state, [match.params.db_name, match.params.kind_of_bet, match.params.type_of_bet])
+    useEffect(() => {
+        document.title = 'Bet Statistic'
+    }, [])
     return <BetStatisticPage isGettingData = {isGettingData}
                              data = {data}
                              odd_type = {match.params.type_of_bet}/>

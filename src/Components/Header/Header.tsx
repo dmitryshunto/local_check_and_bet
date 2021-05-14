@@ -13,18 +13,17 @@ const MyHeader: React.FC = () => {
         <Header>
             <div className="logo" />
             <Menu theme="dark" mode="horizontal">
-                <Menu.Item key="1"><Link to='/'>Главная страница</Link></Menu.Item>
+                <Menu.Item key="1"><Link to='/my_net_main_page'>Main Page</Link></Menu.Item>
                 <Menu.Item key="2"><Link to='/championships'>Leagues</Link></Menu.Item>
-                <Menu.Item key="3"><Link to='/my_net_main_page'>My Net</Link></Menu.Item>
-                {login ? <Menu.Item key="4">
-                            <MyProfileLink login={login} />
-                         </Menu.Item>
+                {login ? <Menu.Item key="3">
+                    <MyProfileLink login={login} />
+                </Menu.Item>
                     : <>
                         <Menu.Item key="4">
-                            <Link to = '/loginpage'>Login</Link>
+                            <Link to='/loginpage'>Login</Link>
                         </Menu.Item>
                         <Menu.Item key="5">
-                            <Link to = '/createnewuserpage'>Register</Link>
+                            <Link to='/createnewuserpage'>Register</Link>
                         </Menu.Item>
                     </>
                 }

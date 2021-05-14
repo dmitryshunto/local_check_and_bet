@@ -3,7 +3,7 @@ import classes from './../BetBlock.module.css'
 import { BetType, MarketType } from '../../../../../redux/betReducer'
 import { BetItemType } from '../../../../../redux/game_stats_reducer'
 import { return_bet_object, transform_name_for_ui } from '../../../../../CommonFunctions/typed_functions';
-import { ItemWithTextSelection } from '../../../../CommonComponents/MyNetChampionship/MyNetGame/ItemWithTextSelection';
+import { ItemWithTextSelection } from '../../../../CommonComponents/MyNetChampionship/ItemWithTextSelection/ItemWithTextSelection';
 import { NewKindOfBet } from '../../../../../redux/redux';
 
 type PropsTypes = {

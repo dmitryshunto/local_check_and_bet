@@ -19,7 +19,7 @@ export const validate = values => {
     if (!values.password) {
         errors.password = 'Required'
     } else if (values.password.length < 8) {
-        errors.password = 'Passworm must have length 8 chars or more'
+        errors.password = 'Password must have length 8 chars or more'
     }
     if (!values.confirm_password) {
         errors.confirm_password = 'Required'

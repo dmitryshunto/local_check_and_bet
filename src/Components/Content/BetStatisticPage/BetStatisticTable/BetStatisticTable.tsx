@@ -124,12 +124,12 @@ const create_columns = (data_items: FullBetStatisticItemType[], odd_type: OddTyp
     return columns
 }
 
-const BetStatisticTable = ({ data, odd_type }: TablePropsType) => {
+const BetStatisticTable = React.memo(({ data, odd_type }: TablePropsType) => {
     if (!data) return <Empty />
     const columns = create_columns(data, odd_type)
     return (
-        <Table columns={columns} dataSource={data} size = {'small'}/>
+        <Table columns={columns} dataSource={data} rowKey = {(r) => `${r['home_team_name']}_${Math.random()}`} size = {'small'}/>
     )
-}
+})
 
 export default BetStatisticTable

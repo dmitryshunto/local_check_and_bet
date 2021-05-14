@@ -133,7 +133,7 @@ export type GameStatsDataType = {
 }
 
 let innitialObject = {
-    isGettingData: false,
+    isGettingData: true,
     error_messages: [] as [] | string[],
     data: null as GameStatsDataType | null
 };

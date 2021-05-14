@@ -3,7 +3,6 @@ import { createStore, combineReducers, applyMiddleware, compose, Action} from "r
 import thunkMiddleWare, {ThunkAction} from "redux-thunk";
 import authReducer from './authReducer';
 import createNUReducer from './createNUReducer';
-import championshipsReducer from './championshipsReduser';
 import gameStatsReducer from './game_stats_reducer';
 import betReducer from './betReducer';
 import championshipStatsReducer from './championship_stats_reducer';
@@ -17,7 +16,6 @@ let rootReducer = combineReducers({
     form: formReducer,
     authUser: authReducer,
     createNU: createNUReducer,
-    championships: championshipsReducer,
     gameStats: gameStatsReducer,
     bets: betReducer,
     championshipPage: championshipStatsReducer,

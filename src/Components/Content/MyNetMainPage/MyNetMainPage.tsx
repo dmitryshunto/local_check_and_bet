@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useSubscribeOnData } from '../../../Hooks/Hooks';
 import { AppStoreType } from '../../../redux/redux';
@@ -19,6 +19,9 @@ const MainPageContainer: React.FC<PropsTypes> = (props) => {
                                                                      : getTodayDate()
                                                                      
     useSubscribeOnData(props.set_my_net_predictionsTC, props.set_my_net_main_page_initial_state, [date_of_prediction])
+    useEffect(() => {
+        document.title = 'Main Page'
+    }, [])
     if(props.isGettingData) return <PreloaderPageWithoutHeader />
     return <MainPage {...props}/>
   } 

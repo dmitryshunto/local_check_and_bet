@@ -34,7 +34,9 @@ export const get_odd_type_and_value_by_bet_book_name = (book_bet_name: Book_bet_
     let value = null
     if (book_bet_name.includes('1')) odd_type = 'home'
     if (book_bet_name.includes('2')) odd_type = 'away'
-    if (book_bet_name.includes('h') || book_bet_name.includes('T') && bet_value) value = bet_value
+    if (bet_value) {
+        if (book_bet_name.includes('h') || book_bet_name.includes('T')) value = bet_value
+    }
     if (book_bet_name.includes('w')) value = -0.5
     if (book_bet_name.includes('x') && book_bet_name.length > 1 && !book_bet_name.includes('!')) value = 0.5
     if (book_bet_name === 'x' || book_bet_name === '!x') odd_type = book_bet_name
@@ -138,5 +140,5 @@ export function create_filters_and_onFilter<DataItemType extends TypeWithStringK
     const onFilter = (value: string | number | boolean, record: DataItemType) => {
         return record[dataIndex] === value
     }
-    return {filters, onFilter}
+    return { filters, onFilter }
 }

@@ -10,7 +10,7 @@ type PropsType = {
     data: GameKindOfBetDataType
 }
 
-const MatchStatistics: React.FC<PropsType> = ({ data }) => {
+const MatchStatistics: React.FC<PropsType> = React.memo(({ data }) => {
     const matchStatisticsRows = Object.keys(data).map(key => {
         let payload = Object.values(data[key]);
         return <MatchStatisticsRow leftblock={payload[0]}
@@ -26,7 +26,7 @@ const MatchStatistics: React.FC<PropsType> = ({ data }) => {
             {matchStatisticsRows}
         </div>
     )
-}
+})
 
 type MatchStatisticsRowPropsType = {
     leftblock: number
@@ -34,7 +34,7 @@ type MatchStatisticsRowPropsType = {
     rightblock: number
 }
 
-const MatchStatisticsRow: React.FC<MatchStatisticsRowPropsType> = ({ leftblock, centerblock, rightblock }) => {
+const MatchStatisticsRow: React.FC<MatchStatisticsRowPropsType> = React.memo(({ leftblock, centerblock, rightblock }) => {
     const styles = { leftblockWidth: 100, rightblockWidth: 100, float: 'right' };
     if (typeof (leftblock) === 'number') {
         if (leftblock < rightblock) {
@@ -85,6 +85,6 @@ const MatchStatisticsRow: React.FC<MatchStatisticsRowPropsType> = ({ leftblock, 
             </div>
         </div>
     )
-}
+})
 
 export default MatchStatistics;

@@ -5,8 +5,8 @@ import { added_bets_selectors, auth_user_selectors } from '../../../Selectors/se
 import { actions, addBetToDBTC, BetType, selectBetTC } from '../../../redux/betReducer'
 import { withRenderByCondition } from '../../../HOC/withPreloader'
 import { AppStoreType } from '../../../redux/redux'
-import { useState } from 'react'
-import { return_bet_object } from '../../../CommonFunctions/typed_functions'
+import { return_bet_object, transform_name_for_ui } from '../../../CommonFunctions/typed_functions'
+import { Input } from 'antd'
 
 type PropsType = MapStateToProps & MapDispatchToProps
 
@@ -69,18 +69,19 @@ const BetCouponItem: React.FC<BetCouponItem> = ({ bet, removeBet, selectBetTC })
             </div>
             <div className={classes.coupon_odd_type}>
                 <div>{`${home_team} : ${away_team}`}</div>
-                <div>{kind_of_bet}</div>
-                <div>{`${market} : ${odd_type} ${value !== null ? value : ''}`}</div>
+                <div>{transform_name_for_ui(kind_of_bet)}</div>
+                <div>{`${transform_name_for_ui(market)} : ${odd_type} ${value !== null ? value : ''}`}</div>
             </div>
-            <div>
-                <input type={'number'}
-                    placeholder={'Insert bet size. Max is 1000$'}
+            <div className = {classes.input_block}>
+                <Input type={'number'}
+                    id = {'bet_size_input'}
                     value={bet.bet_size ? bet.bet_size : ''}
                     onChange={onBetSizeInputChange}
                 />
+                <label htmlFor = {'bet_size_input'}>{`Insert bet size. Max is ${max_size}$`}</label>
 
             </div>
-            <div>
+            <div className = {classes.odd_block}>
                 {odd}
             </div>
         </div>

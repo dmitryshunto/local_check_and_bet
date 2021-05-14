@@ -79,7 +79,16 @@
 }
 
 .coupon_odd_type {
-    width: 70%;
+    width: 50%;
+}
+
+.input_block {
+    width: 35%;
+    padding: 5px;
+}
+
+.odd_block {
+    width: 7%;
 }
 
 .bet_success_message {
@@ -107,3 +116,4 @@
 .message_block {
     width: 90%;
 }
+

@@ -1,10 +1,9 @@
-import { get_blob_file, users_api } from "../API/api";
+import { users_api } from "../API/api";
 import { loginUserTC } from "./authReducer";
 import { ResultCodeTypes } from '../API/api_types'
 import { BaseThunkActionType, PropertiesType } from "./redux"
 import { actions as error_handler_actions } from './error_handler_reducer';
 import { updatePhotoTC } from "./my_profile_reducer";
-import axios from 'axios'
 
 const TOGGLE_IS_GETTING_DATA = 'CREATE_NEW_USER_REDUCER/TOGGLE_IS_GETTING_DATA'
 const SET_CREATING_OF_NEW_USER = 'CREATE_NEW_USER_REDUCER/SET_CREATING_OF_NEW_USER'

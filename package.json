@@ -1,7 +1,7 @@
 {
   "name": "check_and_bet",
   "version": "0.1.0",
-  "homepage": "http://srv165861.hoster-test.ru/",
+  "homepage": "http://a0538478.xsph.ru/client/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",

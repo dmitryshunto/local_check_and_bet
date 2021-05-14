@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import "antd/dist/antd.css";
 import './App.css'
 import LoginPage from './Components/LoginPage/LoginPage';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import CreateNewUserPage from './Components/CreateNewUserPage/CreateNewUserPage';
 import { actions as authuser_actions, amIAuthorizedTC } from './redux/authReducer';
 import { connect } from 'react-redux';
 import { auth_user_selectors, error_handler_selectors } from './Selectors/selectors';
-import MainPage from './Components/Content/MainPage/MainPage';
 import GameStats from './Components/Content/GameStats/GameStats';
 import ChampionshipPage from './Components/Content/ChampionshipPage/ChampionshipPage';
 import ChampionshipsPage from './Components/Content/ChampionshipsPage/ChampionshipsPage';
@@ -29,17 +28,17 @@ import MyFooter from './Components/Footer/Footer';
 
 type AppPropsType = MapStateToPropsType & MapDispatchToProps
 
-let App: React.FC<AppPropsType> = (props) => {
+let App: React.FC<AppPropsType> = ({set_error_message, ...props}) => {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0)
-    props.set_error_message(null)
-  }, [pathname]);
+    set_error_message(null)
+  }, [pathname, set_error_message]);
 
   useEffect(() => {
-    window.addEventListener('unhandledrejection', (e) => { props.set_error_message(e.reason.message) })
-    return window.removeEventListener('unhandledrejection', (e) => { props.set_error_message(e.reason.message) })
-  }, [])
+    window.addEventListener('unhandledrejection', (e) => { set_error_message(e.reason.message) })
+    return window.removeEventListener('unhandledrejection', (e) => { set_error_message(e.reason.message) })
+  }, [set_error_message])
 
   useSubscribeOnData(props.amIAuthorizedTC, null, [])
   return <RootComponent {...props} />
@@ -75,8 +74,7 @@ const RootComponent: React.FC<RootComponentPropsType> = (props) => {
 
               <Route exact path='/game_stats/:db_name/:game_id' component={GameStats} />
               <Route exact path='/my_net_main_page/:date_of_prediction?' component={MyNetMainPage} />
-
-              <Route path='/:date_of_prediction?' component={MainPage} />
+              <Route path = '*' render = {() => <Redirect to = '/my_net_main_page/'/>}/> 
             </Switch>
           </div>}
           <ModalErrorPage active={props.authorization_warning_message}

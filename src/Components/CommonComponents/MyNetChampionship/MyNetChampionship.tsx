@@ -2,10 +2,10 @@ import React from 'react'
 import { actions, MyNetChampionship, MyNetGameType, my_net_kinds_of_bet } from '../../../redux/my_net_main_page_reducer'
 import classes from './MyNetChampionship.module.css'
 import { Link } from 'react-router-dom'
-import { ItemWithTextSelection } from './MyNetGame/ItemWithTextSelection'
+import { ItemWithTextSelection } from './ItemWithTextSelection/ItemWithTextSelection'
 import { BetType, MarketType } from '../../../redux/betReducer'
 import Table, { ColumnsType } from 'antd/lib/table'
-import { Button, Col, Collapse, Empty, Row } from 'antd'
+import { Button, Col, Empty, Row } from 'antd'
 import { get_book_names_from_market_name, get_odd_types_and_values_from_market, get_text_selection_and_condition, return_bet_object, transform_name_for_ui } from '../../../CommonFunctions/typed_functions'
 import { CSSTransition } from 'react-transition-group'
 import { getTodayDate } from '../../../CommonFunctions/commonFunctions'
@@ -20,15 +20,8 @@ type MyNetChampionshipType = {
 
 export type RenderFunction<T> = (value: any, record: T, index: number) => React.ReactNode
 
-export type CustomColumnsType<T> = {
-    title: string
-    key: string | number
-    width?: number
-    render: RenderFunction<T>
-}
-
 const create_odds_columns = (selectBetTC: (bet: BetType) => void, bets: BetType[]) => {
-    const result: CustomColumnsType<MyNetGameType>[] = []
+    const result: ColumnsType<MyNetGameType> = []
     const market: MarketType = 'main_outcomes'
     const odd_types_and_values = get_odd_types_and_values_from_market(market)
     const bet_names = get_book_names_from_market_name(market)
@@ -48,9 +41,10 @@ const create_odds_columns = (selectBetTC: (bet: BetType) => void, bets: BetType[
                         const odd = data.book[bet_names[index]]
 
                         const bet = bet_obj_creator(obj.value, obj.odd_type, data.book[bet_names[index]])
-                        const with_conditions_classes = obj.odd_type === 'x' ? null
-                            : [get_text_selection_and_condition(odd, data.outcome_probability[obj.odd_type], classes.red_text_selection, classes.green_text_selection)]
-
+                        let with_conditions_classes = []
+                        let without_conditions_classes = []
+                        if(obj.odd_type !== 'x') with_conditions_classes.push(get_text_selection_and_condition(odd, data.outcome_probability[obj.odd_type], classes.red_text_selection, classes.green_text_selection))
+                        if(odd) without_conditions_classes.push(classes.odd_item)
                         items.push(
                             <div key={kind_of_bet} >
                                 <ItemWithTextSelection cb={() => selectBetTC(bet)}
@@ -59,6 +53,7 @@ const create_odds_columns = (selectBetTC: (bet: BetType) => void, bets: BetType[
                                     bets={bets}
                                     selected_bet_cn={classes.selected_bet}
                                     value={odd}
+                                    without_condition_classes = {without_conditions_classes}
                                     with_conditions_classes={with_conditions_classes} />
                             </div>)
 
@@ -72,14 +67,15 @@ const create_odds_columns = (selectBetTC: (bet: BetType) => void, bets: BetType[
             title: bet_name.toUpperCase(),
             render: create_render_function(selectBetTC, bets),
             key: bet_name.toUpperCase(),
-            width: 65
+            width: 65,
+            align: 'center'
         })
     })
     return result
 }
 
 const create_prediction_columns = () => {
-    const result: CustomColumnsType<MyNetGameType>[] = []
+    const result: ColumnsType<MyNetGameType> = []
     const columns_names = [
         'Score', 'Kind of bet', 'Basic Total', 'Ex. res.', 'Ex. W1', 'Ex. X', 'Ex. W2', 'Ex. tot.', 'Ex. TO',
         'Ex. TU', 'Ex. BACK', 'Out. Bet', 'Tot. Bet'
@@ -169,12 +165,10 @@ const create_prediction_columns = () => {
         if (name === 'Score' || name === 'Ex. BACK') width = 150
         if (name === 'Kind of bet') width = 200
         if (name === 'Basic Total') width = 100
-        result.push({ title: name, render, width, key: name })
+        result.push({ title: name, render, width, key: name, align: 'center'})
     })
     return result
 }
-
-const { Panel } = Collapse
 
 const classNames = {
     enter: classes.my_node_enter,
@@ -238,6 +232,7 @@ export const GamesTable: React.FC<GamesTableType> = (props) => {
             title: 'Match',
             width: 450,
             key: 'Match',
+            align: 'center',
             render: (v, game) => {
                 return <Link to={`/game_stats/${props.db_name}/${game.game_id}`} >{`${game.home_team_name} - ${game.away_team_name}`}</Link>
             }
@@ -245,8 +240,8 @@ export const GamesTable: React.FC<GamesTableType> = (props) => {
         ...prediction_columns
     ]
     if (!props.predictions.length) return <Empty />
-    return <Table columns={columns} rowKey={record => record['home_team_name']} dataSource={props.predictions}
-        size={'middle'} pagination={false} scroll={{ x: true, y: 500 }} />
+    return <Table columns={columns} rowKey={record => record['game_id']} dataSource={props.predictions}
+        size={'middle'} pagination={false} scroll={{ x: true, y: 500 }}/>
 }
 
 export default MyNetChampionshipTable

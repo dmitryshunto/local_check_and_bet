@@ -4,20 +4,13 @@ import { AuthorizeType, BaseAPIType, ServerResponseType } from './api_types'
 import { FullBetStatisticItemType } from '../redux/bet_statistic_reducer'
 import { ChampionshipDataType } from '../redux/championship_stats_reducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
-import { MainPageChampionshipDataType } from '../redux/championshipsReduser'
 import { MyNetChampionship } from '../redux/my_net_main_page_reducer';
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer';
 import { UserDataType } from '../redux/my_profile_reducer';
 import { NewKindOfBet } from '../redux/redux';
 
-let instanse = axios.create({
-    baseURL: 'http://localhost/',
-    withCredentials: true,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-})
-
 const my_net_axios_instanse = axios.create({
-    baseURL: 'http://localhost:3001/',
+    baseURL: 'http://localhost:3001',
     withCredentials: true
 })
 
@@ -91,9 +84,4 @@ export const get_blob_file =  async (blob_url: string) => {
         return base64data
     }
     return reader.result
-}
-
-export const getPredictions = async (date_of_prediction: string) => {
-    let response = await instanse.post<ServerResponseType<MainPageChampionshipDataType[] | null>>(`mainpage.php`, { date_of_prediction });
-    return response.data;
 }

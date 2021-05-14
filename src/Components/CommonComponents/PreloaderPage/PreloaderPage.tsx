@@ -26,4 +26,12 @@ export const PreloaderPageWithoutHeader: React.FC = () => {
     )
 }
 
+export const PreloaderBlock: React.FC = () => {
+    return (
+        <div className = {classes.preloader_block}>
+            <Spin />
+        </div>
+    )
+}
+
 export default PreloaderPage

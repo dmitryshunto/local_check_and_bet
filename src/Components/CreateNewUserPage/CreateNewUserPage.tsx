@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Field, reduxForm, InjectedFormProps, Form } from 'redux-form'
 import { connect, useSelector } from 'react-redux';
 import { createNewUserTC, set_info_for_creating_userTC, add_user_photo_to_stateTC, actions } from '../../redux/createNUReducer';
@@ -24,6 +24,9 @@ type PropType = MapStateToPropsType & MapDispatchToPropsType
 
 const CreateNewUserPageContainer: React.FC<PropType> = (props) => {
     useSubscribeOnData(props.set_info_for_creating_userTC, null, [])
+    useEffect(() => {
+        document.title = 'Open Account'
+    }, [])
     return <CreateNewUserPage {...props} />
 }
 

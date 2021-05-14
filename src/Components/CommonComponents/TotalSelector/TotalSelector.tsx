@@ -9,7 +9,7 @@ type PropsTypes = {
 const TotalSelector: React.FC<PropsTypes> = ({totals_list, basic_total, callback}) => {
     const options = totals_list.map(total => {
         return (
-            <option key = {total} value = {+total} selected = {total === basic_total}>
+            <option key = {total} defaultValue = {+total} selected = {total === basic_total}>
                 {total}
             </option>
         )

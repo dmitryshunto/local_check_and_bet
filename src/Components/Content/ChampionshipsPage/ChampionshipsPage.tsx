@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ChampionshipListItem, setChampionshipsListTC } from '../../../redux/championships_page_reducer'
 import { AppStoreType } from '../../../redux/redux'
 import { championships_page_selectors } from '../../../Selectors/selectors';
@@ -13,6 +13,9 @@ import { Input } from 'antd';
 
 const ChampionshipsPageContainer = (props: PropsType) => {
     useSubscribeOnData(props.setChampionshipsListTC, props.set_initial_state, [])
+    useEffect(() => {
+        document.title = 'Leagues'
+    }, [])
     if(props.isGettingData) return <PreloaderPageWithoutHeader />
     return <ChampionshipsPage {...props}/>
 } 

@@ -1,11 +1,9 @@
-import { getTodayDate } from "../CommonFunctions/commonFunctions";
 import { AppStoreType } from '../redux/redux'
 import { FullBetStatisticDataType } from '../redux/bet_statistic_reducer'
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer'
 import { MyProfileBets } from '../redux/my_profile_reducer'
 import { BetType } from '../redux/betReducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
-import { MainPageChampionshipDataType } from '../redux/championshipsReduser'
 import { BasicTotals, ChampionshipStatsDataType, BetStatisticType } from '../redux/championship_stats_reducer'
 import { MyNetChampionship, MyNetGameType } from "../redux/my_net_main_page_reducer";
 
@@ -76,21 +74,6 @@ export const game_stats_selectors = {
     get_is_getting_data: (state: AppStoreType): boolean => {
         return state.gameStats.isGettingData;
     },
-}
-
-export const main_page_selectors = {
-    get_is_getting_data: (state: AppStoreType): boolean => {
-        return state.championships.isGettingPrediction;
-    },
-    get_data: (state: AppStoreType): MainPageChampionshipDataType[] | null => {
-        return state.championships.predictions;
-    },
-    get_date_of_prediction: (state: AppStoreType): string => {
-        return state.championships.date_of_prediction || getTodayDate();
-    },
-    get_selected_date_of_prediction: (state: AppStoreType) => {
-        return state.championships.selected_date_of_prediction
-    }
 }
 
 export const championships_page_selectors = {

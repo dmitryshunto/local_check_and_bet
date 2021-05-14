@@ -112,8 +112,6 @@ export const updatePhotoTC = (photo_file: File | Blob): BaseThunkActionType<Acti
         dispatch(actions.set_update_photo_url_warning_message(response.error_messages))
     }
     dispatch(actions.toogle_is_loading_photo(false))
-    // dispatch(actions.toggle_is_getting_data(true))
-    // dispatch(actions.toggle_is_getting_data(false))
 }
 
 export default myProfileReducer;
