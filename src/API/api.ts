@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { BetType, OddTypeType } from '../redux/betReducer'
-import { AuthorizeType, BaseAPIType, ServerResponseType } from './api_types'
+import { AuthData, AuthorizeType, BaseAPIType, ServerResponseType } from './api_types'
 import { FullBetStatisticItemType } from '../redux/bet_statistic_reducer'
 import { ChampionshipDataType } from '../redux/championship_stats_reducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
@@ -8,9 +8,11 @@ import { MyNetChampionship } from '../redux/my_net_main_page_reducer';
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer';
 import { UserDataType } from '../redux/my_profile_reducer';
 import { NewKindOfBet } from '../redux/redux';
+import { base_url } from './../config';
+import { PredictionType } from '../redux/prediction_board';
 
 const my_net_axios_instanse = axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: base_url,
     withCredentials: true
 })
 
@@ -40,7 +42,7 @@ export const my_net_api = {
 
 export const users_api = {
     am_i_authorized: async () => {
-        let response = await my_net_axios_instanse.get<AuthorizeType>(`users/am_i_authorized`)
+        let response = await my_net_axios_instanse.get<ServerResponseType<AuthData>>(`users/am_i_authorized`)
         return response
     },
     login_user: async (user_login: string, user_password: string) => {
@@ -68,7 +70,18 @@ export const users_api = {
         formData.append('avatar', photo_file)
         const response = await my_net_axios_instanse.post<ServerResponseType<string | null>>(`users/upload_profile_avatar`, formData)
         return response.data
-    }
+    },
+    add_prediction: async (prediction: PredictionType) => {
+        const response = await my_net_axios_instanse.post<BaseAPIType>(`users/add_prediction`, {prediction})
+        return response.data
+    },
+    get_public_predictions: async (portion_size: number, last_id?: number) => {
+        const response = await my_net_axios_instanse.post<ServerResponseType<PredictionType[]>>('users/get_public_predictions', {portion_size, last_id})
+        return response.data
+    },
+    update_user_last_seen_prediction_id: async (prediction_id: number) => {
+        await my_net_axios_instanse.post<BaseAPIType>(`users/update_user_last_seen_prediction_id`, {prediction_id})
+    } 
 }
 
 export const get_blob_file =  async (blob_url: string) => {

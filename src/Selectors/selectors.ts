@@ -151,3 +151,12 @@ export const my_net_main_page_selectors = {
         return state.my_net_main_page_reducer.date_of_prediction
     }
 }
+
+export const prediction_board_selectors = {
+    get_is_getting_data: (state: AppStoreType) => state.prediction_board.is_getting_data,
+    get_data: (state: AppStoreType) => state.prediction_board.data,
+    get_new_predictions_number: (state: AppStoreType) => state.prediction_board.new_predictions,
+    get_last_seen_prediction_id: (state: AppStoreType) => state.prediction_board.last_seen_prediction_id,
+    all_predictions_recieved: (state: AppStoreType) => state.prediction_board.are_all_predictions_recieved,
+    get_is_getting_more_prediction: (state: AppStoreType) => state.prediction_board.is_getting_more_prediction
+}

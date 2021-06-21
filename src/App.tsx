@@ -25,6 +25,8 @@ import { BackTop, Layout } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import MyHeader from './Components/Header/Header';
 import MyFooter from './Components/Footer/Footer';
+import PageNotFound from './Components/CommonComponents/PageNotFound';
+import PredictionBoard from './Components/Content/PredictionBoard/PredictionBoard';
 
 type AppPropsType = MapStateToPropsType & MapDispatchToProps
 
@@ -63,10 +65,11 @@ const RootComponent: React.FC<RootComponentPropsType> = (props) => {
           {props.error_message && <ErrorPage message={props.error_message} />}
           {!props.error_message && <div className='app-wrapper-content' >
             <Switch>
+              <Route exact path='/' render={() => <Redirect to = '/my_net_main_page' />} />
               <Route exact path='/welcome_new_user' component={WelcomeNewUserPage} />
               <Route exact path='/profile_page' component={ProfilePage} />
-              <Route exact path='/loginpage' render={() => <LoginPage />} />
-              <Route exact path='/createnewuserpage' render={() => <CreateNewUserPage />} />
+              <Route exact path='/loginpage' component={LoginPage} />
+              <Route exact path='/createnewuserpage' component={CreateNewUserPage} />
 
               <Route exact path='/championships' component={ChampionshipsPage} />
               <Route exact path='/championships/:db_name' component={ChampionshipPage} />
@@ -74,7 +77,8 @@ const RootComponent: React.FC<RootComponentPropsType> = (props) => {
 
               <Route exact path='/game_stats/:db_name/:game_id' component={GameStats} />
               <Route exact path='/my_net_main_page/:date_of_prediction?' component={MyNetMainPage} />
-              <Route path = '*' render = {() => <Redirect to = '/my_net_main_page/'/>}/> 
+              <Route exact path='/prediction_board' component={PredictionBoard} /> 
+              <Route path = '*' component = {PageNotFound}/> 
             </Switch>
           </div>}
           <ModalErrorPage active={props.authorization_warning_message}

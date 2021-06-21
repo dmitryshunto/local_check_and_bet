@@ -1,0 +1,23 @@
+.public_prediction {
+    flex-basis: 31.333%;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1%;
+    margin-left: 1%;
+    margin-right: 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.prediction_content {
+    flex: 1 0 auto;
+}
+
+.prediction_author {
+    flex: 0 0 auto;
+}
+
+.show_whole_descripton:hover {
+    cursor: pointer;
+}

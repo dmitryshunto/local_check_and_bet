@@ -4,7 +4,6 @@ import { TotalsInfoType } from '../redux/championship_stats_reducer'
 import { NewKindOfBet } from '../redux/redux'
 import { TypeWithStringKey, ObjectKeys } from './common_types'
 
-
 type GetTotalInfo = {
     over: number
     under: number
@@ -113,6 +112,7 @@ export const transform_date_for_UI = (string_date: Date) => {
 }
 
 export const transform_name_for_ui = (name: string) => {
+    if(!name) return null
     const reg_exp = new RegExp('_', 'g')
     const without_space = name.replace(reg_exp, ' ')
     const minus_reg_exp = new RegExp('-', 'g')
@@ -141,4 +141,10 @@ export function create_filters_and_onFilter<DataItemType extends TypeWithStringK
         return record[dataIndex] === value
     }
     return { filters, onFilter }
+}
+
+export const play_sound = (src: string) => {
+    const sound = new Audio(src)
+    sound.load()
+    sound.play()
 }

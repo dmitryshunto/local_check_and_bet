@@ -9,6 +9,9 @@ import { Button, Col, Empty, Row } from 'antd'
 import { get_book_names_from_market_name, get_odd_types_and_values_from_market, get_text_selection_and_condition, return_bet_object, transform_name_for_ui } from '../../../CommonFunctions/typed_functions'
 import { CSSTransition } from 'react-transition-group'
 import { getTodayDate } from '../../../CommonFunctions/commonFunctions'
+import CreatePredictionBlock from '../CreatePredictionBlock/CreatePredictionBlock'
+import { useSelector } from 'react-redux'
+import { auth_user_selectors } from '../../../Selectors/selectors'
 
 type MyNetChampionshipType = {
     data: MyNetChampionship
@@ -43,8 +46,8 @@ const create_odds_columns = (selectBetTC: (bet: BetType) => void, bets: BetType[
                         const bet = bet_obj_creator(obj.value, obj.odd_type, data.book[bet_names[index]])
                         let with_conditions_classes = []
                         let without_conditions_classes = []
-                        if(obj.odd_type !== 'x') with_conditions_classes.push(get_text_selection_and_condition(odd, data.outcome_probability[obj.odd_type], classes.red_text_selection, classes.green_text_selection))
-                        if(odd) without_conditions_classes.push(classes.odd_item)
+                        if (obj.odd_type !== 'x') with_conditions_classes.push(get_text_selection_and_condition(odd, data.outcome_probability[obj.odd_type], classes.red_text_selection, classes.green_text_selection))
+                        if (odd) without_conditions_classes.push(classes.odd_item)
                         items.push(
                             <div key={kind_of_bet} >
                                 <ItemWithTextSelection cb={() => selectBetTC(bet)}
@@ -53,21 +56,21 @@ const create_odds_columns = (selectBetTC: (bet: BetType) => void, bets: BetType[
                                     bets={bets}
                                     selected_bet_cn={classes.selected_bet}
                                     value={odd}
-                                    without_condition_classes = {without_conditions_classes}
+                                    without_condition_classes={without_conditions_classes}
                                     with_conditions_classes={with_conditions_classes} />
                             </div>)
 
 
                     }
                 }
-                return { children: items}
+                return { children: items }
             }
         }
         result.push({
             title: bet_name.toUpperCase(),
             render: create_render_function(selectBetTC, bets),
             key: bet_name.toUpperCase(),
-            width: 65,
+            width: 45,
             align: 'center'
         })
     })
@@ -161,11 +164,11 @@ const create_prediction_columns = () => {
             }
             return { children: items }
         }
-        if (name === 'Out. Bet' || name === 'Tot. Bet') width = 250
-        if (name === 'Score' || name === 'Ex. BACK') width = 150
-        if (name === 'Kind of bet') width = 200
-        if (name === 'Basic Total') width = 100
-        result.push({ title: name, render, width, key: name, align: 'center'})
+        if (name === 'Out. Bet' || name === 'Tot. Bet') width = 80
+        if (name === 'Score' || name === 'Ex. BACK') width = 80
+        if (name === 'Kind of bet') width = 100
+        if (name === 'Basic Total') width = 70
+        result.push({ title: name, render, width, key: name, align: 'center' })
     })
     return result
 }
@@ -188,16 +191,16 @@ const MyNetChampionshipTable: React.FC<MyNetChampionshipType> = React.memo((prop
 
     return (
         <div className={classes.my_net_championship_table}>
-            <Row style = {{marginBottom: '1%'}}>
-                <Col span = {4}>
+            <Row style={{ marginBottom: '1%' }}>
+                <Col span={4}>
                     <Link to={`/championships/${props.data.db_name}`}>{`${props.data.country_name} ${props.data.name_of_championship}`}</Link>
                 </Col>
                 {getTodayDate() <= props.date_of_match &&
-                <Col span = {2}>
-                    <Button type={button_type} onClick={
-                        () => { props.changeChampionshipCheckedStatus(props.data.db_name, props.date_of_match) }
-                    }>{button_content}</Button>
-                </Col>}
+                    <Col span={2}>
+                        <Button type={button_type} onClick={
+                            () => { props.changeChampionshipCheckedStatus(props.data.db_name, props.date_of_match) }
+                        }>{button_content}</Button>
+                    </Col>}
             </Row>
             <CSSTransition
                 in={!props.data.checked}
@@ -206,6 +209,7 @@ const MyNetChampionshipTable: React.FC<MyNetChampionshipType> = React.memo((prop
                 timeout={300}
             >
                 <GamesTable selectBetTC={props.selectBetTC}
+                    country_and_name_of_championship={`${props.data.country_name} ${props.data.name_of_championship}`}
                     bets={props.bets}
                     predictions={props.data.predictions}
                     db_name={props.data.db_name} />
@@ -221,27 +225,53 @@ type GamesTableType = {
     bets: BetType[]
     predictions: MyNetGameType[]
     db_name: string
+    country_and_name_of_championship: string
 }
 
 export const GamesTable: React.FC<GamesTableType> = (props) => {
     const odds_columns = create_odds_columns(props.selectBetTC, props.bets)
     const prediction_columns = create_prediction_columns()
-
+    const user_login = useSelector(auth_user_selectors.get_login)
     const columns: ColumnsType<MyNetGameType> = [
         {
             title: 'Match',
-            width: 450,
+            width: 260,
             key: 'Match',
             align: 'center',
             render: (v, game) => {
-                return <Link to={`/game_stats/${props.db_name}/${game.game_id}`} >{`${game.home_team_name} - ${game.away_team_name}`}</Link>
+                return (<TeamsBlock db_name = {props.db_name} game_id = {game.game_id} home_team_name = {game.home_team_name}
+                                    away_team_name = {game.away_team_name} date_of_match = {game.date_of_match}
+                                    country_and_name_of_championship = {props.country_and_name_of_championship}
+                                    user_login = {user_login}/>)
             }
         }, ...odds_columns,
         ...prediction_columns
     ]
     if (!props.predictions.length) return <Empty />
     return <Table columns={columns} rowKey={record => record['game_id']} dataSource={props.predictions}
-        size={'middle'} pagination={false} scroll={{ x: true, y: 500 }}/>
+        size={'middle'} pagination={false} scroll={{ x: true, y: 500 }} />
+}
+
+type TeamsBlockType = {
+    user_login: string | null
+    db_name: string
+    game_id: number
+    home_team_name: string
+    away_team_name: string
+    date_of_match: string
+    country_and_name_of_championship: string
+}
+
+const TeamsBlock: React.FC<TeamsBlockType> = (props) => {
+    return (
+        <div className = {classes.teams_block}>
+            <Link to={`/game_stats/${props.db_name}/${props.game_id}`} >{`${props.home_team_name} - ${props.away_team_name}`}</Link>
+            {props.date_of_match >= getTodayDate() && props.user_login &&
+                <CreatePredictionBlock db_name={props.db_name} game_id={props.game_id}
+                    leagues_names_for_prediction={[props.country_and_name_of_championship]}
+                    matches_for_prediction={[`${props.home_team_name} - ${props.away_team_name}`]} />}
+        </div>
+    )
 }
 
 export default MyNetChampionshipTable

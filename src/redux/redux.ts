@@ -1,5 +1,5 @@
 import { reducer as formReducer } from 'redux-form'
-import { createStore, combineReducers, applyMiddleware, compose, Action} from "redux";
+import { createStore, combineReducers, applyMiddleware, compose, Action} from "redux"
 import thunkMiddleWare, {ThunkAction} from "redux-thunk";
 import authReducer from './authReducer';
 import createNUReducer from './createNUReducer';
@@ -11,6 +11,7 @@ import championshipsPageReducer from './championships_page_reducer';
 import myProfileReducer from './my_profile_reducer';
 import my_net_main_page_reducer from './my_net_main_page_reducer'
 import error_handler_reducer from './error_handler_reducer';
+import prediction_board_reducer from './prediction_board';
 
 let rootReducer = combineReducers({
     form: formReducer,
@@ -23,7 +24,8 @@ let rootReducer = combineReducers({
     championshipsPage: championshipsPageReducer,
     myProfileReducer: myProfileReducer,
     my_net_main_page_reducer: my_net_main_page_reducer,
-    error_handler: error_handler_reducer
+    error_handler: error_handler_reducer,
+    prediction_board: prediction_board_reducer
 })
 
 type RootReducerType = typeof rootReducer

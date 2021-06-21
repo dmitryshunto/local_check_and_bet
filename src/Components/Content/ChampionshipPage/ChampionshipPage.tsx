@@ -45,7 +45,7 @@ let ChampionshipPage: React.FC<PropsType> =  ({championship_stats, bet_statistic
                         db_name = {match.params.db_name}
                         bets = {props.bets}
                         selectBetTC = {props.selectBetTC}
-
+                        country_and_name_of_championship = {`${props.country_name} ${props.name_of_championship}`}
                         />
             <BetCoupon />
         </div>

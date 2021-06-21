@@ -10,6 +10,7 @@ type GamesBlockProps = {
     selectBetTC: (bet: BetType) => void
     bets: [] | BetType[]
     db_name: string
+    country_and_name_of_championship: string
 }
 
 const GamesBlock: React.FC<GamesBlockProps> = ({ games, ...props }) => {
@@ -21,7 +22,8 @@ const GamesBlock: React.FC<GamesBlockProps> = ({ games, ...props }) => {
                 <GamesTable predictions={games}
                     selectBetTC={props.selectBetTC}
                     bets={props.bets}
-                    db_name={props.db_name} />
+                    db_name={props.db_name} 
+                    country_and_name_of_championship = {props.country_and_name_of_championship}/>
 
             </div>
 
