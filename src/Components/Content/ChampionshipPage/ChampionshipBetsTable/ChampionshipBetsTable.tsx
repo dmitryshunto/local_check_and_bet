@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { BetStatisticType, KindOfBetStatisticItemType } from "./../../../../redux/championship_stats_reducer";
-import classes from './ChampionshipBetsTable.module.css';
-import { NewKindOfBet } from '../../../../redux/redux'
+import classes from './ChampionshipBetsTable.module.css'
 import { NavLink, useRouteMatch } from 'react-router-dom';
 import ToggleButtons from '../../../CommonComponents/ToggleButton/ToggleButton';
+import { NewKindOfBet } from '../../../../config';
 
 type PropsType = {
     bet_statistic: BetStatisticType

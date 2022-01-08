@@ -1,8 +1,9 @@
 import { my_net_api } from "../API/api";
 import { getTodayDate } from "../CommonFunctions/commonFunctions";
 import { ResultCodeTypes } from '../API/api_types'
-import { PropertiesType, BaseThunkActionType, NewKindsOfBet } from "./redux"
+import { PropertiesType, BaseThunkActionType } from "./redux"
 import { changeCheckedChampionshipStatus, create_new_date_for_checked_championsips_storage, delete_data_about_checked_championship_from_storage, isChamponshipChecked } from "../Coookie/cookie";
+import { NewKindsOfBet } from "../config";
 
 const SET_ALL_PREDICTIONS = 'MY_NET_MAIN_PAGE_REDUCER/SET_ALL_PREDICTION';
 const SET_DATE_OF_PREDICTION = 'MY_NET_MAIN_PAGE_REDUCER/SET_DATE_OF_PREDICTION'

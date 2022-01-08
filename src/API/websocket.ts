@@ -33,7 +33,12 @@ const operation_success_handler = (event: 'prediction_sent_success' | 'predictio
 }
 
 const create_channel = () => {
-    socket = io(base_url)
+    socket = io(base_url, {
+        path: '/socket.io',
+        transports: ['websocket'],
+        secure: true,
+
+    })
     socket.on('connect', () => {
         subscribers['status-changed'].forEach(cb => cb(true))
     })
@@ -52,7 +57,7 @@ const create_channel = () => {
     socket.on<EventType>(PUBLIC_PREDICTION_EDITED, ({ prediction_id, prediction }: EditPredictionArgsType) => {
         subscribers[PUBLIC_PREDICTION_EDITED].forEach(cb => cb({ prediction_id, prediction }))
     })
-    
+
     operation_success_handler(PREDICTION_DELETION_SUCCESS)
     operation_success_handler(PREDICTION_EDITION_SUCCESS)
     operation_success_handler(PREDICTION_RECEIVING_SUCCESS)

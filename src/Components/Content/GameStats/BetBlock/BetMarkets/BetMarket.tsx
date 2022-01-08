@@ -4,7 +4,7 @@ import { BetType, MarketType } from '../../../../../redux/betReducer'
 import { BetItemType } from '../../../../../redux/game_stats_reducer'
 import { return_bet_object, transform_name_for_ui } from '../../../../../CommonFunctions/typed_functions';
 import { ItemWithTextSelection } from '../../../../CommonComponents/MyNetChampionship/ItemWithTextSelection/ItemWithTextSelection';
-import { NewKindOfBet } from '../../../../../redux/redux';
+import { NewKindOfBet } from '../../../../../config';
 
 type PropsTypes = {
     data: BetItemType[]

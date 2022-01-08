@@ -1,8 +1,8 @@
 import { my_net_api } from "../API/api";
 import { ResultCodeTypes } from "../API/api_types";
-import { OddTypeType } from "./betReducer";
-import { PropertiesType, BaseThunkActionType, NewKindOfBet } from "./redux"
+import { PropertiesType, BaseThunkActionType } from "./redux"
 import { actions as error_handler_actions, SetErrorMessageAction } from './error_handler_reducer';
+import { NewKindOfBet, OddTypeType } from "../config";
 
 const SET_BET_STATISTIC = 'BET_STATISTIC_REDUCER/SET_BET_STATISTIC'
 const SET_INITIAL_STATE = 'BET_STATISTIC_REDUCER/SET_INITIAL_STATE'

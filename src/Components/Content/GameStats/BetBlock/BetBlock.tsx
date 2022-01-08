@@ -3,8 +3,8 @@ import classes from './BetBlock.module.css'
 import common_classes from '../GameStats.module.css'
 import BetMarket from './BetMarkets/BetMarket'
 import { BetItemType, ScoreBoardBetBlockType, TwoWayBetsItem } from '../../../../redux/game_stats_reducer'
-import { NewKindOfBet } from '../../../../redux/redux'
 import { BetType } from '../../../../redux/betReducer'
+import { NewKindOfBet } from '../../../../config';
 
 type OwnPropsTypes = {
     bet_block: ScoreBoardBetBlockType

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { ChampionshipStatsDataType, TeamStatistic, BasicTotals, KindsOfBetTotalIntervalType } from '../../../../redux/championship_stats_reducer'
 import classes from './ChampionshipStats.module.css'
 import ToggleButton from '../../../CommonComponents/ToggleButton/ToggleButton';
-import { HomeAwayItemsType, NewKindOfBet } from '../../../../redux/redux'
+import { HomeAwayItemsType } from '../../../../redux/redux'
 import TotalSelector from '../../../CommonComponents/TotalSelector/TotalSelector';
 import { create_sorter } from '../../../../CommonFunctions/typed_functions';
 import Table, { ColumnsType } from 'antd/lib/table';
+import { NewKindOfBet } from '../../../../config';
 
 const kinds_of_bet_total_interval: KindsOfBetTotalIntervalType = {
   goals: [0.5, 4.5],

@@ -1,11 +1,11 @@
 import React from 'react'
-import { OddTypeType } from '../../../../redux/betReducer'
 import { FullBetStatisticDataType, FullBetStatisticItemType } from '../../../../redux/bet_statistic_reducer'
 import classes from './BetStatisticTable.module.css'
 import cn from 'classnames'
 import Table, { ColumnsType } from 'antd/lib/table'
 import { Empty } from 'antd'
-import { create_filters_and_onFilter } from './../../../../CommonFunctions/typed_functions';
+import { OddTypeType } from '../../../../config'
+import { create_filters_and_onFilter } from '../../../ProfilePage/ProfilePage'
 
 export type TablePropsType = {
     data: FullBetStatisticDataType

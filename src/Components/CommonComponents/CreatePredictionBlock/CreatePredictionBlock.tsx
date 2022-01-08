@@ -88,10 +88,9 @@ export const CreatePredictionContent: React.FC<CreatePredictionContent> = (props
                 form
                     .validateFields()
                     .then((values: BasePredictionType) => {
-                        form.resetFields();
                         set_min_range(-10)
                         props.set_visible(false)
-
+                        form.resetFields()
                         let callback = props.prediction_id ? props.callback({ ...values, db_name, game_id }, props.prediction_id)
                                                            : props.callback({ ...values, db_name, game_id }) 
 

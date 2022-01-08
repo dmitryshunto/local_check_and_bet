@@ -2,7 +2,6 @@ import React from 'react'
 import { WrappedFieldProps } from 'redux-form'
 import { Form, Input, InputNumber, Select } from "antd";
 import { transform_name_for_ui } from '../../../CommonFunctions/typed_functions';
-import TextArea from 'antd/lib/input/TextArea';
 
 const FormItem = Form.Item;
 

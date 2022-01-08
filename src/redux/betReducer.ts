@@ -1,8 +1,9 @@
 import { users_api } from "../API/api"
 import { actions as error_handler_actions, SetWarningMessagesAction } from "./error_handler_reducer"
-import { PropertiesType, BaseThunkActionType, NewKindOfBet } from "./redux"
+import { PropertiesType, BaseThunkActionType } from "./redux"
 import { transform_date_for_UI } from "../CommonFunctions/typed_functions"
 import { getTodayDate } from "../CommonFunctions/commonFunctions"
+import { NewKindOfBet, OddTypeType } from "../config"
 
 const ADD_BET = 'BET_REDUCER/ADD_BET'
 const REMOVE_BET = 'BET_REDUCER/REMOVE_BET'
@@ -27,8 +28,6 @@ export const actions = {
 export type Book_bet_name_type = 'w1' | 'w2' | 'x1' | 'x2' | 'x' | '!x' | 'TO' | 'TU' | 'h1' | 'h2'
 
 export type MarketType = 'totals' | 'main_outcomes' | 'double_chance' | 'handicaps'
-
-export type OddTypeType = 'home' | 'away' | 'TO' | 'TU' | 'x' | '!x'
 
 export type BetType = {
     kind_of_bet: NewKindOfBet;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { TypeWithStringKey } from '../CommonFunctions/common_types';
+import { TypeWithStringKey } from '../config';
 
 export function withAuthRedirect<T extends TypeWithStringKey>(user_login_props_name: string = 'user_login') {
     return (WrappedComponent: React.FC<T>) => {

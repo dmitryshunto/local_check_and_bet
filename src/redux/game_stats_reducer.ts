@@ -1,8 +1,8 @@
 import { my_net_api } from "../API/api"
 import { ResultCodeTypes } from "../API/api_types"
-import { OddTypeType } from "./betReducer"
 import { KindsOfBetType, PropertiesType, BaseThunkActionType } from "./redux"
 import { actions as error_handler_actons, SetErrorMessageAction } from './error_handler_reducer'
+import { OddTypeType } from "../config"
 
 const SET_GAME_STATS = 'GAME_STATS_REDUCER/SET_GAME_STATS'
 const SET_INITIAL_STATE = 'GAME_STATS_REDUCER/SET_INITIAL_STATE'

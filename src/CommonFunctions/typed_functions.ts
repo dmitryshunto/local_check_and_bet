@@ -1,8 +1,7 @@
-import { ColumnFilterItem } from 'antd/lib/table/interface'
-import { BetType, Book_bet_name_type, MarketType, OddTypeType } from '../redux/betReducer'
+import { NewKindOfBet, OddTypeType } from '../config'
+import { BetType, Book_bet_name_type, MarketType } from '../redux/betReducer'
 import { TotalsInfoType } from '../redux/championship_stats_reducer'
-import { NewKindOfBet } from '../redux/redux'
-import { TypeWithStringKey, ObjectKeys } from './common_types'
+import { TypeWithStringKey, ObjectKeys } from '../config'
 
 type GetTotalInfo = {
     over: number
@@ -125,22 +124,6 @@ export function create_sorter<T extends TypeWithStringKey>(key: ObjectKeys<T>) {
         else if (a[key] < b[key]) return -1
         else return 0
     }
-}
-
-export function create_filters_and_onFilter<DataItemType extends TypeWithStringKey>(data_items: DataItemType[], dataIndex: string) {
-    let values: Array<string | number | null> = []
-    data_items!.forEach(data_item => {
-        if (values.indexOf(data_item[dataIndex]) === -1) values.push(data_item[dataIndex])
-    })
-    values.sort()
-    let filters: ColumnFilterItem[] = []
-    values.forEach(value => {
-        if (value) filters.push({ text: value, value })
-    })
-    const onFilter = (value: string | number | boolean, record: DataItemType) => {
-        return record[dataIndex] === value
-    }
-    return { filters, onFilter }
 }
 
 export const play_sound = (src: string) => {

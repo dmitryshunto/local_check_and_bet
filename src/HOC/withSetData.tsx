@@ -1,5 +1,5 @@
 import React from 'react';
-import { TypeWithStringKey } from '../CommonFunctions/common_types';
+import { TypeWithStringKey } from '../config';
 import { useSubscribeOnData } from '../Hooks/Hooks';
 
 function withSetData<T extends TypeWithStringKey>(OriginalComponent: React.FC<T>, setDataFunctionName: string,

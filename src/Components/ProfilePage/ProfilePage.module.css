@@ -57,3 +57,14 @@ div.signing_block {
     padding: 0px;
 }
 
+.user_table_block h3 {
+    color: #cbc4b5;
+    padding-top: 30px;
+    padding-left: 30px;
+}
+
+.user_table_block {
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    margin-top: 20px;
+    border-radius: 5px;
+}

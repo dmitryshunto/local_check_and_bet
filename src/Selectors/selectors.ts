@@ -1,7 +1,7 @@
 import { AppStoreType } from '../redux/redux'
 import { FullBetStatisticDataType } from '../redux/bet_statistic_reducer'
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer'
-import { MyProfileBets } from '../redux/my_profile_reducer'
+import { MyPredictions, MyProfileBets } from '../redux/my_profile_reducer'
 import { BetType } from '../redux/betReducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
 import { BasicTotals, ChampionshipStatsDataType, BetStatisticType } from '../redux/championship_stats_reducer'
@@ -125,6 +125,9 @@ export const propfile_selectors = {
     },
     get_data: (state: AppStoreType): MyProfileBets => {
         return state.myProfileReducer.bets
+    },
+    get_predictions: (state: AppStoreType): MyPredictions => {
+        return state.myProfileReducer.predictions
     },
     get_is_loading_profile_photo: (state: AppStoreType): boolean => {
         return state.myProfileReducer.isLoadingPhoto

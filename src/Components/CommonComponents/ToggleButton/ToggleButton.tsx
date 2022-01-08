@@ -1,7 +1,8 @@
 import React from 'react'
 import  classes from './ToggleButton.module.css'
-import {HomeAwayItemsType, KindOfBetType, NewKindOfBet} from '../../../redux/redux'
+import {HomeAwayItemsType, KindOfBetType} from '../../../redux/redux'
 import { transform_name_for_ui } from '../../../CommonFunctions/typed_functions'
+import { NewKindOfBet } from '../../../config'
 
 type PropsType = {
     kinds_of_bet: string[]

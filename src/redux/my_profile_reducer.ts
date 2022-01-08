@@ -1,7 +1,8 @@
 import { users_api } from "../API/api";
 import { ResultCodeTypes } from "../API/api_types";
-import { PropertiesType, BaseThunkActionType, NewKindOfBet } from "./redux"
+import { PropertiesType, BaseThunkActionType } from "./redux"
 import { actions as error_handler_actions } from './error_handler_reducer';
+import { NewKindOfBet, OddTypeType } from "../config";
 
 const SET_MY_PROFILE_DATA = 'MY_PROFILE_REDUCER/SET_MY_PROFILE_DATA'
 const TOGGLE_IS_GETTING_DATA = 'MY_PROFILE_REDUCER/TOGGLE_IS_GETTING_DATA'
@@ -31,18 +32,37 @@ export type MyProfileBetType = {
     odd_type: string
     odd: number
     value: number | null
-    result: number | null
+    result: 0 | 1 | -1 | null
     balance: number | null
     result_of_match: string | null
-    result_for_ui: 'win' | 'lose' | 'back' | 'accepted'
     date_of_match: string
 }
 
 export type MyProfileBets = Array<MyProfileBetType> | null
 
+export type MyPrediction = {
+    id: number,
+    public: 0 | 1,
+    game_id: number,
+    db_name: string,
+    date_of_match: string,
+    league_name: string,
+    date_of_prediction: string,
+    kind_of_bet: NewKindOfBet,
+    teams: string,
+    odd_type: OddTypeType,
+    odd: number,
+    value: number,
+    result: 0 | 1 | -1 | null,
+    result_of_match: string | null,
+    description: string | null
+}
+
+export type MyPredictions = MyPrediction[] | null
 
 export interface UserDataType {
     user_bets: MyProfileBets
+    user_predictions: MyPredictions
     photo_url: string | null
     default_photo_url: string
 }
@@ -51,6 +71,7 @@ let innitialObject = {
     isGettingData: true,
     isLoadingPhoto: false,
     bets: null as MyProfileBets,
+    predictions: null as MyPredictions,
     default_photo_url: null as string | null,
     photo_url: null as string | null,
     warning_message: null as string[] | null
@@ -62,6 +83,7 @@ const myProfileReducer = (state = innitialObject, action: ActionsTypes): typeof 
         return {
             ...state,
             bets: action.payload.user_bets,
+            predictions: action.payload.user_predictions,
             default_photo_url: action.payload.default_photo_url,
             photo_url: action.payload.photo_url
         }

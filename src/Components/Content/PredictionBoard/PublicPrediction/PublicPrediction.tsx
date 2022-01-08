@@ -2,14 +2,13 @@ import classes from './PublicPrediction.module.css'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { transform_name_for_ui } from '../../../../CommonFunctions/typed_functions'
-import { OddTypeType } from '../../../../redux/betReducer'
 import { BasePredictionType, delete_public_prediction, edit_public_prediction, PredictionType } from '../../../../redux/prediction_board'
-import { NewKindOfBet } from '../../../../redux/redux'
 import { Button, Col, Modal, Popover, Row } from 'antd'
 import { CloseSquareOutlined, EditOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { auth_user_selectors } from '../../../../Selectors/selectors'
 import { CreatePredictionContent } from '../../../CommonComponents/CreatePredictionBlock/CreatePredictionBlock'
+import { NewKindOfBet, OddTypeType } from '../../../../config'
 
 type PredictionProps = {
     data: PredictionType

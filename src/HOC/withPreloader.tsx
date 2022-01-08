@@ -1,6 +1,6 @@
 import React from 'react';
 import { isEmpty } from '../CommonFunctions/commonFunctions';
-import { TypeWithStringKey } from '../CommonFunctions/common_types';
+import { TypeWithStringKey } from '../config';
 
 export function withRenderByCondition<T extends TypeWithStringKey>(NewComponent: React.FC<T>, condition: string, property?: string | undefined) {
     return (WrappedComponent: React.FC<T>) => {

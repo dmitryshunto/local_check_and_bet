@@ -1,12 +1,12 @@
 import { ThunkAction } from "redux-thunk";
 import { BaseAPIType, ResultCodeTypes } from "../API/api_types"
-import { AppStoreType, NewKindOfBet, PropertiesType } from "./redux";
+import { AppStoreType, PropertiesType } from "./redux";
 import { actions as error_handler_actions } from './error_handler_reducer'
-import { OddTypeType } from "./betReducer"
 import { EventType, prediction_board_api } from "../API/websocket";
 import { users_api } from "../API/api";
 import UIfx from 'uifx'
 import { Dispatch } from "redux";
+import { NewKindOfBet, OddTypeType } from "../config";
 
 const notification_sound_file = require('../sounds/new_prediction.mp3')
 const notification_sound = new UIfx(notification_sound_file);

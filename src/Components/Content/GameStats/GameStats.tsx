@@ -10,11 +10,12 @@ import ToggleButtons from '../../CommonComponents/ToggleButton/ToggleButton'
 import { PreloaderPageWithoutHeader } from '../../CommonComponents/PreloaderPage/PreloaderPage';
 import { useSubscribeOnData } from '../../../Hooks/Hooks';
 import { BetType, selectBetTC } from '../../../redux/betReducer'
-import { AppStoreType, NewKindOfBet } from '../../../redux/redux'
+import { AppStoreType } from '../../../redux/redux'
 import { RouteComponentProps } from 'react-router-dom';
 import GameStatsHeader from './GameStatsHeader/GameStatsHeader';
 import BetBlock from './BetBlock/BetBlock';
 import LastMatchesBlock from './LastMatchesBlock/LastMatchesBlock';
+import { NewKindOfBet } from '../../../config';
 
 type PropsTypes = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType & RouteComponentProps<RoutePropsType>
 

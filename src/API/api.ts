@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BetType, OddTypeType } from '../redux/betReducer'
+import { BetType } from '../redux/betReducer'
 import { AuthData, AuthorizeType, BaseAPIType, ServerResponseType } from './api_types'
 import { FullBetStatisticItemType } from '../redux/bet_statistic_reducer'
 import { ChampionshipDataType } from '../redux/championship_stats_reducer'
@@ -7,8 +7,7 @@ import { GameStatsDataType } from '../redux/game_stats_reducer'
 import { MyNetChampionship } from '../redux/my_net_main_page_reducer';
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer';
 import { UserDataType } from '../redux/my_profile_reducer';
-import { NewKindOfBet } from '../redux/redux';
-import { base_url } from './../config';
+import { base_url, NewKindOfBet, OddTypeType } from './../config';
 import { PredictionType } from '../redux/prediction_board';
 
 const my_net_axios_instanse = axios.create({
