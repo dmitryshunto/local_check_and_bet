@@ -1,4 +1,4 @@
-import { my_net_api } from "../API/api";
+import { myNetAPI } from "../API/api";
 import { ResultCodeTypes } from "../API/api_types";
 import { PropertiesType, BaseThunkActionType } from "./redux"
 import { actions as error_handler_actions, SetErrorMessageAction } from './error_handler_reducer';
@@ -17,7 +17,7 @@ export const actions = {
 }
 
 export type FullBetStatisticItemType = {
-    bet_success: number
+    bet_success: number | null
     book_win1?: number | null
     book_x?: number | null
     book_win2?: number | null
@@ -64,7 +64,7 @@ let betStatisticReducer = (state = innitialObject, action: ActionsTypes): typeof
 
 export const setBetStatisticTC = (db_name: string, kind_of_bet: NewKindOfBet, type_of_bet: OddTypeType): BaseThunkActionType<ActionsTypes | SetErrorMessageAction> => async (dispatch) => {
     dispatch(actions.toggle_is_getting_data(true))
-    let response = await my_net_api.get_full_bet_statistic(db_name, kind_of_bet, type_of_bet)
+    let response = await myNetAPI.getFullBetStatistic(db_name, kind_of_bet, type_of_bet)
     if(response.resultCode === ResultCodeTypes.Success) {
         dispatch(actions.set_bet_statistic(response.data))
     } else if (response.resultCode === ResultCodeTypes.Error) {

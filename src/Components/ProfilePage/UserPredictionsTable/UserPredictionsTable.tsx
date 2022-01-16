@@ -67,7 +67,7 @@ const columns_info: ColumnsInfoType<MyPrediction>[] = [
 ]
 
 const UserPredictions: React.FC = () => {
-    const predictions = useSelector(propfile_selectors.get_predictions)
+    const predictions = useSelector(propfile_selectors.getPreditions)
     if (!predictions) return <Empty />
     const columns = create_columns(predictions, columns_info)
     return (

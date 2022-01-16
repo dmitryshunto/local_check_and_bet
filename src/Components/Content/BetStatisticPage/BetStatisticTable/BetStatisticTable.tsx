@@ -1,5 +1,5 @@
 import React from 'react'
-import { FullBetStatisticDataType, FullBetStatisticItemType } from '../../../../redux/bet_statistic_reducer'
+import { FullBetStatisticDataType, FullBetStatisticItemType } from '../../../../redux/betStatisticReducer'
 import classes from './BetStatisticTable.module.css'
 import cn from 'classnames'
 import Table, { ColumnsType } from 'antd/lib/table'

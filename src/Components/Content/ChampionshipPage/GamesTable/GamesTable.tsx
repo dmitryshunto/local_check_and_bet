@@ -1,8 +1,8 @@
 import React from 'react'
 import classes from './GamesTable.module.css'
-import { MyNetGameType } from '../../../../redux/my_net_main_page_reducer';
+import { MyNetGameType } from '../../../../redux/mainPageReducer';
 import { BetType } from '../../../../redux/betReducer';
-import { GamesTable } from '../../../CommonComponents/MyNetChampionship/MyNetChampionship';
+import { GamesTable } from '../../../CommonComponents/Championship/Championship';
 import { Empty } from 'antd';
 
 type GamesBlockProps = {

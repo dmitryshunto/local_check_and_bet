@@ -1,92 +1,92 @@
 import axios from 'axios';
 import { BetType } from '../redux/betReducer'
 import { AuthData, AuthorizeType, BaseAPIType, ServerResponseType } from './api_types'
-import { FullBetStatisticItemType } from '../redux/bet_statistic_reducer'
+import { FullBetStatisticItemType } from '../redux/betStatisticReducer'
 import { ChampionshipDataType } from '../redux/championship_stats_reducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
-import { MyNetChampionship } from '../redux/my_net_main_page_reducer';
+import { Championship } from '../redux/mainPageReducer';
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer';
 import { UserDataType } from '../redux/my_profile_reducer';
 import { base_url, NewKindOfBet, OddTypeType } from './../config';
 import { PredictionType } from '../redux/prediction_board';
 
-const my_net_axios_instanse = axios.create({
+const axiosInstanse = axios.create({
     baseURL: base_url,
     withCredentials: true
 })
 
-export const my_net_api = {
-    get_predictions: async (date_of_prediction: string) => {
-        let url = date_of_prediction ? `${date_of_prediction}/` : ''
-        let response = await my_net_axios_instanse.get<ServerResponseType<MyNetChampionship[] | []>>(`my_net_main_page/${url}`)
+export const myNetAPI = {
+    getPreditions: async (dateOfPrediction: string) => {
+        let url = dateOfPrediction ? `${dateOfPrediction}/` : ''
+        let response = await axiosInstanse.get<ServerResponseType<Championship[] | []>>(`mainPage/${url}`)
         return response.data
     },
-    get_game_stats: async (db_name: string, game_id: number) => {
-        let response = await my_net_axios_instanse.get<ServerResponseType<GameStatsDataType>>(`game_stats/${db_name}/${game_id}`)
+    getGameStats: async (dbName: string, gameID: number) => {
+        let response = await axiosInstanse.get<ServerResponseType<GameStatsDataType>>(`game_stats/${dbName}/${gameID}`)
         return response.data
     },
-    get_championship_stats: async (db_name: string) => {
-        let response = await my_net_axios_instanse.get<ServerResponseType<ChampionshipDataType>>(`championship_stats/${db_name}`)
+    getChampionshipStats: async (dbName: string) => {
+        let response = await axiosInstanse.get<ServerResponseType<ChampionshipDataType>>(`championshipStats/${dbName}`)
         return response.data
     },
-    get_championships_list: async () => {
-        let response = await my_net_axios_instanse.get<ServerResponseType<ChampionshipsPageDataType>>(`championships_list_page`)
+    getChampionshipsList: async () => {
+        let response = await axiosInstanse.get<ServerResponseType<ChampionshipsPageDataType>>(`championshipsListPage`)
         return response.data
     },
-    get_full_bet_statistic: async (db_name: string, kind_of_bet: NewKindOfBet, type_of_bet: OddTypeType) => {
-        let response = await my_net_axios_instanse.get<ServerResponseType<FullBetStatisticItemType[]>>(`full_bet_info/${db_name}/${kind_of_bet}/${type_of_bet}`)
-        return response.data
+    getFullBetStatistic: async (dbName: string, kindOfBet: NewKindOfBet, typeOfBet: OddTypeType) => {
+        let response = await axiosInstanse.get<ServerResponseType<FullBetStatisticItemType[]>>(`fullBetInfo/${dbName}/${kindOfBet}/${typeOfBet}`)
+            return response.data
     }
 }
 
-export const users_api = {
-    am_i_authorized: async () => {
-        let response = await my_net_axios_instanse.get<ServerResponseType<AuthData>>(`users/am_i_authorized`)
+export const usersAPI = {
+    amIAuthorized: async () => {
+        let response = await axiosInstanse.get<ServerResponseType<AuthData>>(`users/amIAuthorized`)
         return response
     },
-    login_user: async (user_login: string, user_password: string) => {
-        return await my_net_axios_instanse.post(`users/login_user`, { user_login, user_password })
+    loginUser: async (userLogin: string, userPassword: string) => {
+        return await axiosInstanse.post(`users/loginUser`, { userLogin, userPassword })
     },
-    logout_user: async () => {
-        return await my_net_axios_instanse.get(`users/logout_user`)
+    logoutUser: async () => {
+        return await axiosInstanse.get(`users/logoutUser`)
     },
-    create_new_user: async (user_login: string, user_password: string) => {
-        return await my_net_axios_instanse.post<AuthorizeType>(`users/create_new_user`, { user_login, user_password })
+    createNewUser: async (userLogin: string, userPassword: string) => {
+        return await axiosInstanse.post<AuthorizeType>(`users/createNewUser`, { userLogin, userPassword })
     },
-    get_create_new_user_page_info: async () => {
-        const response = await my_net_axios_instanse.get<ServerResponseType<{ default_photo_url: string }>>(`users/create_new_user_page`)
+    getCreateNewUserPageInfo: async () => {
+        const response = await axiosInstanse.get<ServerResponseType<{ defaultPhotoURL: string }>>(`users/createNewUserPage`)
         return response.data
     },
-    add_bet: async (bets: BetType[]) => {
-        return await my_net_axios_instanse.post<BaseAPIType>(`users/add_bet`, { bets })
+    addBet: async (bets: BetType[]) => {
+        return await axiosInstanse.post<BaseAPIType>(`users/addBet`, { bets })
     },
-    get_my_profile: async () => {
-        const response = await my_net_axios_instanse.get<ServerResponseType<UserDataType>>(`users/get_my_profile`)
+    getMyProfile: async () => {
+        const response = await axiosInstanse.get<ServerResponseType<UserDataType>>(`users/getMyProfile`)
         return response.data
     },
-    upload_profile_avatar: async (photo_file: File | Blob) => {
+    uploadProfileAvatar: async (photoFile: File | Blob) => {
         const formData = new FormData()
-        formData.append('avatar', photo_file)
-        const response = await my_net_axios_instanse.post<ServerResponseType<string | null>>(`users/upload_profile_avatar`, formData)
+        formData.append('avatar', photoFile)
+        const response = await axiosInstanse.post<ServerResponseType<string | null>>(`users/uploadProfileAvatar`, formData)
         return response.data
     },
-    add_prediction: async (prediction: PredictionType) => {
-        const response = await my_net_axios_instanse.post<BaseAPIType>(`users/add_prediction`, {prediction})
+    addPrediction: async (prediction: PredictionType) => {
+        const response = await axiosInstanse.post<BaseAPIType>(`users/addPrediction`, {prediction})
         return response.data
     },
-    get_public_predictions: async (portion_size: number, last_id?: number) => {
-        const response = await my_net_axios_instanse.post<ServerResponseType<PredictionType[]>>('users/get_public_predictions', {portion_size, last_id})
+    getPublicPredictions: async (portionSize: number, lastID?: number) => {
+        const response = await axiosInstanse.post<ServerResponseType<PredictionType[]>>('users/getPublicPredictions', {portionSize, lastID})
         return response.data
     },
-    update_user_last_seen_prediction_id: async (prediction_id: number) => {
-        await my_net_axios_instanse.post<BaseAPIType>(`users/update_user_last_seen_prediction_id`, {prediction_id})
+    updateUserLastSeenPredictionID: async (predictionID: number) => {
+        await axiosInstanse.post<BaseAPIType>(`users/updateUserLastSeenPredictionID`, {predictionID})
     } 
 }
 
-export const get_blob_file =  async (blob_url: string) => {
+export const getBlobFile =  async (blobURL: string) => {
     const response = await axios({
         method: 'get',
-        url: blob_url,
+        url: blobURL,
         responseType: 'blob'
     })
     var reader = new FileReader();

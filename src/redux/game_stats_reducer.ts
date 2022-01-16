@@ -1,4 +1,4 @@
-import { my_net_api } from "../API/api"
+import { myNetAPI } from "../API/api"
 import { ResultCodeTypes } from "../API/api_types"
 import { KindsOfBetType, PropertiesType, BaseThunkActionType } from "./redux"
 import { actions as error_handler_actons, SetErrorMessageAction } from './error_handler_reducer'
@@ -163,7 +163,7 @@ let gameStatsReducer = (state = innitialObject, action: ActionsTypes): typeof in
 
 export const setGameStatsTC = (name_of_championship: string, games_id: number): BaseThunkActionType<ActionsTypes | SetErrorMessageAction> => async dispatch => {
     dispatch(actions.toggle_is_getting_data(true));
-    let response = await my_net_api.get_game_stats(name_of_championship, games_id);
+    let response = await myNetAPI.getGameStats(name_of_championship, games_id);
     if(response.resultCode === ResultCodeTypes.Success) {
         dispatch(actions.set_game_stats(response.data));
     } else {

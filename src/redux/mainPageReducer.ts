@@ -1,16 +1,16 @@
-import { my_net_api } from "../API/api";
+import { myNetAPI } from "../API/api";
 import { getTodayDate } from "../CommonFunctions/commonFunctions";
 import { ResultCodeTypes } from '../API/api_types'
 import { PropertiesType, BaseThunkActionType } from "./redux"
 import { changeCheckedChampionshipStatus, create_new_date_for_checked_championsips_storage, delete_data_about_checked_championship_from_storage, isChamponshipChecked } from "../Coookie/cookie";
 import { NewKindsOfBet } from "../config";
 
-const SET_ALL_PREDICTIONS = 'MY_NET_MAIN_PAGE_REDUCER/SET_ALL_PREDICTION';
-const SET_DATE_OF_PREDICTION = 'MY_NET_MAIN_PAGE_REDUCER/SET_DATE_OF_PREDICTION'
-const SELECT_DATE_OF_PREDICTION = 'MY_NET_MAIN_PAGE_REDUCER/SELECT_DATE_OF_PREDICTION'
-const TOGGLE_IS_GETTING_DATA = 'MY_NET_MAIN_PAGE_REDUCER/TOGGLE_IS_GETTING_DATA'
-const SET_INITIAL_STATE = 'MY_NET_MAIN_PAGE_REDUCER/SET_INITIAL_STATE'
-const CHANGE_CHAMPIONSHIP_CHECKED_STATUS = 'MY_NET_MAIN_PAGE_REDUCER/CHANGE_CHAMPIONSHIP_CHECKED_STATUS'
+const SET_ALL_PREDICTIONS = 'mainPageReducer/SET_ALL_PREDICTION';
+const SET_DATE_OF_PREDICTION = 'mainPageReducer/SET_DATE_OF_PREDICTION'
+const SELECT_DATE_OF_PREDICTION = 'mainPageReducer/SELECT_DATE_OF_PREDICTION'
+const TOGGLE_IS_GETTING_DATA = 'mainPageReducer/TOGGLE_IS_GETTING_DATA'
+const SET_INITIAL_STATE = 'mainPageReducer/SET_INITIAL_STATE'
+const CHANGE_CHAMPIONSHIP_CHECKED_STATUS = 'mainPageReducer/CHANGE_CHAMPIONSHIP_CHECKED_STATUS'
 
 export const my_net_kinds_of_bet: NewKindsOfBet = ['goals', 'yellow_cards', 'corners', 'shots_on_goal', 'fouls']
 
@@ -66,7 +66,7 @@ type OutcomeProbability = {
     x: number
 }
 
-export type MyNetChampionship = {
+export type Championship = {
     checked: boolean | undefined,
     country_name: string,
     name_of_championship: string,
@@ -76,24 +76,24 @@ export type MyNetChampionship = {
 }
 
 export const actions = {
-    setAllPredictions: (data: MyNetChampionship[] | null) => ({ type: SET_ALL_PREDICTIONS, data } as const),
+    setAllPredictions: (data: Championship[] | null) => ({ type: SET_ALL_PREDICTIONS, data } as const),
     setDateOfPrediction: (date_of_prediction: string) => ({ type: SET_DATE_OF_PREDICTION, date_of_prediction } as const),
     toogleIsGettingData: (isGettingPrediction: boolean) => ({ type: TOGGLE_IS_GETTING_DATA, isGettingPrediction } as const),
-    set_my_net_main_page_initial_state: () => ({ type: SET_INITIAL_STATE } as const),
+    set_mainPage_initial_state: () => ({ type: SET_INITIAL_STATE } as const),
     selectDateOfPrediction: (selected_date_of_prediction: string) => ({ type: SELECT_DATE_OF_PREDICTION, selected_date_of_prediction } as const),
     changeChampionshipCheckedStatus: (db_name: string, date: string) => ({type: CHANGE_CHAMPIONSHIP_CHECKED_STATUS, db_name, date} as const)
 }
 
 let innitialObject = {
     isGettingPrediction: true,
-    data: null as MyNetChampionship[] | null,
+    data: null as Championship[] | null,
     date_of_prediction: getTodayDate(),
     selected_date_of_prediction: getTodayDate()
 }
 
 type ActionsTypes = ReturnType<PropertiesType<typeof actions>>
 
-let my_net_main_page_reducer = (state = innitialObject, action: ActionsTypes): typeof innitialObject => {
+let mainPageReducer = (state = innitialObject, action: ActionsTypes): typeof innitialObject => {
     if (action.type === SET_ALL_PREDICTIONS) {
         if (action.data) {
             const with_checking_predictions = action.data.map(prediction => {
@@ -150,7 +150,7 @@ export const set_my_net_predictionsTC = (date_of_prediction: string): BaseThunkA
     dispatch(actions.setDateOfPrediction(date_of_prediction))
     dispatch(actions.selectDateOfPrediction(date_of_prediction))
     delete_data_about_checked_championship_from_storage()
-    let response = await my_net_api.get_predictions(date_of_prediction)
+    let response = await myNetAPI.getPreditions(date_of_prediction)
     if (response.resultCode === ResultCodeTypes.Success) {
         dispatch(actions.setAllPredictions(response.data))
     } else if (response.resultCode === ResultCodeTypes.Error) {
@@ -159,4 +159,4 @@ export const set_my_net_predictionsTC = (date_of_prediction: string): BaseThunkA
     dispatch(actions.toogleIsGettingData(false))
 }
 
-export default my_net_main_page_reducer;
+export default mainPageReducer;

@@ -16,7 +16,7 @@ import { ColumnsType } from 'antd/lib/table'
 import { ColumnFilterItem, SortOrder } from 'antd/lib/table/interface'
 import { create_sorter } from '../../CommonFunctions/typed_functions'
 import { ColumnsInfoType, TypeWithStringKey } from '../../config'
-import { RenderFunction } from '../CommonComponents/MyNetChampionship/MyNetChampionship'
+import { RenderFunction } from '../CommonComponents/Championship/Championship'
 import { CheckCircleTwoTone, CloseCircleTwoTone, EnterOutlined } from '@ant-design/icons'
 
 const getIconForResult = (result: 0 | 1 | -1) => {
@@ -91,7 +91,7 @@ let ProfilePageContainer: React.FC<PropsType> = (props: PropsType) => {
 ProfilePageContainer = withAuthRedirect<PropsType>()(ProfilePageContainer)
 
 let ProfilePage: React.FC<PropsType> = ({ my_profile_data, photo_url, isLoadingPhoto, updatePhotoTC,
-    default_photo_url, user_login, }) => {
+    defaultPhotoURL, user_login, }) => {
 
     let balance = 0
     let win_bets = 0
@@ -124,7 +124,7 @@ let ProfilePage: React.FC<PropsType> = ({ my_profile_data, photo_url, isLoadingP
             <ProfileInfo number_of_bets={number_of_bets}
                 number_of_setled_bets={number_of_settled_bets}
                 user_login={user_login}
-                default_photo_url={default_photo_url}
+                defaultPhotoURL={defaultPhotoURL}
                 average_odd={average_odd}
                 balance={balance}
                 winning_rating={winning_rating}
@@ -158,7 +158,7 @@ let mapStateToProps = (state: AppStoreType) => {
         isGettingData: propfile_selectors.get_is_getting_data(state),
         photo_url: propfile_selectors.get_profile_photo_url(state),
         isLoadingPhoto: propfile_selectors.get_is_loading_profile_photo(state),
-        default_photo_url: propfile_selectors.get_default_photo_url(state)
+        defaultPhotoURL: propfile_selectors.get_defaultPhotoURL(state)
     }
 }
 

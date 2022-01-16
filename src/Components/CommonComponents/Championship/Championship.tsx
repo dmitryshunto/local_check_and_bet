@@ -1,6 +1,6 @@
 import React from 'react'
-import { actions, MyNetChampionship, MyNetGameType, MyNetPredictionKindOfBetType, my_net_kinds_of_bet } from '../../../redux/my_net_main_page_reducer'
-import classes from './MyNetChampionship.module.css'
+import { actions, Championship, MyNetGameType, MyNetPredictionKindOfBetType, my_net_kinds_of_bet } from '../../../redux/mainPageReducer'
+import classes from './Championship.module.css'
 import { Link } from 'react-router-dom'
 import { ItemWithTextSelection } from './ItemWithTextSelection/ItemWithTextSelection'
 import { BetType, MarketType } from '../../../redux/betReducer'
@@ -14,8 +14,8 @@ import { useSelector } from 'react-redux'
 import { auth_user_selectors } from '../../../Selectors/selectors'
 import { ColumnsType } from 'antd/lib/table'
 
-type MyNetChampionshipType = {
-    data: MyNetChampionship
+type ChampionshipType = {
+    data: Championship
     date_of_match: string
     selectBetTC: (bet: BetType) => void
     bets: [] | BetType[]
@@ -182,7 +182,7 @@ const classNames = {
     exitActive: classes.my_node_exit_active,
 }
 
-const MyNetChampionshipTable: React.FC<MyNetChampionshipType> = React.memo((props) => {
+const ChampionshipTable: React.FC<ChampionshipType> = React.memo((props) => {
     let button_content, button_type: 'primary' | undefined
     if (props.data.checked) {
         button_content = 'checked'
@@ -276,6 +276,6 @@ const TeamsBlock: React.FC<TeamsBlockType> = (props) => {
     )
 }
 
-export default MyNetChampionshipTable
+export default ChampionshipTable
 
 

@@ -65,7 +65,7 @@ const RootComponent: React.FC<RootComponentPropsType> = (props) => {
           {props.error_message && <ErrorPage message={props.error_message} />}
           {!props.error_message && <div className='app-wrapper-content' >
             <Switch>
-              <Route exact path='/' render={() => <Redirect to = '/my_net_main_page' />} />
+              <Route exact path='/' render={() => <Redirect to = '/mainPage' />} />
               <Route exact path='/welcome_new_user' component={WelcomeNewUserPage} />
               <Route exact path='/profile_page' component={ProfilePage} />
               <Route exact path='/loginpage' component={LoginPage} />
@@ -76,7 +76,7 @@ const RootComponent: React.FC<RootComponentPropsType> = (props) => {
               <Route exact path='/championships/:db_name/:kind_of_bet/:type_of_bet' component={BetStatisticPage} />
 
               <Route exact path='/game_stats/:db_name/:game_id' component={GameStats} />
-              <Route exact path='/my_net_main_page/:date_of_prediction?' component={MyNetMainPage} />
+              <Route exact path='/mainPage/:date_of_prediction?' component={MyNetMainPage} />
               <Route exact path='/prediction_board' component={PredictionBoard} /> 
               <Route path = '*' component = {PageNotFound}/> 
             </Switch>

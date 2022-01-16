@@ -136,8 +136,8 @@ const UploadNewPhotoWindow = ({ set_upload_mode, upload_mode, updatePhotoTC, act
   )
 }
 
-let ProfileAvatar = ({ photo_url, default_photo_url, cb }) => {
-  let avatar_photo_url = photo_url ? photo_url : default_photo_url
+let ProfileAvatar = ({ photo_url, defaultPhotoURL, cb }) => {
+  let avatar_photo_url = photo_url ? photo_url : defaultPhotoURL
   return (
     <div className={classes.avatar}>
       <img src={avatar_photo_url} alt={'avatar'} />
@@ -148,13 +148,13 @@ let ProfileAvatar = ({ photo_url, default_photo_url, cb }) => {
 
 ProfileAvatar = withPreloader(PreloaderBlock, 'isLoadingPhoto')(ProfileAvatar)
 
-const AvatarComonent = ({ updatePhotoTC, photo_url, isLoadingPhoto, default_photo_url }) => {
+const AvatarComonent = ({ updatePhotoTC, photo_url, isLoadingPhoto, defaultPhotoURL }) => {
   const [upload_mode, set_upload_mode] = useState(false)
   return (
     <div>
       <ProfileAvatar photo_url={photo_url}
         isLoadingPhoto={isLoadingPhoto}
-        default_photo_url={default_photo_url}
+        defaultPhotoURL={defaultPhotoURL}
         cb={set_upload_mode} />
       <UploadNewPhotoWindow updatePhotoTC={updatePhotoTC}
         set_upload_mode={set_upload_mode}

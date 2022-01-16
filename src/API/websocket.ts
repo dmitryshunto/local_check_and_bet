@@ -26,7 +26,9 @@ type SubscriberType<SubscriberArgsType> = (payload: SubscriberArgsType) => void
 
 let socket: Socket | null = null
 
-const operation_success_handler = (event: 'prediction_sent_success' | 'prediction_deleted_success' | 'prediction_edition_success') => {
+const operation_success_handler = (event: typeof PREDICTION_RECEIVING_SUCCESS |
+                                          typeof PREDICTION_DELETION_SUCCESS |
+                                          typeof PREDICTION_EDITION_SUCCESS) => {
     socket?.on<EventType>(event, (response: BaseAPIType) => {
         subscribers[event].forEach(cb => cb(response))
     })

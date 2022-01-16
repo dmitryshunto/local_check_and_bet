@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Field, reduxForm, InjectedFormProps, Form } from 'redux-form'
 import { connect, useSelector } from 'react-redux';
 import { createNewUserTC, set_info_for_creating_userTC, add_user_photo_to_stateTC, actions } from '../../redux/createNUReducer';
-import { auth_user_selectors, create_new_user_page_selectors } from '../../Selectors/selectors';
+import { auth_user_selectors, createNewUser_page_selectors } from '../../Selectors/selectors';
 import classes from './CreateNewUserPage.module.css'
 import { validate } from '../../CommonFunctions/validators';
 import { AppStoreType } from '../../redux/redux';
@@ -48,7 +48,7 @@ let CreateNewUserPage: React.FC<PropType> = (props) => {
                     <Col span={4} offset={10}>
                         <AvatarComonent updatePhotoTC={props.add_user_photo_to_stateTC}
                             photo_url={props.avatar_photo_url}
-                            default_photo_url={props.default_photo_url}
+                            defaultPhotoURL={props.defaultPhotoURL}
                             isLoadingPhoto={props.isLoadingPhoto}
                         />
                     </Col>
@@ -126,12 +126,12 @@ let mapDispatchToProps: MapDispatchToPropsType = {
 
 let mapStateToProps = (state: AppStoreType) => {
     return {
-        isGettingData: create_new_user_page_selectors.get_is_getting_data(state),
-        warning_messages: create_new_user_page_selectors.get_warning_message(state),
-        createNUsuccess: create_new_user_page_selectors.get_operation_success(state),
-        default_photo_url: create_new_user_page_selectors.get_default_photo_url(state),
-        avatar_photo_url: create_new_user_page_selectors.get_avatar_photo_url(state),
-        isLoadingPhoto: create_new_user_page_selectors.get_is_loading_photo(state)
+        isGettingData: createNewUser_page_selectors.get_is_getting_data(state),
+        warning_messages: createNewUser_page_selectors.get_warning_message(state),
+        createNUsuccess: createNewUser_page_selectors.get_operation_success(state),
+        defaultPhotoURL: createNewUser_page_selectors.get_defaultPhotoURL(state),
+        avatar_photo_url: createNewUser_page_selectors.get_avatar_photo_url(state),
+        isLoadingPhoto: createNewUser_page_selectors.get_is_loading_photo(state)
     }
 }
 

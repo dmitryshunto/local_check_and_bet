@@ -1,4 +1,4 @@
-import { my_net_api } from "../API/api";
+import { myNetAPI } from "../API/api";
 import { PropertiesType, BaseThunkActionType } from "./redux"
 
 const SET_CHAMPIONSHIPS_LIST = 'CHAMPIONSHIPS_PAGE_REDUCER/SET_CHAMPIONSHIPS_LIST'
@@ -44,7 +44,7 @@ const championshipsPageReducer = (state = innitialObject, action: ActionsTypes):
 
 export const setChampionshipsListTC = (): BaseThunkActionType<ActionsTypes> => async (dispatch) => {
     dispatch(actions.toggle_is_getting_data(true))
-    let response = await my_net_api.get_championships_list()
+    let response = await myNetAPI.getChampionshipsList()
     dispatch(actions.set_championships_list(response.data))
     dispatch(actions.toggle_is_getting_data(false))
 }

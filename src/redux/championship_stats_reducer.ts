@@ -1,6 +1,6 @@
-import { my_net_api } from './../API/api';
+import { myNetAPI } from './../API/api';
 import { PropertiesType, BaseThunkActionType } from "./redux"
-import { MyNetGameType } from './my_net_main_page_reducer';
+import { MyNetGameType } from './mainPageReducer';
 import { ResultCodeTypes } from '../API/api_types';
 import { actions as error_handler_actons, SetErrorMessageAction } from './error_handler_reducer'
 
@@ -138,7 +138,7 @@ let championshipStatsReducer = (state = innitialObject, action: ActionsTypes): t
 
 export const setChampionshipStatsTC = (db_name: string): BaseThunkActionType<ActionsTypes | SetErrorMessageAction> => async (dispatch) => {
     dispatch(actions.toggle_is_getting_data(true));
-    let response = await my_net_api.get_championship_stats(db_name)
+    let response = await myNetAPI.getChampionshipStats(db_name)
     if(response.resultCode === ResultCodeTypes.Success) {
         dispatch(actions.set_championship_stats(response.data))
     } else if (response.resultCode === ResultCodeTypes.Error) {

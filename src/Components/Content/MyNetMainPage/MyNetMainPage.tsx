@@ -2,12 +2,12 @@ import React, { memo, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useSubscribeOnData } from '../../../Hooks/Hooks';
 import { AppStoreType } from '../../../redux/redux';
-import { actions, MyNetChampionship, set_my_net_predictionsTC } from './../../../redux/my_net_main_page_reducer';
-import {added_bets_selectors, my_net_main_page_selectors} from '../../../Selectors/selectors'
+import { actions, Championship, set_my_net_predictionsTC } from './../../../redux/mainPageReducer';
+import {added_bets_selectors, mainPage_selectors} from '../../../Selectors/selectors'
 import { connect } from 'react-redux';
 import DateButton from '../../CommonComponents/DateButton/DateButton';
 import { PreloaderPageWithoutHeader } from '../../CommonComponents/PreloaderPage/PreloaderPage';
-import MyNetChampionshipTable from '../../CommonComponents/MyNetChampionship/MyNetChampionship';
+import ChampionshipTable from '../../CommonComponents/Championship/Championship';
 import { BetType, addBetActionType, removeBetActionType, selectBetTC, actions as betReducerActions} from '../../../redux/betReducer';
 import BetCoupon from '../../CommonComponents/BetCoupon/BetCoupon';
 import { getTodayDate } from '../../../CommonFunctions/commonFunctions';
@@ -18,7 +18,7 @@ const MainPageContainer: React.FC<PropsTypes> = (props) => {
     const date_of_prediction = props.match.params.date_of_prediction ? props.match.params.date_of_prediction
                                                                      : getTodayDate()
                                                                      
-    useSubscribeOnData(props.set_my_net_predictionsTC, props.set_my_net_main_page_initial_state, [date_of_prediction])
+    useSubscribeOnData(props.set_my_net_predictionsTC, props.set_mainPage_initial_state, [date_of_prediction])
     useEffect(() => {
         document.title = 'Main Page'
     }, [])
@@ -29,7 +29,7 @@ const MainPageContainer: React.FC<PropsTypes> = (props) => {
 
 let MainPage: React.FC<PropsTypes> = memo(({...props}) => {
     const championships = props.data?.map(item => {
-        return <MyNetChampionshipTable  key = {item.country_name + item.name_of_championship} 
+        return <ChampionshipTable  key = {item.country_name + item.name_of_championship} 
                                         changeChampionshipCheckedStatus = {props.changeChampionshipCheckedStatus}                                              
                                         data = {item}
                                         bets = {props.bets}
@@ -41,7 +41,7 @@ let MainPage: React.FC<PropsTypes> = memo(({...props}) => {
         <div>
             <DateButton selected_date_of_prediction = {props.selected_date_of_prediction}
                         selectDateOfPrediction = {props.selectDateOfPrediction}
-                        additional_url = {'my_net_main_page'}/>
+                        additional_url = {'mainPage'}/>
             <div>
                 {championships}
             </div>
@@ -64,7 +64,7 @@ type RoutePropsType = {
 type MapDispatchToPropsType = {
     set_my_net_predictionsTC: (date_of_prediction: string) => void
     selectBetTC: (bet: BetType) => void
-    set_my_net_main_page_initial_state: () => void
+    set_mainPage_initial_state: () => void
     selectDateOfPrediction: (selected_date_of_prediction: string) => void
     addBet: (bet: BetType) => addBetActionType
     removeBet: (bet: BetType) => removeBetActionType
@@ -74,7 +74,7 @@ type MapDispatchToPropsType = {
 const mapDispatchToProps: MapDispatchToPropsType = {
     set_my_net_predictionsTC,
     selectBetTC,
-    set_my_net_main_page_initial_state: actions.set_my_net_main_page_initial_state,
+    set_mainPage_initial_state: actions.set_mainPage_initial_state,
     selectDateOfPrediction: actions.selectDateOfPrediction,
     addBet: betReducerActions.addBet,
     removeBet: betReducerActions.removeBet,
@@ -82,7 +82,7 @@ const mapDispatchToProps: MapDispatchToPropsType = {
 }
 
 type MapStateToPropsType = {
-    data: MyNetChampionship[] | null
+    data: Championship[] | null
     isGettingData: boolean
     selected_date_of_prediction: string
     date_of_prediction: string
@@ -91,10 +91,10 @@ type MapStateToPropsType = {
 
 const mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
     return {
-      data: my_net_main_page_selectors.get_data(state),
-      isGettingData: my_net_main_page_selectors.get_is_getting_data(state),
-      selected_date_of_prediction: my_net_main_page_selectors.selected_date_of_prediction(state),
-      date_of_prediction: my_net_main_page_selectors.get_date_of_prediction(state),
+      data: mainPage_selectors.get_data(state),
+      isGettingData: mainPage_selectors.get_is_getting_data(state),
+      selected_date_of_prediction: mainPage_selectors.selected_date_of_prediction(state),
+      date_of_prediction: mainPage_selectors.get_date_of_prediction(state),
       bets: added_bets_selectors.get_data(state)
     }
 }

@@ -1,4 +1,4 @@
-import { users_api } from "../API/api";
+import { usersAPI } from "../API/api";
 import { SetInitialStateCNUreducer, actions as createNewUserActions } from "./createNUReducer";
 import { SetInitialBetReducerState, actions as betReducerActions } from "./betReducer"
 import { actions as error_handler_actions } from './error_handler_reducer'
@@ -65,7 +65,7 @@ type ActionTypes = OwnActions | SetInitialStateCNUreducer | SetInitialBetReducer
 export const amIAuthorizedTC = (): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch) => {
     dispatch(actions.toggleIsLoggingUser(true));
     try {
-        const response = await users_api.am_i_authorized();
+        const response = await usersAPI.amIAuthorized();
         if (response.statusText === 'OK') {
             if (response.data.data.login) {
                 dispatch(actions.setAutorization({
@@ -100,7 +100,7 @@ export const amIAuthorizedTC = (): ThunkAction<Promise<void>, AppStoreType, unkn
 
 export const loginUserTC = (login: string, password: string): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch) => {
     dispatch(actions.toggleIsLoggingUser(true));
-    let response = await users_api.login_user(login, password);
+    let response = await usersAPI.loginUser(login, password);
     if (response.data.resultCode === ResultCodeTypes.Success) {
         dispatch(actions.setAutorization({
             isAuthorized: true,
@@ -119,7 +119,7 @@ export const loginUserTC = (login: string, password: string): ThunkAction<Promis
 }
 
 export const logoutUserTC = (): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch) => {
-    let response = await users_api.logout_user()
+    let response = await usersAPI.logoutUser()
     if(response.statusText === 'OK') {
         dispatch(actions.setAutorization({
             isAuthorized: false,

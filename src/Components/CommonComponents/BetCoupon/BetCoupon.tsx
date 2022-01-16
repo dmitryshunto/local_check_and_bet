@@ -25,7 +25,7 @@ let BetCoupon: React.FC<PropsType> = ({ bets, removeBet, addBetToDBTC, login, is
                     <div className={classes.remove_all_bets_button} onClick={() => setInitialBetsReducerState()}>Delete all</div>
                 </div>
                 {coupon_bets}
-                <button className={classes.add_bet_button}
+                <button className={classes.addBet_button}
                     onClick={() => addBetToDBTC(login, bets)}
                     disabled={!all_bets_with_inserted_size || isAddingBets}>
                     Add to my bets

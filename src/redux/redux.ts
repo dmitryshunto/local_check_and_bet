@@ -6,10 +6,10 @@ import createNUReducer from './createNUReducer';
 import gameStatsReducer from './game_stats_reducer';
 import betReducer from './betReducer';
 import championshipStatsReducer from './championship_stats_reducer';
-import betStatisticReducer from './bet_statistic_reducer';
+import betStatisticReducer from './betStatisticReducer';
 import championshipsPageReducer from './championships_page_reducer';
 import myProfileReducer from './my_profile_reducer';
-import my_net_main_page_reducer from './my_net_main_page_reducer'
+import mainPageReducer from './mainPageReducer'
 import error_handler_reducer from './error_handler_reducer';
 import prediction_board_reducer from './prediction_board';
 
@@ -23,7 +23,7 @@ let rootReducer = combineReducers({
     betsStatistic: betStatisticReducer,
     championshipsPage: championshipsPageReducer,
     myProfileReducer: myProfileReducer,
-    my_net_main_page_reducer: my_net_main_page_reducer,
+    mainPageReducer: mainPageReducer,
     error_handler: error_handler_reducer,
     prediction_board: prediction_board_reducer
 })

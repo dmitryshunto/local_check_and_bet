@@ -3,7 +3,7 @@ import { BaseAPIType, ResultCodeTypes } from "../API/api_types"
 import { AppStoreType, PropertiesType } from "./redux";
 import { actions as error_handler_actions } from './error_handler_reducer'
 import { EventType, prediction_board_api } from "../API/websocket";
-import { users_api } from "../API/api";
+import { usersAPI } from "../API/api";
 import UIfx from 'uifx'
 import { Dispatch } from "redux";
 import { NewKindOfBet, OddTypeType } from "../config";
@@ -157,10 +157,10 @@ const portion_size = 6
 export const setUsersPredictionsTC = (): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch, getState) => {
     dispatch(actions.toggle_is_getting_data(true))
     if (getState().authUser.login) {
-        let response = await users_api.get_public_predictions(portion_size)
+        let response = await usersAPI.getPublicPredictions(portion_size)
         if (response.resultCode === ResultCodeTypes.Success) {
             dispatch(actions.set_new_predictions_number(0))
-            if(response.data.length) users_api.update_user_last_seen_prediction_id(response.data[0].id)
+            if(response.data.length) usersAPI.updateUserLastSeenPredictionID(response.data[0].id)
             if(response.data.length < portion_size) dispatch(actions.all_predictions_recieved(true))
             dispatch(actions.set_data(response.data))
         } else if (response.resultCode === ResultCodeTypes.Error) {
@@ -175,7 +175,7 @@ export const getMoreUsersPredictions = (): ThunkAction<Promise<void>, AppStoreTy
     const state = getState().prediction_board
     if (state.data.length) {
         const last_id = state.data[state.data.length - 1].id
-        let response = await users_api.get_public_predictions(portion_size, last_id)
+        let response = await usersAPI.getPublicPredictions(portion_size, last_id)
         if (response.resultCode === ResultCodeTypes.Success) {
             dispatch(actions.more_prediction_recieved(response.data))
             if (response.data.length === 0 || response.data.length < portion_size) dispatch(actions.all_predictions_recieved(true))
@@ -188,15 +188,15 @@ export const getMoreUsersPredictions = (): ThunkAction<Promise<void>, AppStoreTy
 
 export const set_initial_state = (): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch) => {
     dispatch(actions.set_new_predictions_number(0))
-    dispatch(update_user_last_seen_prediction_id())
+    dispatch(updateUserLastSeenPredictionID())
     dispatch(actions.all_predictions_recieved(false))
     dispatch(actions.is_getting_more_prediction_changed(false))
 }
 
-export const update_user_last_seen_prediction_id = (): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch, getState) => {
+export const updateUserLastSeenPredictionID = (): ThunkAction<Promise<void>, AppStoreType, unknown, ActionTypes> => async (dispatch, getState) => {
     const predictions = getState().prediction_board.data
     if (predictions.length) {
-        users_api.update_user_last_seen_prediction_id(predictions[0].id)
+        usersAPI.updateUserLastSeenPredictionID(predictions[0].id)
         dispatch(actions.last_seen_prediction_id_changed(predictions[0].id))
     }
 }

@@ -1,15 +1,15 @@
-import { users_api } from "../API/api"
+import { usersAPI } from "../API/api"
 import { actions as error_handler_actions, SetWarningMessagesAction } from "./error_handler_reducer"
 import { PropertiesType, BaseThunkActionType } from "./redux"
 import { transform_date_for_UI } from "../CommonFunctions/typed_functions"
 import { getTodayDate } from "../CommonFunctions/commonFunctions"
 import { NewKindOfBet, OddTypeType } from "../config"
 
-const ADD_BET = 'BET_REDUCER/ADD_BET'
+const addBet = 'BET_REDUCER/addBet'
 const REMOVE_BET = 'BET_REDUCER/REMOVE_BET'
 const TOGGLE_IS_ADDING_BET = 'BET_REDUCER/TOGGLE_IS_ADDING_BET'
-const ADD_BET_SUCCESS = 'BET_REDUCER/ADD_BET_SUCCESS'
-const ADD_BET_ERROR = 'BET_REDUCER/ADD_BET_ERROR'
+const addBet_SUCCESS = 'BET_REDUCER/addBet_SUCCESS'
+const addBet_ERROR = 'BET_REDUCER/addBet_ERROR'
 const SET_INITIAL_STATE = 'BET_REDUCER/SET_INITIAL_STATE'
 
 export type addBetActionType = ReturnType<typeof actions.addBet>
@@ -18,10 +18,10 @@ export type SetInitialBetReducerState = ReturnType<typeof actions.setInitialBets
 
 export const actions = {
     removeBet: (bet: BetType) => ({ type: REMOVE_BET, bet } as const),
-    addBet: (bet: BetType) => ({ type: ADD_BET, bet } as const),
+    addBet: (bet: BetType) => ({ type: addBet, bet } as const),
     toggleIsAddingBet: (isAddingBetsToDB: boolean) => ({ type: TOGGLE_IS_ADDING_BET, isAddingBetsToDB } as const),
-    addBetSuccess: (object: typeof innitialObject) => ({ type: ADD_BET_SUCCESS, object } as const),
-    addBetError: (message: string[]) => ({ type: ADD_BET_ERROR, message } as const),
+    addBetSuccess: (object: typeof innitialObject) => ({ type: addBet_SUCCESS, object } as const),
+    addBetError: (message: string[]) => ({ type: addBet_ERROR, message } as const),
     setInitialBetsReducerState: () => ({ type: SET_INITIAL_STATE } as const)
 }
 
@@ -53,7 +53,7 @@ let innitialObject = {
 type ActionsTypes = ReturnType<PropertiesType<typeof actions>>
 
 let betReducer = (state = innitialObject, action: ActionsTypes): typeof innitialObject => {
-    if (action.type === ADD_BET) {
+    if (action.type === addBet) {
         return {
             ...state,
             bets: [...state.bets, action.bet],
@@ -72,12 +72,12 @@ let betReducer = (state = innitialObject, action: ActionsTypes): typeof innitial
             ...state,
             isAddingBetsToDB: action.isAddingBetsToDB
         }
-    } else if (action.type === ADD_BET_SUCCESS) {
+    } else if (action.type === addBet_SUCCESS) {
         return {
             ...state,
             ...action.object
         }
-    } else if (action.type === ADD_BET_ERROR) {
+    } else if (action.type === addBet_ERROR) {
         return {
             ...state,
             isAddingBetsToDB: false,
@@ -93,7 +93,7 @@ let betReducer = (state = innitialObject, action: ActionsTypes): typeof innitial
 export const addBetToDBTC = (login: string | null, bets: Array<BetType>): BaseThunkActionType<ActionsTypes | SetWarningMessagesAction> => async (dispatch) => {
     if (login) {
         dispatch(actions.toggleIsAddingBet(true))
-        let response = await users_api.add_bet(bets)
+        let response = await usersAPI.addBet(bets)
         if (response.data.resultCode === 0) {
             dispatch(actions.toggleIsAddingBet(false))
             dispatch(actions.addBetSuccess({

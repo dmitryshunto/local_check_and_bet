@@ -1,4 +1,4 @@
-import { users_api } from "../API/api";
+import { usersAPI } from "../API/api";
 import { ResultCodeTypes } from "../API/api_types";
 import { PropertiesType, BaseThunkActionType } from "./redux"
 import { actions as error_handler_actions } from './error_handler_reducer';
@@ -64,7 +64,7 @@ export interface UserDataType {
     user_bets: MyProfileBets
     user_predictions: MyPredictions
     photo_url: string | null
-    default_photo_url: string
+    defaultPhotoURL: string
 }
 
 let innitialObject = {
@@ -72,7 +72,7 @@ let innitialObject = {
     isLoadingPhoto: false,
     bets: null as MyProfileBets,
     predictions: null as MyPredictions,
-    default_photo_url: null as string | null,
+    defaultPhotoURL: null as string | null,
     photo_url: null as string | null,
     warning_message: null as string[] | null
 }
@@ -84,7 +84,7 @@ const myProfileReducer = (state = innitialObject, action: ActionsTypes): typeof 
             ...state,
             bets: action.payload.user_bets,
             predictions: action.payload.user_predictions,
-            default_photo_url: action.payload.default_photo_url,
+            defaultPhotoURL: action.payload.defaultPhotoURL,
             photo_url: action.payload.photo_url
         }
     } else if (action.type === TOGGLE_IS_GETTING_DATA) {
@@ -114,7 +114,7 @@ const myProfileReducer = (state = innitialObject, action: ActionsTypes): typeof 
 
 export const setMyProfileDataTC = (): BaseThunkActionType<ActionsTypes> => async (dispatch) => {
     dispatch(actions.toggle_is_getting_data(true))
-    const response = await users_api.get_my_profile()
+    const response = await usersAPI.getMyProfile()
     if (response.resultCode === ResultCodeTypes.Success) {
         dispatch(actions.set_my_profile_data({...response.data}))
         dispatch(error_handler_actions.set_error(null))
@@ -126,7 +126,7 @@ export const setMyProfileDataTC = (): BaseThunkActionType<ActionsTypes> => async
 
 export const updatePhotoTC = (photo_file: File | Blob): BaseThunkActionType<ActionsTypes> => async (dispatch) => {
     dispatch(actions.toogle_is_loading_photo(true))
-    const response = await users_api.upload_profile_avatar(photo_file)
+    const response = await usersAPI.uploadProfileAvatar(photo_file)
     if (response.resultCode === ResultCodeTypes.Success) {
         dispatch(actions.update_photo_url(response.data))
         dispatch(actions.set_update_photo_url_warning_message(null))

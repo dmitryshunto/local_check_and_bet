@@ -7,7 +7,7 @@ const PageNotFound: React.FC = () => {
             status="403"
             title="403"
             subTitle="Sorry, you are not authorized to access this page."
-            extra={<Button type="link" href = 'my_net_main_page'>Back Home</Button>}
+            extra={<Button type="link" href = 'mainPage'>Back Home</Button>}
         />)
 }
 

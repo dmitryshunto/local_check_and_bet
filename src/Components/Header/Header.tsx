@@ -14,7 +14,7 @@ const MyHeader: React.FC = () => {
         <Header>
             <div className="logo" />
             <Menu theme="dark" mode="horizontal">
-                <Menu.Item key="1"><Link to='/my_net_main_page'>Main Page</Link></Menu.Item>
+                <Menu.Item key="1"><Link to='/mainPage'>Main Page</Link></Menu.Item>
                 <Menu.Item key="2"><Link to='/championships'>Leagues</Link></Menu.Item>
                 {login ?
                     <>

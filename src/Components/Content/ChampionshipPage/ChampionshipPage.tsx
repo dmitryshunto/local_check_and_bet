@@ -13,7 +13,7 @@ import GamesTable from './GamesTable/GamesTable';
 import { BetType, selectBetTC } from '../../../redux/betReducer';
 import BetCoupon from '../../CommonComponents/BetCoupon/BetCoupon';
 import { useEffect } from 'react';
-import { MyNetGameType } from '../../../redux/my_net_main_page_reducer';
+import { MyNetGameType } from '../../../redux/mainPageReducer';
 import ChampionshipStats from './ChampionshipStats/ChampionshipStats';
 
 
@@ -78,7 +78,7 @@ type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType & Route
 
 let mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {
-        championship_stats: championship_page_selectors.get_championship_stats(state),
+        championship_stats: championship_page_selectors.getChampionshipStats(state),
         bet_statistic: championship_page_selectors.get_championship_bet_statistic(state),
         isGettingData: championship_page_selectors.get_is_getting_data(state),
         basic_totals: championship_page_selectors.get_basic_totals(state),

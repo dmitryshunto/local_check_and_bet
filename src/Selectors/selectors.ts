@@ -1,11 +1,11 @@
 import { AppStoreType } from '../redux/redux'
-import { FullBetStatisticDataType } from '../redux/bet_statistic_reducer'
+import { FullBetStatisticDataType } from '../redux/betStatisticReducer'
 import { ChampionshipsPageDataType } from '../redux/championships_page_reducer'
 import { MyPredictions, MyProfileBets } from '../redux/my_profile_reducer'
 import { BetType } from '../redux/betReducer'
 import { GameStatsDataType } from '../redux/game_stats_reducer'
 import { BasicTotals, ChampionshipStatsDataType, BetStatisticType } from '../redux/championship_stats_reducer'
-import { MyNetChampionship, MyNetGameType } from "../redux/my_net_main_page_reducer";
+import { Championship, MyNetGameType } from "../redux/mainPageReducer";
 
 export const error_handler_selectors = {
     get_error_message: (state: AppStoreType) => {
@@ -16,7 +16,7 @@ export const error_handler_selectors = {
     }
 }
 
-export const create_new_user_page_selectors = {
+export const createNewUser_page_selectors = {
     get_is_getting_data: (state: AppStoreType): boolean => {
         return state.createNU.is_getting_data;
     },
@@ -29,8 +29,8 @@ export const create_new_user_page_selectors = {
     get_operation_success: (state: AppStoreType): boolean | null => {
         return state.createNU.createNewUserSuccess;
     },
-    get_default_photo_url: (state: AppStoreType) => {
-        return state.createNU.default_photo_url
+    get_defaultPhotoURL: (state: AppStoreType) => {
+        return state.createNU.defaultPhotoURL
     },
     get_avatar_photo_url: (state: AppStoreType) => {
         return state.createNU.avatar_photo_file_url
@@ -95,7 +95,7 @@ export const bet_statistic_page_selectors = {
 }
 
 export const championship_page_selectors = {
-    get_championship_stats: (state: AppStoreType): ChampionshipStatsDataType | undefined => {
+    getChampionshipStats: (state: AppStoreType): ChampionshipStatsDataType | undefined => {
         return state.championshipPage.data?.championships_stats
     },
     get_championship_bet_statistic: (state: AppStoreType): BetStatisticType | undefined => {
@@ -126,7 +126,7 @@ export const propfile_selectors = {
     get_data: (state: AppStoreType): MyProfileBets => {
         return state.myProfileReducer.bets
     },
-    get_predictions: (state: AppStoreType): MyPredictions => {
+    getPreditions: (state: AppStoreType): MyPredictions => {
         return state.myProfileReducer.predictions
     },
     get_is_loading_profile_photo: (state: AppStoreType): boolean => {
@@ -135,23 +135,23 @@ export const propfile_selectors = {
     get_profile_photo_url: (state: AppStoreType): string | null => {
         return state.myProfileReducer.photo_url
     },
-    get_default_photo_url: (state: AppStoreType): string | null => {
-        return state.myProfileReducer.default_photo_url
+    get_defaultPhotoURL: (state: AppStoreType): string | null => {
+        return state.myProfileReducer.defaultPhotoURL
     }
 }
 
-export const my_net_main_page_selectors = {
+export const mainPage_selectors = {
     get_is_getting_data: (state: AppStoreType): boolean => {
-        return state.my_net_main_page_reducer.isGettingPrediction
+        return state.mainPageReducer.isGettingPrediction
     },
-    get_data: (state: AppStoreType): MyNetChampionship[] | null => {
-        return state.my_net_main_page_reducer.data
+    get_data: (state: AppStoreType): Championship[] | null => {
+        return state.mainPageReducer.data
     },
     selected_date_of_prediction: (state: AppStoreType): string => {
-        return state.my_net_main_page_reducer.selected_date_of_prediction
+        return state.mainPageReducer.selected_date_of_prediction
     },
     get_date_of_prediction: (state: AppStoreType): string => {
-        return state.my_net_main_page_reducer.date_of_prediction
+        return state.mainPageReducer.date_of_prediction
     }
 }
 

@@ -12,17 +12,17 @@ type PropsType = {
     photo_url: string | null
     isLoadingPhoto: boolean
     updatePhotoTC: (photo_file: File) => void
-    default_photo_url: string | null
+    defaultPhotoURL: string | null
 }
 
 const ProfileInfo: React.FC<PropsType> = ({ number_of_bets, balance, isLoadingPhoto, photo_url, updatePhotoTC, user_login,
-    winning_rating, average_odd, default_photo_url, number_of_setled_bets }) => {
+    winning_rating, average_odd, defaultPhotoURL, number_of_setled_bets }) => {
 
     return (
         <div className={classes.profile_info}>
             <div className={classes.avatar_container}>
                 <AvatarComonent photo_url={photo_url}
-                    default_photo_url={default_photo_url}
+                    defaultPhotoURL={defaultPhotoURL}
                     isLoadingPhoto={isLoadingPhoto}
                     updatePhotoTC={updatePhotoTC}
                 />
