@@ -12,7 +12,7 @@ import { BetType, addBetActionType, removeBetActionType, selectBetTC, actions as
 import BetCoupon from '../../CommonComponents/BetCoupon/BetCoupon';
 import { getTodayDate } from '../../../CommonFunctions/commonFunctions';
 
-type PropsTypes = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType &  RouteComponentProps<RoutePropsType>
+type PropsTypes = MapStateToPropsType & MapDispatchToPropsType & RouteComponentProps<RoutePropsType>
 
 const MainPageContainer: React.FC<PropsTypes> = (props) => {
     const date_of_prediction = props.match.params.date_of_prediction ? props.match.params.date_of_prediction
@@ -50,13 +50,6 @@ let MainPage: React.FC<PropsTypes> = memo(({...props}) => {
     )
 })
 
-
-
-
-type OwnPropsType = {
- 
-}
-
 type RoutePropsType = {
     date_of_prediction: string  
 }
@@ -81,15 +74,7 @@ const mapDispatchToProps: MapDispatchToPropsType = {
     changeChampionshipCheckedStatus: actions.changeChampionshipCheckedStatus
 }
 
-type MapStateToPropsType = {
-    data: Championship[] | null
-    isGettingData: boolean
-    selected_date_of_prediction: string
-    date_of_prediction: string
-    bets: BetType[] | []
-}
-
-const mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
+const mapStateToProps = (state: AppStoreType) => {
     return {
       data: mainPage_selectors.get_data(state),
       isGettingData: mainPage_selectors.get_is_getting_data(state),
@@ -99,4 +84,6 @@ const mapStateToProps = (state: AppStoreType): MapStateToPropsType => {
     }
 }
 
-export default connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStoreType>(mapStateToProps, mapDispatchToProps)(MainPageContainer)
+type MapStateToPropsType = ReturnType<typeof mapStateToProps>
+
+export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStoreType>(mapStateToProps, mapDispatchToProps)(MainPageContainer)

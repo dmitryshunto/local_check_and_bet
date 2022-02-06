@@ -45,32 +45,25 @@ let BetStatisticPage: React.FC<BetStatisticPageProps> = ({odd_type, data}) => {
 
 BetStatisticPage = withPreloader<BetStatisticPageProps>(PreloaderPageWithoutHeader, 'isGettingData')(BetStatisticPage)
 
-type MapStatePropsType = {
-    data: FullBetStatisticDataType
-    isGettingData: boolean
-}
-
 type MapDispatchPropsType = {
     setBetStatisticTC: (db_name: string, kind_of_bet: NewKindOfBet, type_of_bet: OddTypeType) => void
     set_initial_state: typeof actions.set_initial_state
 }
 
-type OwnPropsType = {
-
-}
-
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType & RoutePropsType
-
-let mapStateToProps = (state: AppStoreType): MapStatePropsType => {
+let mapStateToProps = (state: AppStoreType) => {
     return {
         data: bet_statistic_page_selectors.get_data(state),
         isGettingData: bet_statistic_page_selectors.get_is_getting_data(state)
     }
 }
 
-let mapDispatchToProps: MapDispatchPropsType = {
+type MapStatePropsType = ReturnType<typeof mapStateToProps>
+
+let mapDispatchToProps = {
     setBetStatisticTC,
     set_initial_state: actions.set_initial_state
 }
 
-export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStoreType>(mapStateToProps, mapDispatchToProps)(BetStatisticPageContainer)
+type PropsType = MapStatePropsType & MapDispatchPropsType & RoutePropsType
+
+export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStoreType>(mapStateToProps, mapDispatchToProps)(BetStatisticPageContainer)

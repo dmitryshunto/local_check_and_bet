@@ -4,7 +4,7 @@ import { setMyProfileDataTC, updatePhotoTC, actions, MyPrediction, MyProfileBetT
 import { auth_user_selectors, propfile_selectors } from '../../Selectors/selectors'
 import { AppStoreType } from '../../redux/redux'
 import classes from './ProfilePage.module.css'
-import { round_plus } from '../../CommonFunctions/commonFunctions'
+import { roundPlus } from '../../CommonFunctions/commonFunctions'
 import { useSubscribeOnData } from '../../Hooks/Hooks'
 import { PreloaderPageWithoutHeader } from '../CommonComponents/PreloaderPage/PreloaderPage'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
@@ -111,11 +111,11 @@ let ProfilePage: React.FC<PropsType> = ({ my_profile_data, photo_url, isLoadingP
             number_of_settled_bets++
         }
     })
-    balance = round_plus(balance, 2)
+    balance = roundPlus(balance, 2)
 
     const winning_rating = overall_bets ? Math.round(win_bets * 100 / overall_bets) : 0;
 
-    const average_odd = odds_sum && number_of_settled_bets ? round_plus(odds_sum / number_of_settled_bets, 2) : 0;
+    const average_odd = odds_sum && number_of_settled_bets ? roundPlus(odds_sum / number_of_settled_bets, 2) : 0;
 
     const number_of_bets = my_profile_data ? my_profile_data.length : 0
 

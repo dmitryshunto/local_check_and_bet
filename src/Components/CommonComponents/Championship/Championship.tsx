@@ -49,9 +49,10 @@ const create_odds_columns = (selectBetTC: (bet: BetType) => void, bets: BetType[
                         let without_conditions_classes = []
                         if (obj.odd_type !== 'x') with_conditions_classes.push(get_text_selection_and_condition(odd, data.outcome_probability[obj.odd_type], classes.red_text_selection, classes.green_text_selection))
                         if (odd) without_conditions_classes.push(classes.odd_item)
+                        const selectBetCallBack = () => selectBetTC(bet)
                         items.push(
                             <div key={kind_of_bet} >
-                                <ItemWithTextSelection cb={() => selectBetTC(bet)}
+                                <ItemWithTextSelection cb={selectBetCallBack}
                                     key={kind_of_bet}
                                     bet={bet}
                                     bets={bets}
@@ -191,17 +192,23 @@ const ChampionshipTable: React.FC<ChampionshipType> = React.memo((props) => {
         button_content = 'check'
     }
 
+    const changeChampionshipStatusCallBack = () => { 
+        props.changeChampionshipCheckedStatus(props.data.db_name, props.date_of_match) }
+
     return (
         <div className={classes.my_net_championship_table}>
             <Row style={{ marginBottom: '1%' }}>
                 <Col span={4}>
-                    <Link to={`/championships/${props.data.db_name}`}>{`${props.data.country_name} ${props.data.name_of_championship}`}</Link>
+                    <Link to={`/championships/${props.data.db_name}`}>
+                        {`${props.data.country_name} ${props.data.name_of_championship}`}
+                    </Link>
                 </Col>
                 {getTodayDate() <= props.date_of_match &&
                     <Col span={2}>
-                        <Button type={button_type} onClick={
-                            () => { props.changeChampionshipCheckedStatus(props.data.db_name, props.date_of_match) }
-                        }>{button_content}</Button>
+                        <Button type={button_type} 
+                                onClick={changeChampionshipStatusCallBack}>
+                            {button_content}
+                        </Button>
                     </Col>}
             </Row>
             <CSSTransition
@@ -230,7 +237,7 @@ type GamesTableType = {
     country_and_name_of_championship: string
 }
 
-export const GamesTable: React.FC<GamesTableType> = (props) => {
+export const GamesTable: React.FC<GamesTableType> = React.memo((props) => {
     const odds_columns = create_odds_columns(props.selectBetTC, props.bets)
     const prediction_columns = create_prediction_columns()
     const user_login = useSelector(auth_user_selectors.get_login)
@@ -252,7 +259,7 @@ export const GamesTable: React.FC<GamesTableType> = (props) => {
     if (!props.predictions.length) return <Empty />
     return <Table columns={columns} rowKey={record => record['game_id']} dataSource={props.predictions}
         size={'middle'} pagination={false} scroll={{ x: true, y: 500 }} />
-}
+})
 
 type TeamsBlockType = {
     user_login: string | null

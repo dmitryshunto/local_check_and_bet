@@ -6,17 +6,6 @@ export const getTodayDate = () => {
     return yyyy + '-' + mm + '-' + dd;
 }
 
-export const objectRoundTo = (obj, to) => {
-    let x = (a) => {
-        return typeof (a) === 'number' ? +a.toFixed(to) : a;
-    };
-    let newObj = {};
-    for (let key in obj) {
-        newObj[key] = x(obj[key]);
-    }
-    return newObj;
-}
-
 export const notNullProp = (obj) => {
     let number = [];
     for (let key in obj) {
@@ -25,20 +14,22 @@ export const notNullProp = (obj) => {
     return number;
 }
 export const translate_kind_of_bet_and_home_away = (str) => {
-    if (str === 'goals') return 'Голы'
-    else if (str === 'ycard' || str === 'yellow_cards') return 'ЖК'
-    else if (str === 'corners') return 'УГЛ'
-    else if (str === 'home') return 'Дома'
-    else if (str === 'away') return 'В гостях'
-    else if (str === 'total_over') return 'ТБ'
-    else if (str === 'total_under') return 'ТМ'
-    else if (str === 'result_win1') return 'П1'
-    else if (str === 'result_win2') return 'П2'
-    else if (str === 'fouls') return 'Фолы'
-    else if (str === 'shots_on_goal') return 'Удары в створ'
-
+    switch (str) {
+        case 'goals': return 'Голы'
+        case 'ycard': return 'ЖК'
+        case 'yellow_cards': return 'ЖК'
+        case 'corners': return 'УГЛ'
+        case 'home': return 'Дома'
+        case 'away': return 'В гостях'
+        case 'total_over': return 'ТБ'
+        case 'total_under': return 'ТМ'
+        case 'result_win1': return 'П1'
+        case 'result_win2': return 'П2'
+        case 'fouls': return 'Фолы'
+        case 'shots_on_goal': return 'Удары в створ'
+        default : return str
+    }
 }
-// проверяет есть ли ставка с выбранным типом (тотал, исход) в массиве ставок
 
 export const isEmpty = (prop) => {
     return (
@@ -49,30 +40,21 @@ export const isEmpty = (prop) => {
     )
 }
 
-export const filterFunction = () => {
-    let input, filter, championships_list, championship_item, a, i;
-    input = document.getElementById('myInput');
-    filter = input.value.toUpperCase();
-    championships_list = document.getElementById("championships_list");
-    championship_item = championships_list.getElementsByTagName('div');
-
-    for (i = 0; i < championship_item.length; i++) {
-        a = championship_item[i].getElementsByTagName("a")[0];
-        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-            championship_item[i].style.display = "";
-        } else {
-            championship_item[i].style.display = "none";
-        }
-    }
-}
-
 export const set_initial_state = (type) => () => {
     return { type }
 }
 
-export const round_plus = (x, n) => { //x - число, n - количество знаков
-    const m = Math.pow(10, n);
-    return Math.round(x * m) / m;
+export const roundPlus = (number, charactersNumber) => { 
+    if(typeof number !== 'number' || typeof charactersNumber !== 'number') return number
+    const m = Math.pow(10, charactersNumber);
+    return Math.round(number * m) / m;
 }
 
+export const objectRoundTo = (obj, to) => {
+    let newObj = {}
+    for (let key in obj) {
+        newObj[key] = roundPlus(obj[key])
+    }
+    return newObj
+}
 

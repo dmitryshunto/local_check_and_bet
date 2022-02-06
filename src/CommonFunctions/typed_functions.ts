@@ -7,7 +7,7 @@ type GetTotalInfo = {
     over: number
     under: number
 }
-// bet_value это значение тотала или форы
+// bet_value is total or handicap value
 export const get_odd_types_and_values_from_market = (market: MarketType, bet_value: number | null = null): OddTypeAndValue[] => {
     const book_names = get_book_names_from_market_name(market)
     const result = []
@@ -19,10 +19,12 @@ export const get_odd_types_and_values_from_market = (market: MarketType, bet_val
 }
 
 export const get_book_names_from_market_name = (market: MarketType): Book_bet_name_type[] => {
-    if (market === 'totals') return ['TO', 'TU']
-    else if (market === 'double_chance') return ['x1', '!x', 'x2']
-    else if (market === 'handicaps') return ['h1', 'h2']
-    else return ['w1', 'x', 'w2']
+    switch (market) {
+        case 'totals': return ['TO', 'TU']
+        case 'double_chance': return ['x1', '!x', 'x2']
+        case 'handicaps': return ['h1', 'h2']
+        default: return  ['w1', 'x', 'w2']
+    }
 }
 
 export type OddTypeAndValue = { odd_type: OddTypeType, value: number | null }
@@ -94,12 +96,10 @@ export const get_bet_info = (market: MarketType) => {
     }
 }
 export const isBetInArrayOfBets = (bet: BetType, bets: BetType[] | []) => {
-    const bet_in_arr = bets.filter(b => {
+    return bets.some(b => {
         if (b.game_id === bet.game_id && b.kind_of_bet === bet.kind_of_bet && b.odd_type === bet.odd_type && b.value === bet.value) return true
         return false
     })
-    if (bet_in_arr.length) return true
-    return false
 }
 
 export const transform_date_for_UI = (string_date: Date) => {

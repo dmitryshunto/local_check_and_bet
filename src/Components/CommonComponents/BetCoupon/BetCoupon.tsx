@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import classes from './BetCoupon.module.css'
 import { connect } from 'react-redux'
 import { added_bets_selectors, auth_user_selectors } from '../../../Selectors/selectors'
@@ -10,7 +10,9 @@ import { Input } from 'antd'
 
 type PropsType = MapStateToProps & MapDispatchToProps
 
-let BetCoupon: React.FC<PropsType> = ({ bets, removeBet, addBetToDBTC, login, isAddingBets, setInitialBetsReducerState, selectBetTC }) => {
+let BetCoupon: React.FC<PropsType> = React.memo(({ bets, removeBet, addBetToDBTC, login, isAddingBets, setInitialBetsReducerState, selectBetTC }) => {
+    const setInitialStateCallBack = useCallback(() => setInitialBetsReducerState(), [setInitialBetsReducerState])
+    const addBetCallBack = useCallback(() => addBetToDBTC(login, bets), [login, bets, addBetToDBTC])
     if (bets.length) {
         let coupon_bets = bets.map((bet: BetType, index: number) => <BetCouponItem bet={bet}
             key={index}
@@ -22,18 +24,18 @@ let BetCoupon: React.FC<PropsType> = ({ bets, removeBet, addBetToDBTC, login, is
             <div className={classes.bet_coupon}>
                 <div className={classes.bet_coupon_head}>
                     <div className={classes.bets_length_block}>{bets.length}</div>
-                    <div className={classes.remove_all_bets_button} onClick={() => setInitialBetsReducerState()}>Delete all</div>
+                    <div className={classes.remove_all_bets_button} onClick={setInitialStateCallBack}>Delete all</div>
                 </div>
                 {coupon_bets}
                 <button className={classes.addBet_button}
-                    onClick={() => addBetToDBTC(login, bets)}
+                    onClick={addBetCallBack}
                     disabled={!all_bets_with_inserted_size || isAddingBets}>
                     Add to my bets
                 </button>
             </div>
         )
     } return null
-}
+})
 
 type BetCouponItem = {
     bet: BetType
@@ -41,7 +43,7 @@ type BetCouponItem = {
     selectBetTC: (bet: BetType) => void
 }
 
-const BetCouponItem: React.FC<BetCouponItem> = ({ bet, removeBet, selectBetTC }) => {
+const BetCouponItem: React.FC<BetCouponItem> = React.memo(({ bet, removeBet, selectBetTC }) => {
     const { market, odd_type, odd, kind_of_bet, home_team, away_team, value } = bet
     const max_size = 1000
     const min_size = 1
@@ -62,9 +64,11 @@ const BetCouponItem: React.FC<BetCouponItem> = ({ bet, removeBet, selectBetTC })
         selectBetTC(new_bet) // добавляет в массив bets новую ставку с актуальным значением bet_size
     }              
 
+    const removeBetCallBack = useCallback(() => removeBet(bet), [bet, removeBet])
+
     return (
         <div className={classes.bet_coupon_item}>
-            <div className={classes.remove_bet_button} onClick={() => removeBet(bet)}>
+            <div className={classes.remove_bet_button} onClick={removeBetCallBack}>
                 X
             </div>
             <div className={classes.coupon_odd_type}>
@@ -86,7 +90,7 @@ const BetCouponItem: React.FC<BetCouponItem> = ({ bet, removeBet, selectBetTC })
             </div>
         </div>
     )
-}
+})
 
 let BetSuccessMessage: React.FC<PropsType> = ({ warning_messages, setInitialBetsReducerState }) => {
     return (

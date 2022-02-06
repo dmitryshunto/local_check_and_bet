@@ -6,7 +6,7 @@ import { MyPrediction } from '../../../redux/my_profile_reducer';
 import { ColumnsInfoType } from '../../../config';
 import { create_columns } from '../ProfilePage';
 import classes from '../ProfilePage.module.css'
-import { round_plus } from '../../../CommonFunctions/commonFunctions';
+import { roundPlus } from '../../../CommonFunctions/commonFunctions';
 
 const { Text } = Typography
 
@@ -89,7 +89,7 @@ const UserPredictions: React.FC = () => {
                             <Table.Summary.Cell index={1}>{items?.length ? items.length : 0}</Table.Summary.Cell>
                             <Table.Summary.Cell index={2}>Balance:</Table.Summary.Cell>
                             <Table.Summary.Cell index={3}>
-                                <Text >{round_plus(balance, 2)}</Text>
+                                <Text >{roundPlus(balance, 2)}</Text>
                             </Table.Summary.Cell>
                         </Table.Summary.Row>
                     )
